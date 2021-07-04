@@ -34,7 +34,9 @@ if __name__ == '__main__':
     principal_components= redTec.PCA(D, 2)
     print(principal_components.shape)
     #stats.plot_scatter(principal_components,L)
-    linear_discriminants = redTec.LDA(D,L, 2)
-    stats.plot_scatter(linear_discriminants,L)
+    linear_discriminants = redTec.LDA(D,L, 1)
+    redTec.plotLDA(linear_discriminants, L, "Applied LDA")
+
+    
 
     

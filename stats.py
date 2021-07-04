@@ -24,7 +24,6 @@ def plot_hist(D, L):
         plt.hist(D1[dIdx, :], bins = 10, density = True, alpha = 0.4, label = 'authentic')
         
         plt.legend()
-        plt.tight_layout() # Use with non-default font size to keep axis label inside the figure
         plt.savefig('Stat/Hist/hist_%d.pdf' % dIdx)
         
 
@@ -54,10 +53,8 @@ def plot_scatter(D, L):
 
         
             plt.legend()
-            plt.tight_layout() # Use with non-default font size to keep axis label inside the figure
             plt.savefig('Stat/Scatter/scatter_%d_%d.pdf' % (dIdx1, dIdx2))
-    
-    plt.show()
+
         
 def plot_heatmaps (D, L):
     # show the correlation of the features in the whole dataset

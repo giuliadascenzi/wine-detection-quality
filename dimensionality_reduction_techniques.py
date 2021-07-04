@@ -56,6 +56,22 @@ def LDA(D,L, m):
     linear_discriminants = numpy.dot (eigenvectors_chosen.T , D)
     return linear_discriminants   
 
+def plotLDA (data, labels, title):
+    import matplotlib
+    import matplotlib.pyplot as plt
+
+    D0 = data[:, labels==0]
+    D1 = data[:, labels==1]
+
+
+    plt.figure()
+    plt.scatter(D0, D0*0, label = 'not authentic')
+    plt.scatter(D1, D1*0, label = 'authentic')
+
+    plt.legend()
+    plt.title(title)
+    plt.show()
+
 
 
 
