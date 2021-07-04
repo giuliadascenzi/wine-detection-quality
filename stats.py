@@ -24,7 +24,7 @@ def plot_hist(D, L):
         plt.hist(D1[dIdx, :], bins = 10, density = True, alpha = 0.4, label = 'authentic')
         
         plt.legend()
-        plt.savefig('Stat/Hist/hist_%d.pdf' % dIdx)
+        plt.savefig('Stat/Hist/hist_%d.png' % dIdx)
         
 
 
@@ -53,7 +53,7 @@ def plot_scatter(D, L):
 
         
             plt.legend()
-            plt.savefig('Stat/Scatter/scatter_%d_%d.pdf' % (dIdx1, dIdx2))
+            plt.savefig('Stat/Scatter/scatter_%d_%d.png' % (dIdx1, dIdx2))
 
         
 def plot_heatmaps (D, L):

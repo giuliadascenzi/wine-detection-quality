@@ -29,7 +29,7 @@ def load(fname):
 
 if __name__ == '__main__':
     D, L = load('Data/original_features/Train.txt')
-    #stats.compute_stats(D, L, show_figures = False)
+    stats.compute_stats(D, L, show_figures = True)
 
     principal_components= redTec.PCA(D, 2)
     print(principal_components.shape)
