@@ -28,14 +28,23 @@ def load(fname):
 
 
 if __name__ == '__main__':
-    D, L = load('Data/original_features/Train.txt')
-    stats.compute_stats(D, L, show_figures = True)
+    DTR, LTR = load('Data/original_features/Train.txt')
+    DTE, LTE = load('Data/original_features/Test.txt')
 
-    principal_components= redTec.PCA(D, 2)
-    print(principal_components.shape)
-    #stats.plot_scatter(principal_components,L)
-    linear_discriminants = redTec.LDA(D,L, 1)
-    redTec.plotLDA(linear_discriminants, L, "Applied LDA")
+    # DTR: Training Data
+    # DTE: Evaluation Data
+    # LTR: Training Labels
+    # LTE: Evaluation Labels
+    
+    # compute statistics to analyse the data and the givem features
+    #stats.compute_stats(DTR, LTR, show_figures = True)
+
+    #principal_components= redTec.PCA(DTR, 2)
+
+    #stats.plot_scatter(principal_components,LTR)
+    #linear_discriminants = redTec.LDA(DTR,LTR, 1)
+    #redTec.plotLDA(linear_discriminants, LTR, "Applied LDA")
+
 
     
 
