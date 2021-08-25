@@ -11,17 +11,24 @@ def plot_hist(D, L):
     D1 = D[:, L==1]
 
     hFea = {
-        0: 'Variance',
-        1: 'Skewness',
-        2: 'Curtosis',
-        3: 'Entropy'
+        0: 'fixed acidity',
+        1: 'volatile acidity',
+        2: 'citric acid',
+        3: 'residual sugar',
+        4: 'chlorides',
+        5: 'free sulfur dioxide',
+        6: 'total sulfur dioxide',
+        7: 'density',
+        8: 'pH',
+        9: 'sulphates',
+        10: 'alcohol'
         }
 
     for dIdx in range(D.shape[0]):
         plt.figure()
         plt.xlabel(hFea[dIdx])
-        plt.hist(D0[dIdx, :], bins = 10, density = True, alpha = 0.4, label = 'not authentic')
-        plt.hist(D1[dIdx, :], bins = 10, density = True, alpha = 0.4, label = 'authentic')
+        plt.hist(D0[dIdx, :], bins = 20, density = True, alpha = 0.4, label = 'not authentic')
+        plt.hist(D1[dIdx, :], bins = 20, density = True, alpha = 0.4, label = 'authentic')
         
         plt.legend()
         plt.savefig('Stat/Hist/hist_%d.png' % dIdx)
@@ -34,10 +41,17 @@ def plot_scatter(D, L):
     D1 = D[:, L==1]
 
     hFea = {
-        0: 'Variance',
-        1: 'Skewness',
-        2: 'Curtosis',
-        3: 'Entropy'
+        0: 'fixed acidity',
+        1: 'volatile acidity',
+        2: 'citric acid',
+        3: 'residual sugar',
+        4: 'chlorides',
+        5: 'free sulfur dioxide',
+        6: 'total sulfur dioxide',
+        7: 'density',
+        8: 'pH',
+        9: 'sulphates',
+        10: 'alcohol'
         }
 
 
@@ -60,42 +74,46 @@ def plot_heatmaps (D, L):
     # show the correlation of the features in the whole dataset
     C =numpy.corrcoef(D)
     plt.figure()
-    plt.imshow(C, cmap='Blues')
+    #plt.imshow(C, cmap='Blues')
+    plt.imshow(C, cmap='Greens')
     plt.colorbar()
     plt.title("Whole dataset")
     plt.savefig('Stat/HeatMaps/whole_dataset')
 
-    # show the correlation of the features in the samples of authentic banknote
+    # show the correlation of the features in the samples of low quality wine
     C =numpy.corrcoef(D[:,L==0])
     plt.figure()
     plt.imshow(C, cmap='Greens')
+    #plt.imshow(C, cmap='Oranges')
     plt.colorbar()
-    plt.title("Samples of authentic banknote")
-    plt.savefig('Stat/HeatMaps/authentic_dataset')
+    plt.title("Samples of low quality wine")
+    plt.savefig('Stat/HeatMaps/low_quality')
 
-    # show the correlation of the features in the samples of forged banknote
+    # show the correlation of the features in the samples of high quality wine
     C =numpy.corrcoef(D[:,L==1])
     plt.figure()
-    plt.imshow(C, cmap='Oranges')
+    plt.imshow(C, cmap='Greens')
     plt.colorbar()
-    plt.title("Samples of forged banknote")
-    plt.savefig('Stat/HeatMaps/forged_dataset')
+    plt.title("Samples of high quality wine")
+    plt.savefig('Stat/HeatMaps/high_quality')
     
 
     
     
 def compute_stats (D, L, show_figures=True):
 
-    plot_hist(D, L)
-    plot_scatter(D, L)
+    #plot_hist(D, L)
+    mu= D.mean(1)
+    center_data= D-mcol(mu)
+    #plot_hist(center_data, L)
+    
+    #plot_scatter(D, L)
     
 
     #calculate the matrix of the Pearson product-moment correlation coefficients.
-    plot_heatmaps(D, L)
+    #plot_heatmaps(D, L)
 
-    mu= D.mean(1)
-    center_data= D-mcol(mu)
-    plot_hist(center_data, L)
+    
 
     if (show_figures):
         plt.show()
