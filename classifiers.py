@@ -1,7 +1,7 @@
 import numpy
 import probability as prob
 
-def MVG_classifier(DTR, LTR, DTE, LTE):
+def MVG_classifier(DTR, LTR, DTE, LTE, classes_prior_probabilties):
     log =True
     
     # 1) Compute the ML estimetes for the classifier parameters (mu, co : for each class) mu=mean, co=covariance matrix
@@ -12,8 +12,6 @@ def MVG_classifier(DTR, LTR, DTE, LTE):
         # 2) Compute the likelihood of each sample for each class and store it in a matrix #Row=classes x #columns=data_sample
         scores = prob.compute_likelihoods (DTE, m, c, 2)
         # 3) Compute class posterior probability= multiply the score matrix with prior probability
-        P_c= 1/2
-        classes_prior_probabilties = numpy.array([P_c, P_c, P_c]) #assuming for each class P(c)=1/3 
         S_joint = prob.compute_joint_distribution(scores, classes_prior_probabilties) 
         # 4) compute class posterior probability
         S_post = prob.compute_class_posterior_probabilities(S_joint) 
@@ -23,8 +21,6 @@ def MVG_classifier(DTR, LTR, DTE, LTE):
         # 2) Compute the loglikelihood of each sample for each class and store it in a matrix #Row=classes x #columns=data_sample
         scores = prob.compute_loglikelihoods (DTE, m, c, 2)
         # 3) Compute class posterior probability= multiply the score matrix with prior probability
-        P_c= 1/2
-        classes_prior_probabilties = numpy.array([P_c, P_c, P_c]) #assuming for each class P(c)=1/3 
         S_joint = prob.compute_joint_log_distribution(scores, classes_prior_probabilties) 
         # 4) compute class posterior probability
         S_log_post = prob.compute_log_class_posterior_probabilities(S_joint) 
@@ -40,7 +36,7 @@ def MVG_classifier(DTR, LTR, DTE, LTE):
 
 
 
-def TiedCovariance_classifier(DTR, LTR, DTE, LTE):
+def TiedCovariance_classifier(DTR, LTR, DTE, LTE, classes_prior_probabilties):
     log =True
      # 1) Compute the ML estimetes for the classifier parameters (mu, co : for each class) mu=mean, co=covariance matrix
     m = prob.means(DTR, LTR)
@@ -63,8 +59,6 @@ def TiedCovariance_classifier(DTR, LTR, DTE, LTE):
         # 2) Compute the likelihood of each sample for each class and store it in a matrix #Row=classes x #columns=data_sample
         scores = prob.compute_likelihoods (DTE, m, c, 2)
         # 3) Compute class posterior probability= multiply the score matrix with prior probability
-        P_c= 1/2
-        classes_prior_probabilties = numpy.array([P_c, P_c, P_c]) #assuming for each class P(c)=1/3 
         S_joint = prob.compute_joint_distribution(scores, classes_prior_probabilties) 
         # 4) compute class posterior probability
         S_post = prob.compute_class_posterior_probabilities(S_joint) 
@@ -74,8 +68,6 @@ def TiedCovariance_classifier(DTR, LTR, DTE, LTE):
         # 2) Compute the loglikelihood of each sample for each class and store it in a matrix #Row=classes x #columns=data_sample
         scores = prob.compute_loglikelihoods (DTE, m, c, 2)
         # 3) Compute class posterior probability= multiply the score matrix with prior probability
-        P_c= 1/2
-        classes_prior_probabilties = numpy.array([P_c, P_c, P_c]) #assuming for each class P(c)=1/3 
         S_joint = prob.compute_joint_log_distribution(scores, classes_prior_probabilties) 
         # 4) compute class posterior probability
         S_log_post = prob.compute_log_class_posterior_probabilities(S_joint) 
@@ -92,7 +84,7 @@ def TiedCovariance_classifier(DTR, LTR, DTE, LTE):
 
 
 
-def NaiveBayes_classifier(DTR, LTR, DTE, LTE):
+def NaiveBayes_classifier(DTR, LTR, DTE, LTE, classes_prior_probabilties):
     log =True
      # 1) Compute the ML estimetes for the classifier parameters (mu, co : for each class) mu=mean, co=covariance matrix
     m = prob.means(DTR, LTR)
@@ -108,8 +100,7 @@ def NaiveBayes_classifier(DTR, LTR, DTE, LTE):
         # 2) Compute the likelihood of each sample for each class and store it in a matrix #Row=classes x #columns=data_sample
         scores = prob.compute_likelihoods (DTE, m, c, 2)
         # 3) Compute class posterior probability= multiply the score matrix with prior probability
-        P_c= 1/2
-        classes_prior_probabilties = numpy.array([P_c, P_c, P_c]) #assuming for each class P(c)=1/3 
+       
         S_joint = prob.compute_joint_distribution(scores, classes_prior_probabilties) 
         # 4) compute class posterior probability
         S_post = prob.compute_class_posterior_probabilities(S_joint) 
@@ -119,8 +110,7 @@ def NaiveBayes_classifier(DTR, LTR, DTE, LTE):
         # 2) Compute the loglikelihood of each sample for each class and store it in a matrix #Row=classes x #columns=data_sample
         scores = prob.compute_loglikelihoods (DTE, m, c, 2)
         # 3) Compute class posterior probability= multiply the score matrix with prior probability
-        P_c= 1/2
-        classes_prior_probabilties = numpy.array([P_c, P_c, P_c]) #assuming for each class P(c)=1/3 
+       
         S_joint = prob.compute_joint_log_distribution(scores, classes_prior_probabilties) 
         # 4) compute class posterior probability
         S_log_post = prob.compute_log_class_posterior_probabilities(S_joint) 

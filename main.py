@@ -33,18 +33,21 @@ def load(fname):
 
 
 
+
+
+
 def gaussianization(D):
     N = D.shape[1]
     r = numpy.zeros(D.shape)
     for k in range(D.shape[0]):
         featureVector = D[k,:]
-        for i in range(N):
-            for j in range(N):
-                if(featureVector[i]<featureVector[j]):
-                    r[k][i]+=1
+        ranks = scipy.stats.rankdata(featureVector, method='min') -1
+        r[k,:] = ranks
+
     r = (r + 1)/(N+2)
     gaussianizedFeatures = scipy.stats.norm.ppf(r)
     return gaussianizedFeatures
+
 
 
 
@@ -111,18 +114,25 @@ if __name__ == '__main__':
     stats.compute_stats(DTR, LTR, show_figures = True)
 
     #gaussianize the features
-    #gaussianizedFeatures = gaussianization(DTR)
+    gaussianizedFeatures = gaussianization(DTR)
+    
     #stats.plot_hist(gaussianizedFeatures, LTR)
+
 
     #enstablish if data are balanced
     n_high_qty = numpy.count_nonzero(LTR == 1)
     n_low_qty = numpy.count_nonzero(LTR == 0)
     #-----> number of low qty >> number of high qty
 
+    #PT = Prior probability for True class -> high quality
+    #PF = Prior probability for False class -> low quality
+    PT = 0.5
+    PF = 0.5
+    classes_prior_probabilties = numpy.array([PT, PF])
 
-    _,_,predicted_labelsMVG= classifiers.MVG_classifier(DTR, LTR, DTE, LTE)
-    _,_,predicted_labelsTied= classifiers.TiedCovariance_classifier(DTR, LTR, DTE, LTE)
-    _,_,predicted_labelsNaive= classifiers.NaiveBayes_classifier(DTR, LTR, DTE, LTE)
+    _,_,predicted_labelsMVG= classifiers.MVG_classifier(DTR, LTR, DTE, LTE, classes_prior_probabilties)
+    _,_,predicted_labelsTied= classifiers.TiedCovariance_classifier(DTR, LTR, DTE, LTE, classes_prior_probabilties)
+    _,_,predicted_labelsNaive= classifiers.NaiveBayes_classifier(DTR, LTR, DTE, LTE, classes_prior_probabilties)
 
     accMVG,_ = prob.compute_accuracy_error(predicted_labelsMVG, LTE)
     accTied,_ = prob.compute_accuracy_error(predicted_labelsTied, LTE)
