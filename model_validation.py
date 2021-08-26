@@ -1,6 +1,7 @@
 import numpy
+import model_evaluation
 
-def k_cross_validation(D, L, k, classifier):
+def k_cross_validation_accuracy(D, L, k, classifier):
     step = int(D.shape[1]/k)
     numpy.random.seed(seed=0)
 
@@ -40,15 +41,3 @@ def k_cross_validation(D, L, k, classifier):
     return err
 
 
-def compute_confusion_matrix(predicted_labels, actual_labels, numClasses):
-    #Build confusion matrix 
-    c_matrix_C =numpy.zeros((numClasses,numClasses))
-    #columns =classes, #rows= predictions
-
-    # classLabels: evaluation labels -> actual class labels
-    # predicted_labelsC ->assigned class Labels    
-    for i in range (len(actual_labels)):
-        columnIndex=actual_labels[i]
-        rowIndex=predicted_labels[i]
-        c_matrix_C[rowIndex][columnIndex]+=1
-    return c_matrix_C
