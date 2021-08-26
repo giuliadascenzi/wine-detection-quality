@@ -1,5 +1,22 @@
 import numpy
 
+def split_db_2tol(D,L, seed=0):
+    nTrain=int(D.shape[1]*2.0/3.0)
+    numpy.random.seed(seed)
+    idx=numpy.random.permutation(D.shape[1])
+    idxTrain=idx[0:nTrain]
+    idxTest=idx[nTrain:]
+
+    #Training Data
+    DTR = D[:, idxTrain]
+    #Evaluation Data
+    DTE = D[:, idxTest]
+    #Training Labels
+    LTR = L[idxTrain]
+    #Evaluation Labels
+    LTE = L[idxTest]
+
+    return [(DTR, LTR), (DTE,LTE)]
 
 def compute_confusion_matrix(predicted_labels, actual_labels, numClasses):
     #Build confusion matrix 
@@ -52,16 +69,16 @@ def compute_normalised_bayes_risk_wrapper(data, labels, prior, cost_fn, cost_fp)
     normalized_bayes_risk=compute_normalized_bayes_risk(bayes_risk ,prior, cost_fn, cost_fp)
     return (predicted_labels,c_matrix_IP, bayes_risk, normalized_bayes_risk)
 
-def compute_minimum_detection_cost(data, labels, prior, cost_fn, cost_fp):
+def compute_minimum_detection_cost(llrs, labels, prior, cost_fn, cost_fp):
     # 1) ordina in ordine crescente i test scores= data (logLikelihood ratios)
-    data_sorted= numpy.sort(data)
+    llrs_sorted= numpy.sort(llrs)
     # 2) considero ogni elemento data come threshold, ottengo le predicted labels confrontando con la threshold
     DCFs=[]
     FPRs=[]
     TPRs=[]
 
-    for t in data_sorted:
-        p_label=1*(data>t)
+    for t in llrs_sorted:
+        p_label=1*(llrs>t)
         conf_matrix=compute_confusion_matrix(p_label, labels, numpy.unique(labels).size )
         br= compute_bayes_risk(conf_matrix, prior, cost_fn, cost_fp)
         nbr= compute_normalized_bayes_risk(br, prior, cost_fn, cost_fp)
@@ -76,7 +93,7 @@ def compute_minimum_detection_cost(data, labels, prior, cost_fn, cost_fp):
     return (DCF_min, FPRs, TPRs)
 
 
-def k_cross_minDCF(D, L, k, llr_calculator, prior , cost_fn, cost_fp):
+def k_cross_minDCF(D, L, k, llr_calculator, prior, cost_fn, cost_fp):
     step = int(D.shape[1]/k)
     numpy.random.seed(seed=0)
 
@@ -108,10 +125,17 @@ def k_cross_minDCF(D, L, k, llr_calculator, prior , cost_fn, cost_fp):
         
         llr_i= llr_calculator(DTR, LTR, DEV)
         llr.append(llr_i)
-        labels.append( LEV)
+        labels.append(LEV)
 
     llr = numpy.concatenate(llr)
     labels = numpy.concatenate(labels)
     min_DCF,_,_ =compute_minimum_detection_cost(llr, labels, prior , cost_fn, cost_fp)
+    return min_DCF #minDCF
+
+
+def singleFold_minDCF(D, L, llr_calculator, prior, cost_fn, cost_fp):
+    (DTR, LTR), (DTE,LTE)= split_db_2tol(D,L)
+    llr =llr_calculator (DTR,LTR,DTE)
+    min_DCF,_,_ =compute_minimum_detection_cost(llr, LTE, prior , cost_fn, cost_fp)
     return min_DCF #minDCF
 
