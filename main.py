@@ -81,14 +81,126 @@ if __name__ == '__main__':
     cost_fp = 1
     classes_prior_probabilties = numpy.array([prior, 1-prior])
 
+    #choose k for k cross validation
+    k = 5
+
+    #------------------------RAW FEATURES -----------------
     #Full_Cov 
-    min_DCF = model_evaluation.k_cross_minDCF(DTR, LTR, 4, classifiers.MVG_logLikelihoodRatios, prior , cost_fn, cost_fp)
-    print(min_DCF)
+    min_DCF_MVG = model_evaluation.k_cross_minDCF(DTR, LTR, k, classifiers.MVG_logLikelihoodRatios, prior , cost_fn, cost_fp)
+    print("RAW FEATURES - min DCF MVG: ",min_DCF_MVG)  
+
+    #Diag_Cov == Naive
+    min_DCF_Diag_Cov = model_evaluation.k_cross_minDCF(DTR, LTR, k, classifiers.NAIVE_logLikelihoodRatios, prior , cost_fn, cost_fp)
+    print("RAW FEATURES - min DCF MVG with Diag cov: ",min_DCF_Diag_Cov)
+
+    #Tied
+    min_DCF_Tied = model_evaluation.k_cross_minDCF(DTR, LTR, k, classifiers.TIED_logLikelihoodRatios, prior , cost_fn, cost_fp)
+    print("RAW FEATURES - min DCF Tied MVG: ",min_DCF_Tied)
+
+    #Tied Diag_Cov
+    min_DCF_Tied_Diag_Cov = model_evaluation.k_cross_minDCF(DTR, LTR, k, classifiers.TIED_DIAG_COV_logLikelihoodRatios, prior , cost_fn, cost_fp)
+    print("RAW FEATURES - min DCF Tied MVG with Diag Cov: ",min_DCF_Tied_Diag_Cov)
 
 
-    #principal_components= redTec.PCA(DTR, 9)
-    #print(principal_components)
+    #------------------------RAW FEATURES WITH PCA = 9 --------------------
+    principal_components_9= redTec.PCA(DTR, 9)
 
+    #Full_Cov 
+    min_DCF_MVG = model_evaluation.k_cross_minDCF(principal_components_9, LTR, k, classifiers.MVG_logLikelihoodRatios, prior , cost_fn, cost_fp)
+    print("RAW FEATURES with PCA = 9 - min DCF MVG: ",min_DCF_MVG)  
+
+    #Diag_Cov == Naive
+    min_DCF_Diag_Cov = model_evaluation.k_cross_minDCF(principal_components_9, LTR, k, classifiers.NAIVE_logLikelihoodRatios, prior , cost_fn, cost_fp)
+    print("RAW FEATURES with PCA = 9 - min DCF MVG with Diag cov: ",min_DCF_Diag_Cov)
+
+    #Tied
+    min_DCF_Tied = model_evaluation.k_cross_minDCF(principal_components_9, LTR, k, classifiers.TIED_logLikelihoodRatios, prior , cost_fn, cost_fp)
+    print("RAW FEATURES with PCA = 9 - min DCF Tied MVG: ",min_DCF_Tied)
+
+    #Tied Diag_Cov
+    min_DCF_Tied_Diag_Cov = model_evaluation.k_cross_minDCF(principal_components_9, LTR, k, classifiers.TIED_DIAG_COV_logLikelihoodRatios, prior , cost_fn, cost_fp)
+    print("RAW FEATURES with PCA = 9 - min DCF Tied MVG with Diag Cov: ",min_DCF_Tied_Diag_Cov)
+
+
+
+    #------------------------RAW FEATURES WITH PCA = 8 --------------------
+    principal_components_8= redTec.PCA(DTR, 8)
+
+    #Full_Cov 
+    min_DCF_MVG = model_evaluation.k_cross_minDCF(principal_components_8, LTR, k, classifiers.MVG_logLikelihoodRatios, prior , cost_fn, cost_fp)
+    print("RAW FEATURES with PCA = 8 - min DCF MVG: ",min_DCF_MVG)  
+
+    #Diag_Cov == Naive
+    min_DCF_Diag_Cov = model_evaluation.k_cross_minDCF(principal_components_8, LTR, k, classifiers.NAIVE_logLikelihoodRatios, prior , cost_fn, cost_fp)
+    print("RAW FEATURES with PCA = 8 - min DCF MVG with Diag cov: ",min_DCF_Diag_Cov)
+
+    #Tied
+    min_DCF_Tied = model_evaluation.k_cross_minDCF(principal_components_8, LTR, k, classifiers.TIED_logLikelihoodRatios, prior , cost_fn, cost_fp)
+    print("RAW FEATURES with PCA = 8 - min DCF Tied MVG: ",min_DCF_Tied)
+
+    #Tied Diag_Cov
+    min_DCF_Tied_Diag_Cov = model_evaluation.k_cross_minDCF(principal_components_8, LTR, k, classifiers.TIED_DIAG_COV_logLikelihoodRatios, prior , cost_fn, cost_fp)
+    print("RAW FEATURES with PCA = 8 - min DCF Tied MVG with Diag Cov: ",min_DCF_Tied_Diag_Cov)
+
+
+    #--------------- GAUSSIANIZED FEATURES-------------------------
+
+    #Full_Cov 
+    min_DCF_MVG = model_evaluation.k_cross_minDCF(gaussianizedFeatures, LTR, k, classifiers.MVG_logLikelihoodRatios, prior , cost_fn, cost_fp)
+    print("GAUSSIANIZED FEATURES - min DCF MVG: ",min_DCF_MVG)  
+
+    #Diag_Cov == Naive
+    min_DCF_Diag_Cov = model_evaluation.k_cross_minDCF(gaussianizedFeatures, LTR, k, classifiers.NAIVE_logLikelihoodRatios, prior , cost_fn, cost_fp)
+    print("GAUSSIANIZED FEATURES - min DCF MVG with Diag cov: ",min_DCF_Diag_Cov)
+
+    #Tied
+    min_DCF_Tied = model_evaluation.k_cross_minDCF(gaussianizedFeatures, LTR, k, classifiers.TIED_logLikelihoodRatios, prior , cost_fn, cost_fp)
+    print("GAUSSIANIZED FEATURES - min DCF Tied MVG: ",min_DCF_Tied)
+
+    #Tied Diag_Cov
+    min_DCF_Tied_Diag_Cov = model_evaluation.k_cross_minDCF(gaussianizedFeatures, LTR, k, classifiers.TIED_DIAG_COV_logLikelihoodRatios, prior , cost_fn, cost_fp)
+    print("GAUSSIANIZED FEATURES - min DCF Tied MVG with Diag Cov: ",min_DCF_Tied_Diag_Cov)
+
+
+    #------------------------GAUSSIANIZED FEATURES WITH PCA = 9 --------------------
+    gaussianized_principal_components_9= redTec.PCA(gaussianizedFeatures, 9)
+
+    #Full_Cov 
+    min_DCF_MVG = model_evaluation.k_cross_minDCF(gaussianized_principal_components_9, LTR, k, classifiers.MVG_logLikelihoodRatios, prior , cost_fn, cost_fp)
+    print("GAUSSIANIZED FEATURES with PCA = 9 - min DCF MVG: ",min_DCF_MVG)  
+
+    #Diag_Cov == Naive
+    min_DCF_Diag_Cov = model_evaluation.k_cross_minDCF(gaussianized_principal_components_9, LTR, k, classifiers.NAIVE_logLikelihoodRatios, prior , cost_fn, cost_fp)
+    print("GAUSSIANIZED FEATURES with PCA = 9 - min DCF MVG with Diag cov: ",min_DCF_Diag_Cov)
+
+    #Tied
+    min_DCF_Tied = model_evaluation.k_cross_minDCF(gaussianized_principal_components_9, LTR, k, classifiers.TIED_logLikelihoodRatios, prior , cost_fn, cost_fp)
+    print("GAUSSIANIZED FEATURES with PCA = 9 - min DCF Tied MVG: ",min_DCF_Tied)
+
+    #Tied Diag_Cov
+    min_DCF_Tied_Diag_Cov = model_evaluation.k_cross_minDCF(gaussianized_principal_components_9, LTR, k, classifiers.TIED_DIAG_COV_logLikelihoodRatios, prior , cost_fn, cost_fp)
+    print("GAUSSIANIZED FEATURES with PCA = 9 - min DCF Tied MVG with Diag Cov: ",min_DCF_Tied_Diag_Cov)
+
+
+
+    #------------------------GAUSSIANIZED FEATURES WITH PCA = 8 --------------------
+    gaussianized_principal_components_8= redTec.PCA(gaussianizedFeatures, 8)
+
+    #Full_Cov 
+    min_DCF_MVG = model_evaluation.k_cross_minDCF(gaussianized_principal_components_8, LTR, k, classifiers.MVG_logLikelihoodRatios, prior , cost_fn, cost_fp)
+    print("GAUSSIANIZED FEATURES with PCA = 8 - min DCF MVG: ",min_DCF_MVG)  
+
+    #Diag_Cov == Naive
+    min_DCF_Diag_Cov = model_evaluation.k_cross_minDCF(gaussianized_principal_components_8, LTR, k, classifiers.NAIVE_logLikelihoodRatios, prior , cost_fn, cost_fp)
+    print("GAUSSIANIZED FEATURES with PCA = 8 - min DCF MVG with Diag cov: ",min_DCF_Diag_Cov)
+
+    #Tied
+    min_DCF_Tied = model_evaluation.k_cross_minDCF(gaussianized_principal_components_8, LTR, k, classifiers.TIED_logLikelihoodRatios, prior , cost_fn, cost_fp)
+    print("GAUSSIANIZED FEATURES with PCA = 8 - min DCF Tied MVG: ",min_DCF_Tied)
+
+    #Tied Diag_Cov
+    min_DCF_Tied_Diag_Cov = model_evaluation.k_cross_minDCF(gaussianized_principal_components_8, LTR, k, classifiers.TIED_DIAG_COV_logLikelihoodRatios, prior , cost_fn, cost_fp)
+    print("GAUSSIANIZED FEATURES with PCA = 8 - min DCF Tied MVG with Diag Cov: ",min_DCF_Tied_Diag_Cov)
     #stats.plot_scatter(principal_components,LTR)
     #linear_discriminants = redTec.LDA(DTR,LTR, 1)
     #redTec.plotLDA(linear_discriminants, LTR, "Applied LDA")

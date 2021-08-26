@@ -45,7 +45,7 @@ def TiedCovariance_classifier(DTR, LTR, DTE, LTE, classes_prior_probabilties):
 
 
     # 2) get the tied covariance
-    csigma = numpy.zeros((10,10))
+    csigma = numpy.zeros([DTR.shape[0], DTR.shape[0]])
 
     for i in range (len(c_MVG)):
         Nc = (LTR == i).sum()
@@ -90,7 +90,7 @@ def TIED_logLikelihoodRatios(DTR, LTR, DTE):
 
 
     # 2) get the tied covariance
-    csigma = numpy.zeros((10,10))
+    csigma = numpy.zeros([DTR.shape[0],DTR.shape[0]])
 
     for i in range (len(c_MVG)):
         Nc = (LTR == i).sum()
@@ -158,6 +158,36 @@ def NAIVE_logLikelihoodRatios(DTR, LTR, DTE):
     c = c_MVG
     for i in range (len(c_MVG)):
         c[i]= c_MVG[i]*numpy.eye(c_MVG[i].shape[0],c_MVG[i].shape[1])
+    
+    #work with loglikelihoods
+    # 3) Compute the loglikelihood of each sample for each class and store it in a matrix #Row=classes x #columns=data_sample
+    scores = prob.compute_loglikelihoods (DTE, m, c, 2)
+    return (scores[1,:]-scores[0,:])#return the ratio
+
+
+
+
+def TIED_DIAG_COV_logLikelihoodRatios(DTR, LTR, DTE):
+    # 1) Compute the ML estimetes for the classifier parameters (mu, co : for each class) mu=mean, co=covariance matrix
+    m = prob.means(DTR, LTR)
+    c_MVG = prob.covariances(DTR, LTR, m)
+
+
+    # 2) get the tied covariance
+    csigma = numpy.zeros([DTR.shape[0], DTR.shape[0]])
+
+    for i in range (len(c_MVG)):
+        Nc = (LTR == i).sum()
+        csigma += c_MVG[i]*Nc
+    csigma = csigma / LTR.shape[0]
+
+    #as NAIVE --> multiply for a eye matrix --> we need only the diagonal
+    csigma= csigma*numpy.eye(csigma.shape[0],csigma.shape[1])
+
+    c =[]
+    for i in range (len(c_MVG)):
+        c.append(csigma)
+        
     
     #work with loglikelihoods
     # 3) Compute the loglikelihood of each sample for each class and store it in a matrix #Row=classes x #columns=data_sample
