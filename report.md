@@ -32,6 +32,7 @@ Correlation between the features:
 ## - Classifier for the wine
 
 # table MVG Classifiers min DCF
+********************* MVG TABLE ************************************
 ------> pi = 0.5
 *** minDCF - RAW FEATURES - NO PCA ***
 [Single Fold] -  MVG:  0.34620265521280746
@@ -41,7 +42,7 @@ Correlation between the features:
 [Single Fold] - Tied MVG:  0.35554959000390474
 [5- Fold] - Tied MVG:  0.35970636215334423
 [Single Fold] - Tied MVG with Diag Cov:  0.5214271768840297
-[5 Fold] - Tied MVG with Diag Cov:  0.5214271768840297
+[5 Fold] - Tied MVG with Diag Cov:  0.5432300163132138
 
 *** minDCF - RAW FEATURES -  PCA (m=9) ***
 [Single Fold] -  MVG:  0.4551810816087466
@@ -51,7 +52,7 @@ Correlation between the features:
 [Single Fold] - Tied MVG:  0.5556179226864506
 [5- Fold] - Tied MVG:  0.35970636215334423
 [Single Fold] - Tied MVG with Diag Cov:  0.5214271768840297
-[5 Fold] - Tied MVG with Diag Cov:  0.5214271768840297
+[5 Fold] - Tied MVG with Diag Cov:  0.5432300163132138
 
 *** minDCF - RAW FEATURES -  PCA (m=8) ***
 [Single Fold] -  MVG:  0.4909825263568918
@@ -61,7 +62,7 @@ Correlation between the features:
 [Single Fold] - Tied MVG:  0.5850131784459196
 [5- Fold] - Tied MVG:  0.35970636215334423
 [Single Fold] - Tied MVG with Diag Cov:  0.5214271768840297
-[5 Fold] - Tied MVG with Diag Cov:  0.5214271768840297
+[5 Fold] - Tied MVG with Diag Cov:  0.5432300163132138
 
 *** minDCF - GAUSSIANIZED FEATURES - NO PCA ***
 [Single Fold] -  MVG:  0.27701581413510346
@@ -71,7 +72,7 @@ Correlation between the features:
 [Single Fold] - Tied MVG:  0.3558180398281921
 [5- Fold] - Tied MVG:  0.35970636215334423
 [Single Fold] - Tied MVG with Diag Cov:  0.5214271768840297
-[5 Fold] - Tied MVG with Diag Cov:  0.5214271768840297
+[5 Fold] - Tied MVG with Diag Cov:  0.5432300163132138
 
 *** minDCF - GAUSSIANIZED FEATURES -  PCA m=9 ***
 [Single Fold] -  MVG:  0.3007858258492776
@@ -81,7 +82,7 @@ Correlation between the features:
 [Single Fold] - Tied MVG:  0.42127098789535333
 [5- Fold] - Tied MVG:  0.35970636215334423
 [Single Fold] - Tied MVG with Diag Cov:  0.5214271768840297
-[5 Fold] - Tied MVG with Diag Cov:  0.5214271768840297
+[5 Fold] - Tied MVG with Diag Cov:  0.5432300163132138
 
 *** minDCF - GAUSSIANIZED FEATURES -  PCA m=8 ***
 [Single Fold] -  MVG:  0.34592200312377974
@@ -91,7 +92,7 @@ Correlation between the features:
 [Single Fold] - Tied MVG:  0.4340955681374463
 [5- Fold] - Tied MVG:  0.35970636215334423
 [Single Fold] - Tied MVG with Diag Cov:  0.5214271768840297
-[5 Fold] - Tied MVG with Diag Cov:  0.5214271768840297
+[5 Fold] - Tied MVG with Diag Cov:  0.5432300163132138
 
 
 ------> pi = 0.9
@@ -103,7 +104,7 @@ Correlation between the features:
 [Single Fold] - Tied MVG:  0.8365384615384616
 [5- Fold] - Tied MVG:  0.8278955954323002
 [Single Fold] - Tied MVG with Diag Cov:  0.9831730769230769
-[5 Fold] - Tied MVG with Diag Cov:  0.9831730769230769
+[5 Fold] - Tied MVG with Diag Cov:  0.9526916802610115
 
 *** minDCF - RAW FEATURES -  PCA (m=9) ***
 [Single Fold] -  MVG:  0.8846275868801249
@@ -113,7 +114,7 @@ Correlation between the features:
 [Single Fold] - Tied MVG:  0.9399160484185866
 [5- Fold] - Tied MVG:  0.8278955954323002
 [Single Fold] - Tied MVG with Diag Cov:  0.9831730769230769
-[5 Fold] - Tied MVG with Diag Cov:  0.9831730769230769
+[5 Fold] - Tied MVG with Diag Cov:  0.9526916802610115
 
 *** minDCF - RAW FEATURES -  PCA (m=8) ***
 [Single Fold] -  MVG:  0.9303250683326826
@@ -123,7 +124,7 @@ Correlation between the features:
 [Single Fold] - Tied MVG:  0.9471153846153845
 [5- Fold] - Tied MVG:  0.8278955954323002
 [Single Fold] - Tied MVG with Diag Cov:  0.9831730769230769
-[5 Fold] - Tied MVG with Diag Cov:  0.9831730769230769
+[5 Fold] - Tied MVG with Diag Cov:  0.9526916802610115
 
 *** minDCF - GAUSSIANIZED FEATURES - NO PCA ***
 [Single Fold] -  MVG:  0.8245314330339711
@@ -133,7 +134,7 @@ Correlation between the features:
 [Single Fold] - Tied MVG:  0.9062988090589612
 [5- Fold] - Tied MVG:  0.8278955954323002
 [Single Fold] - Tied MVG with Diag Cov:  0.9831730769230769
-[5 Fold] - Tied MVG with Diag Cov:  0.9831730769230769
+[5 Fold] - Tied MVG with Diag Cov:  0.9526916802610115
 
 *** minDCF - GAUSSIANIZED FEATURES -  PCA m=9 ***
 [Single Fold] -  MVG:  0.8582584927762592
@@ -143,7 +144,7 @@ Correlation between the features:
 [Single Fold] - Tied MVG:  0.903882760640375
 [5- Fold] - Tied MVG:  0.8278955954323002
 [Single Fold] - Tied MVG with Diag Cov:  0.9831730769230769
-[5 Fold] - Tied MVG with Diag Cov:  0.9831730769230769
+[5 Fold] - Tied MVG with Diag Cov:  0.9526916802610115
 
 *** minDCF - GAUSSIANIZED FEATURES -  PCA m=8 ***
 [Single Fold] -  MVG:  0.8678738773916441
@@ -153,7 +154,7 @@ Correlation between the features:
 [Single Fold] - Tied MVG:  0.8534019914096056
 [5- Fold] - Tied MVG:  0.8278955954323002
 [Single Fold] - Tied MVG with Diag Cov:  0.9831730769230769
-[5 Fold] - Tied MVG with Diag Cov:  0.9831730769230769
+[5 Fold] - Tied MVG with Diag Cov:  0.9526916802610115
 
 
 ------> pi = 0.1
@@ -165,7 +166,7 @@ Correlation between the features:
 [Single Fold] - Tied MVG:  0.8188329754002344
 [5- Fold] - Tied MVG:  0.8433931484502446
 [Single Fold] - Tied MVG with Diag Cov:  0.913949629051152
-[5 Fold] - Tied MVG with Diag Cov:  0.913949629051152
+[5 Fold] - Tied MVG with Diag Cov:  0.9706362153344209
 
 *** minDCF - RAW FEATURES -  PCA (m=9) ***
 [Single Fold] -  MVG:  0.9660410972276454
@@ -175,7 +176,7 @@ Correlation between the features:
 [Single Fold] - Tied MVG:  0.9746192893401016
 [5- Fold] - Tied MVG:  0.8433931484502446
 [Single Fold] - Tied MVG with Diag Cov:  0.913949629051152
-[5 Fold] - Tied MVG with Diag Cov:  0.913949629051152
+[5 Fold] - Tied MVG with Diag Cov:  0.9706362153344209
 
 *** minDCF - RAW FEATURES -  PCA (m=8) ***
 [Single Fold] -  MVG:  0.9708731940648185
@@ -185,7 +186,7 @@ Correlation between the features:
 [Single Fold] - Tied MVG:  0.963625048809059
 [5- Fold] - Tied MVG:  0.8433931484502446
 [Single Fold] - Tied MVG with Diag Cov:  0.913949629051152
-[5 Fold] - Tied MVG with Diag Cov:  0.913949629051152
+[5 Fold] - Tied MVG with Diag Cov:  0.9706362153344209
 
 *** minDCF - GAUSSIANIZED FEATURES - NO PCA ***
 [Single Fold] -  MVG:  0.7918781725888325
@@ -195,7 +196,7 @@ Correlation between the features:
 [Single Fold] - Tied MVG:  0.8898989652479501
 [5- Fold] - Tied MVG:  0.8433931484502446
 [Single Fold] - Tied MVG with Diag Cov:  0.913949629051152
-[5 Fold] - Tied MVG with Diag Cov:  0.913949629051152
+[5 Fold] - Tied MVG with Diag Cov:  0.9706362153344209
 
 *** minDCF - GAUSSIANIZED FEATURES -  PCA m=9 ***
 [Single Fold] -  MVG:  0.8206511128465444
@@ -205,7 +206,7 @@ Correlation between the features:
 [Single Fold] - Tied MVG:  0.8978792463881297
 [5- Fold] - Tied MVG:  0.8433931484502446
 [Single Fold] - Tied MVG with Diag Cov:  0.913949629051152
-[5 Fold] - Tied MVG with Diag Cov:  0.913949629051152
+[5 Fold] - Tied MVG with Diag Cov:  0.9706362153344209
 
 *** minDCF - GAUSSIANIZED FEATURES -  PCA m=8 ***
 [Single Fold] -  MVG:  0.8706803982819212
@@ -215,13 +216,49 @@ Correlation between the features:
 [Single Fold] - Tied MVG:  0.9874316673174541
 [5- Fold] - Tied MVG:  0.8433931484502446
 [Single Fold] - Tied MVG with Diag Cov:  0.913949629051152
-[5 Fold] - Tied MVG with Diag Cov:  0.913949629051152
-
+[5 Fold] - Tied MVG with Diag Cov:  0.9706362153344209
 
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+********************* LG TABLE ************************************
+------> pi = 0.5
+*** minDCF - RAW FEATURES ***
+[5-Folds]  -  lam = 10^-5, pi_T = 0.5:  0.5636215334420881
+[5-Folds]  -  lam = 10^-5, pi_T = 0.1:  0.5783034257748776
+[5-Folds]  -  lam = 10^-5, pi_T = 0.9:  0.5864600326264273
 
+*** minDCF - GAUSSIANIZED FEATURES  ***
+[5-Folds]  -  lam = 10^-5, pi_T = 0.5:  0.3719412724306689
+[5-Folds]  -  lam = 10^-5, pi_T = 0.1:  0.3727569331158238
+[5-Folds]  -  lam = 10^-5, pi_T = 0.9:  0.3752039151712887
+
+
+------> pi = 0.1
+*** minDCF - RAW FEATURES ***
+[5-Folds]  -  lam = 10^-5, pi_T = 0.5:  0.9274061990212071
+[5-Folds]  -  lam = 10^-5, pi_T = 0.1:  0.9469820554649265
+[5-Folds]  -  lam = 10^-5, pi_T = 0.9:  0.9110929853181078
+
+*** minDCF - GAUSSIANIZED FEATURES  ***
+[5-Folds]  -  lam = 10^-5, pi_T = 0.5:  0.8197389885807504
+[5-Folds]  -  lam = 10^-5, pi_T = 0.1:  0.9869494290375205
+[5-Folds]  -  lam = 10^-5, pi_T = 0.9:  0.8287112561174552
+
+
+------> pi = 0.9
+*** minDCF - RAW FEATURES ***
+[5-Folds]  -  lam = 10^-5, pi_T = 0.5:  0.9706362153344209
+[5-Folds]  -  lam = 10^-5, pi_T = 0.1:  0.966557911908646
+[5-Folds]  -  lam = 10^-5, pi_T = 0.9:  0.9796084828711256
+
+*** minDCF - GAUSSIANIZED FEATURES  ***
+[5-Folds]  -  lam = 10^-5, pi_T = 0.5:  0.8548123980424144
+[5-Folds]  -  lam = 10^-5, pi_T = 0.1:  0.7911908646003263
+[5-Folds]  -  lam = 10^-5, pi_T = 0.9:  0.9143556280587275
+
+
+********************************************************************
 
 ## - Experimental validation
 

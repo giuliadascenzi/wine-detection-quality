@@ -51,8 +51,10 @@ def logreg_obj_wrapper(DTR, LTR, lam, pi_T):
 def compute_scores( samples, w, b):
     return numpy.dot( w.T , samples ) + b
 
-def LR_logLikelihoodRatios(DTR, LTR, DTE, lam, pi_T ):
-
+def LR_logLikelihoodRatios(DTR, LTR, DTE, params ):
+    
+    lam = params[0]
+    pi_T = params[1]
     x0=numpy.zeros(DTR.shape[0]+1)
     logreg_obj = logreg_obj_wrapper(DTR, LTR, lam, pi_T)
     (x,f,d)= scipy.optimize.fmin_l_bfgs_b(logreg_obj, approx_grad=True, x0=x0, iprint=0 )
@@ -62,4 +64,5 @@ def LR_logLikelihoodRatios(DTR, LTR, DTE, lam, pi_T ):
     b_min = x[-1]
     scores = compute_scores(DTE, w_min, b_min)
 
-    return scores
+    return scores.flatten()
+

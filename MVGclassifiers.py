@@ -23,7 +23,7 @@ def MVG_classifier(DTR, LTR, DTE, LTE, classes_prior_probabilties, predict=True)
     
     return (predicted_labels) #return predicted labels
 
-def MVG_logLikelihoodRatios(DTR, LTR, DTE):
+def MVG_logLikelihoodRatios(DTR, LTR, DTE, params=None):
 
     
     # 1) Compute the ML estimetes for the classifier parameters (mu, co : for each class) mu=mean, co=covariance matrix
@@ -83,7 +83,7 @@ def TiedCovariance_classifier(DTR, LTR, DTE, LTE, classes_prior_probabilties):
 
     return (accuracy*predicted_labels.shape[0], predicted_labels.shape[0], predicted_labels) #return tot_true_predictions, tot_predictions
 
-def TIED_logLikelihoodRatios(DTR, LTR, DTE):
+def TIED_logLikelihoodRatios(DTR, LTR, DTE, params=None):
     # 1) Compute the ML estimetes for the classifier parameters (mu, co : for each class) mu=mean, co=covariance matrix
     m = prob.means(DTR, LTR)
     c_MVG = prob.covariances(DTR, LTR, m)
@@ -148,7 +148,7 @@ def NaiveBayes_classifier(DTR, LTR, DTE, LTE, classes_prior_probabilties):
     return (accuracy*predicted_labels.shape[0], predicted_labels.shape[0], predicted_labels) #return tot_true_predictions, tot_predictions
 
 
-def NAIVE_logLikelihoodRatios(DTR, LTR, DTE):
+def NAIVE_logLikelihoodRatios(DTR, LTR, DTE,params=None):
     # 1) Compute the ML estimetes for the classifier parameters (mu, co : for each class) mu=mean, co=covariance matrix
     m = prob.means(DTR, LTR)
     c_MVG = prob.covariances(DTR, LTR, m)
@@ -167,7 +167,7 @@ def NAIVE_logLikelihoodRatios(DTR, LTR, DTE):
 
 
 
-def TIED_DIAG_COV_logLikelihoodRatios(DTR, LTR, DTE):
+def TIED_DIAG_COV_logLikelihoodRatios(DTR, LTR, DTE, params=None):
     # 1) Compute the ML estimetes for the classifier parameters (mu, co : for each class) mu=mean, co=covariance matrix
     m = prob.means(DTR, LTR)
     c_MVG = prob.covariances(DTR, LTR, m)

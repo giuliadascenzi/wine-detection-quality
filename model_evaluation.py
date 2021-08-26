@@ -1,5 +1,10 @@
 import numpy
 
+def mcol(v):
+    return v.reshape((v.size, 1))
+def mrow(v):
+    return v.reshape((1, v.size))
+
 def split_db_2tol(D,L, seed=0):
     nTrain=int(D.shape[1]*2.0/3.0)
     numpy.random.seed(seed)
@@ -93,7 +98,7 @@ def compute_minimum_detection_cost(llrs, labels, prior, cost_fn, cost_fp):
     return (DCF_min, FPRs, TPRs)
 
 
-def k_cross_minDCF(D, L, k, llr_calculator, prior, cost_fn, cost_fp):
+def k_cross_minDCF(D, L, k, llr_calculator, prior, cost_fn, cost_fp, otherParams=None):
     step = int(D.shape[1]/k)
     numpy.random.seed(seed=0)
 
@@ -123,7 +128,7 @@ def k_cross_minDCF(D, L, k, llr_calculator, prior, cost_fn, cost_fp):
         DEV = D[:, indexesEV]
         LEV = L[indexesEV]
         
-        llr_i= llr_calculator(DTR, LTR, DEV)
+        llr_i= llr_calculator(DTR, LTR, DEV, otherParams)
         llr.append(llr_i)
         labels.append(LEV)
 
@@ -133,9 +138,9 @@ def k_cross_minDCF(D, L, k, llr_calculator, prior, cost_fn, cost_fp):
     return min_DCF #minDCF
 
 
-def singleFold_minDCF(D, L, llr_calculator, prior, cost_fn, cost_fp):
+def singleFold_minDCF(D, L, llr_calculator, prior, cost_fn, cost_fp, otherParams=None):
     (DTR, LTR), (DTE,LTE)= split_db_2tol(D,L)
-    llr =llr_calculator (DTR,LTR,DTE)
+    llr =llr_calculator (DTR,LTR,DTE, otherParams)
     min_DCF,_,_ =compute_minimum_detection_cost(llr, LTE, prior , cost_fn, cost_fp)
     return min_DCF #minDCF
 

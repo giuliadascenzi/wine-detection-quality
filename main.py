@@ -68,7 +68,7 @@ def print_table_MVG_classifiers_minDCF(DTR, prior, cost_fn, cost_fp, k):
         #Tied Diag_Cov
         min_DCF_Tied_Diag_Cov = model_evaluation.singleFold_minDCF(DTR, LTR, MVGclassifiers.TIED_DIAG_COV_logLikelihoodRatios, prior , cost_fn, cost_fp)
         print("[Single Fold] - Tied MVG with Diag Cov: ",min_DCF_Tied_Diag_Cov)
-        min_DCF_Tied_Diag_Cov = model_evaluation.singleFold_minDCF(DTR, LTR, MVGclassifiers.TIED_DIAG_COV_logLikelihoodRatios, prior , cost_fn, cost_fp)
+        min_DCF_Tied_Diag_Cov = model_evaluation.k_cross_minDCF(DTR, LTR, k,  MVGclassifiers.TIED_DIAG_COV_logLikelihoodRatios, prior , cost_fn, cost_fp)
         print("[5 Fold] - Tied MVG with Diag Cov: ",min_DCF_Tied_Diag_Cov)
 
         print()
@@ -93,6 +93,7 @@ def print_table_MVG_classifiers_minDCF(DTR, prior, cost_fn, cost_fp, k):
 
 
     #--------------- GAUSSIANIZED FEATURES-------------------------
+    gaussianizedFeatures = gaussianization(DTR)
 
     print("*** minDCF - GAUSSIANIZED FEATURES - NO PCA ***")
     MVG_Classifiers_minDCF(gaussianizedFeatures)
@@ -106,6 +107,37 @@ def print_table_MVG_classifiers_minDCF(DTR, prior, cost_fn, cost_fp, k):
     print("*** minDCF - GAUSSIANIZED FEATURES -  PCA m=8 ***")
     gaussianized_principal_components_8= redTec.PCA(gaussianizedFeatures, 8)
     MVG_Classifiers_minDCF(gaussianized_principal_components_8)
+
+def print_table_LR_minDCF(DTR, prior, cost_fn, cost_fp, k):
+
+    def LR_minDCF(data):
+            lam = 10**(-5)
+            pi_T = 0.5
+            min_DCF_LR = model_evaluation.k_cross_minDCF(data, LTR, k, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
+            print("[5-Folds]  -  lam = 10^-5, pi_T = 0.5: ",min_DCF_LR)  
+
+            lam = 10**(-5)
+            pi_T = 0.1
+            min_DCF_LR = model_evaluation.k_cross_minDCF(data, LTR, k, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
+            print("[5-Folds]  -  lam = 10^-5, pi_T = 0.1: ",min_DCF_LR)
+
+            lam = 10**(-5)
+            pi_T = 0.9
+            min_DCF_LR = model_evaluation.k_cross_minDCF(data, LTR, k, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
+            print("[5-Folds]  -  lam = 10^-5, pi_T = 0.9: ",min_DCF_LR)
+
+            print()
+
+    
+    #------------------------RAW FEATURES -----------------
+    print("*** minDCF - RAW FEATURES ***")
+    LR_minDCF(DTR)
+
+    #--------------- GAUSSIANIZED FEATURES-------------------------
+    gaussianizedFeatures = gaussianization(DTR)
+
+    print("*** minDCF - GAUSSIANIZED FEATURES  ***")
+    LR_minDCF(gaussianizedFeatures)
 
 
 
@@ -123,8 +155,8 @@ if __name__ == '__main__':
     #stats.compute_stats(DTR, LTR, show_figures = True)
 
     ## - gaussianize the features
-    gaussianizedFeatures = gaussianization(DTR)
-    stats.plot_hist(gaussianizedFeatures, LTR)
+    #gaussianizedFeatures = gaussianization(DTR)
+    #stats.plot_hist(gaussianizedFeatures, LTR)
 
 
     ##enstablish if data are balanced
@@ -143,7 +175,8 @@ if __name__ == '__main__':
 
     ##EVAULATION OF THE CLASSIFIERS : 
     ### -- MVG CLASSIFIERS
-    '''
+    
+    print("********************* MVG TABLE ************************************")
     print("------> pi = 0.5")
     print_table_MVG_classifiers_minDCF(DTR, prior=0.5, cost_fn=1, cost_fp=1, k=k)
     print()
@@ -153,13 +186,27 @@ if __name__ == '__main__':
     print("------> pi = 0.1")
     print_table_MVG_classifiers_minDCF(DTR, prior=0.1, cost_fn=1, cost_fp=1, k=k)
     print()
-
+    print("********************************************************************")
     '''
+    
 
     ### -- LOGISTIC REGRESSION
+    print("********************* LG TABLE ************************************")
+    print("------> pi = 0.5")
+    print_table_LR_minDCF(DTR, prior=0.5, cost_fn=1, cost_fp=1, k=k)
+    print()
+    print("------> pi = 0.1")
+    print_table_LR_minDCF(DTR, prior=0.9, cost_fn=1, cost_fp=1, k=k)
+    print()
+    print("------> pi = 0.9")
+    print_table_LR_minDCF(DTR, prior=0.1, cost_fn=1, cost_fp=1, k=k)
+    print()
+    print("********************************************************************")
+'''
 
-    scores = logisticRegression.LR_logLikelihoodRatios(DTR, LTR, DTE, lam=1, pi_T=0.5)
-    print(scores)
+
+    
+    
 
 
     
