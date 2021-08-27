@@ -6,6 +6,7 @@ import MVGclassifiers
 import model_evaluation
 import probability as prob
 import logisticRegression
+import matplotlib.pyplot as plt
 
 
 
@@ -111,22 +112,102 @@ def print_table_MVG_classifiers_minDCF(DTR, prior, cost_fn, cost_fp, k):
 def print_table_LR_minDCF(DTR, prior, cost_fn, cost_fp, k):
 
     def LR_minDCF(data):
-            lam = 10**(-5)
+            lam = 10**(-7)
             pi_T = 0.5
             min_DCF_LR = model_evaluation.k_cross_minDCF(data, LTR, k, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
-            print("[5-Folds]  -  lam = 10^-5, pi_T = 0.5: ",min_DCF_LR)  
+            print("[5-Folds]  -  lam = 10^-7, pi_T = 0.5: ",min_DCF_LR)  
 
-            lam = 10**(-5)
             pi_T = 0.1
             min_DCF_LR = model_evaluation.k_cross_minDCF(data, LTR, k, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
-            print("[5-Folds]  -  lam = 10^-5, pi_T = 0.1: ",min_DCF_LR)
+            print("[5-Folds]  -  lam = 10^-7, pi_T = 0.1: ",min_DCF_LR)
 
-            lam = 10**(-5)
             pi_T = 0.9
             min_DCF_LR = model_evaluation.k_cross_minDCF(data, LTR, k, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
-            print("[5-Folds]  -  lam = 10^-5, pi_T = 0.9: ",min_DCF_LR)
+            print("[5-Folds]  -  lam = 10^-7, pi_T = 0.9: ",min_DCF_LR)
 
             print()
+
+    
+    #------------------------RAW FEATURES -----------------
+    print("*** minDCF - RAW FEATURES ***")
+    LR_minDCF(DTR)
+
+    #--------------- GAUSSIANIZED FEATURES-------------------------
+    gaussianizedFeatures = gaussianization(DTR)
+
+    print("*** minDCF - GAUSSIANIZED FEATURES  ***")
+    LR_minDCF(gaussianizedFeatures)
+
+
+
+def print_graphs_LR_lambdas(DTR):
+    def oneGraphSingleFold(data, pi_T):
+        exps = numpy.linspace(-8,5, 20)
+        lambdas = 10** exps
+        minDCFs = 0 * exps
+        for i in range (lambdas.size):
+            lam= lambdas[i]
+            minDCFs[i] = model_evaluation.singleFold_minDCF(data, LTR, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
+        
+        lb = "minDCF (pi_T="+ str(pi_T)+ " )"
+        plt.plot(lambdas, minDCFs, label=lb)
+        plt.legend()
+
+    def oneGraphKFold(data, pi_T):
+        exps = numpy.linspace(-8,5, 20)
+        lambdas = 10** exps
+        minDCFs = 0 * exps
+        k=5
+        for i in range (lambdas.size):
+            lam= lambdas[i]
+            minDCFs[i] = model_evaluation.k_cross_minDCF(data, LTR,k, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
+        
+        lb = "minDCF (pi_T="+ str(pi_T)+ " )"
+        plt.plot(lambdas, minDCFs, label=lb)
+        plt.legend()
+
+    plt.figure()
+    plt.title("Raw fearures, single fold")
+    plt.xscale('log')
+    plt.xlabel("lambda")
+    plt.ylabel("minDCFs")
+    oneGraphSingleFold(DTR, pi_T=0.5)
+    oneGraphSingleFold(DTR, pi_T=0.1)
+    oneGraphSingleFold(DTR, pi_T=0.9)
+    plt.savefig('Graph/LR/singleFoldRAW.png' )
+
+    plt.figure()
+    plt.title("Gaussianized fearures, single fold")
+    plt.xscale('log')
+    plt.xlabel("lambda")
+    plt.ylabel("minDCFs")
+    gaussianizedFeatures = gaussianization(DTR)
+    oneGraphSingleFold(gaussianizedFeatures, pi_T=0.5)
+    oneGraphSingleFold(gaussianizedFeatures, pi_T=0.1)
+    oneGraphSingleFold(gaussianizedFeatures, pi_T=0.9)
+    plt.savefig('Graph/LR/singleFoldGauss.png' )
+
+    plt.figure()
+    plt.title("Raw fearures, 5 fold")
+    plt.xscale('log')
+    plt.xlabel("lambda")
+    plt.ylabel("minDCFs")
+    oneGraphKFold(DTR, pi_T=0.5)
+    oneGraphKFold(DTR, pi_T=0.1)
+    oneGraphKFold(DTR, pi_T=0.9)
+    plt.savefig('Graph/LR/5FoldRAW.png' )
+
+    plt.figure()
+    plt.title("Gaussianized fearures, 5 fold")
+    plt.xscale('log')
+    plt.xlabel("lambda")
+    plt.ylabel("minDCFs")
+    gaussianizedFeatures = gaussianization(DTR)
+    oneGraphKFold(gaussianizedFeatures, pi_T=0.5)
+    oneGraphKFold(gaussianizedFeatures, pi_T=0.1)
+    oneGraphKFold(gaussianizedFeatures, pi_T=0.9)
+    plt.savefig('Graph/LR/kFoldRAW.png' )
+    plt.show()
 
     
     #------------------------RAW FEATURES -----------------
@@ -175,7 +256,7 @@ if __name__ == '__main__':
 
     ##EVAULATION OF THE CLASSIFIERS : 
     ### -- MVG CLASSIFIERS
-    
+    '''
     print("********************* MVG TABLE ************************************")
     print("------> pi = 0.5")
     print_table_MVG_classifiers_minDCF(DTR, prior=0.5, cost_fn=1, cost_fp=1, k=k)
@@ -187,11 +268,18 @@ if __name__ == '__main__':
     print_table_MVG_classifiers_minDCF(DTR, prior=0.1, cost_fn=1, cost_fp=1, k=k)
     print()
     print("********************************************************************")
-    '''
+    
     
 
     ### -- LOGISTIC REGRESSION
-    print("********************* LG TABLE ************************************")
+     
+    print("********************* LR GRAPHS MIN DCF ************************************")
+    print_graphs_LR_lambdas(DTR)
+    print("********************************************************************")
+    '''
+
+    
+    print("********************* LR TABLE ************************************")
     print("------> pi = 0.5")
     print_table_LR_minDCF(DTR, prior=0.5, cost_fn=1, cost_fp=1, k=k)
     print()
@@ -202,7 +290,7 @@ if __name__ == '__main__':
     print_table_LR_minDCF(DTR, prior=0.1, cost_fn=1, cost_fp=1, k=k)
     print()
     print("********************************************************************")
-'''
+
 
 
     
