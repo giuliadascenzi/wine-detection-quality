@@ -141,8 +141,9 @@ def print_table_LR_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
 
 
 
-def print_graphs_LR_lambdas(DTR):
-    def oneGraphSingleFold(data, pi_T):
+def print_graphs_LR_lambdas(DTR, LTR,  k):
+    def oneGraphSingleFold( data, prior, cost_fn, cost_fp, pi_T):
+        print("working on single fold prior = ", prior)
         exps = numpy.linspace(-8,5, 14)
         lambdas = 10** exps
         minDCFs = 0 * exps
@@ -150,11 +151,14 @@ def print_graphs_LR_lambdas(DTR):
             lam= lambdas[i]
             minDCFs[i] = model_evaluation.singleFold_minDCF(data, LTR, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
         
-        lb = "minDCF (pi_T="+ str(pi_T)+ " )"
+        lb = "minDCF (prior="+ str(prior)+ " )"
+        print("DONE")
         plt.plot(lambdas, minDCFs, label=lb)
         plt.legend()
+        
 
-    def oneGraphKFold(data, pi_T):
+    def oneGraphKFold(data, prior, cost_fn, cost_fp, pi_T):
+        print("working on k fold prior = ", prior)
         exps = numpy.linspace(-8,5, 14)
         lambdas = 10** exps
         minDCFs = 0 * exps
@@ -163,59 +167,70 @@ def print_graphs_LR_lambdas(DTR):
             lam= lambdas[i]
             minDCFs[i] = model_evaluation.k_cross_minDCF(data, LTR,k, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
         
-        lb = "minDCF (pi_T="+ str(pi_T)+ " )"
+        lb = "minDCF (prior="+ str(prior)+ " )"
+        print("DONE")
         plt.plot(lambdas, minDCFs, label=lb)
         plt.legend()
 
     plt.figure()
+    print("+++++++++++++++++++++++++++++++++++")
+    print("Raw fearures, single fold")
     plt.title("Raw fearures, single fold")
     plt.xscale('log')
     plt.xlabel("lambda")
     plt.ylabel("minDCFs")
-    oneGraphSingleFold(DTR, pi_T=0.5)
-    oneGraphSingleFold(DTR, pi_T=0.1)
-    oneGraphSingleFold(DTR, pi_T=0.9)
+    oneGraphSingleFold(DTR, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphSingleFold(DTR, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphSingleFold(DTR, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
     plt.savefig('Graph/LR/singleFoldRAW.png' )
 
     plt.figure()
+    print("+++++++++++++++++++++++++++++++++++")
+    print("Gaussianized fearures, single fold")
     plt.title("Gaussianized fearures, single fold")
     plt.xscale('log')
     plt.xlabel("lambda")
     plt.ylabel("minDCFs")
     gaussianizedFeatures = gaussianization(DTR)
-    oneGraphSingleFold(gaussianizedFeatures, pi_T=0.5)
-    oneGraphSingleFold(gaussianizedFeatures, pi_T=0.1)
-    oneGraphSingleFold(gaussianizedFeatures, pi_T=0.9)
+    oneGraphSingleFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphSingleFold(gaussianizedFeatures, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphSingleFold(gaussianizedFeatures, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
     plt.savefig('Graph/LR/singleFoldGauss.png' )
 
     plt.figure()
+    print("+++++++++++++++++++++++++++++++++++")
+    print("Raw fearures, 5 fold")
     plt.title("Raw fearures, 5 fold")
     plt.xscale('log')
     plt.xlabel("lambda")
     plt.ylabel("minDCFs")
-    oneGraphKFold(DTR, pi_T=0.5)
-    oneGraphKFold(DTR, pi_T=0.1)
-    oneGraphKFold(DTR, pi_T=0.9)
+    oneGraphKFold(DTR, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphKFold(DTR, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphKFold(DTR, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
     plt.savefig('Graph/LR/5FoldRAW.png' )
 
     plt.figure()
+    print("+++++++++++++++++++++++++++++++++++")
+    print("Gaussianized fearures, 5 fold")
     plt.title("Gaussianized fearures, 5 fold")
     plt.xscale('log')
     plt.xlabel("lambda")
     plt.ylabel("minDCFs")
     gaussianizedFeatures = gaussianization(DTR)
-    oneGraphKFold(gaussianizedFeatures, pi_T=0.5)
-    oneGraphKFold(gaussianizedFeatures, pi_T=0.1)
-    oneGraphKFold(gaussianizedFeatures, pi_T=0.9)
+    oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphKFold(gaussianizedFeatures, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphKFold(gaussianizedFeatures, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
     plt.savefig('Graph/LR/kFoldRAW.png' )
-    plt.show()
+    #plt.show()
 
     
  
 
 
-def print_graphs_SVM_Cs(DTR, LTR, prior, cost_fn, cost_fp, k ):
-    def oneGraphSingleFold(data, pi_T):
+def print_graphs_SVM_Cs(DTR, LTR, k ):
+
+    def oneGraphSingleFold(data, prior, cost_fn, cost_fp, pi_T):
+        print("working on single fold prior = ", prior)
         exps = numpy.linspace(-3,1, 5)
         Cs = 10** exps
         minDCFs = 0 * exps
@@ -223,11 +238,13 @@ def print_graphs_SVM_Cs(DTR, LTR, prior, cost_fn, cost_fp, k ):
             C= Cs[i]
             minDCFs[i] = model_evaluation.singleFold_minDCF(data, LTR, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
         
-        lb = "minDCF (pi_T="+ str(pi_T) +")"
+        lb = "minDCF (prior="+ str(prior) +")"
         plt.plot(Cs, minDCFs, label=lb)
         plt.legend()
+        print("DONE")
 
-    def oneGraphKFold(data, pi_T):
+    def oneGraphKFold(data, prior, cost_fn, cost_fp, pi_T):
+        print("working on k fold prior = ", prior)
         exps = numpy.linspace(-3,1, 5)
         Cs = 10** exps
         minDCFs = 0 * exps
@@ -235,53 +252,57 @@ def print_graphs_SVM_Cs(DTR, LTR, prior, cost_fn, cost_fp, k ):
             C= Cs[i]
             minDCFs[i] = model_evaluation.k_cross_minDCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
         
-        lb = "minDCF (pi_T="+ str(pi_T) +")"
+        lb = "minDCF (prior="+ str(prior) +")"
         plt.plot(Cs, minDCFs, label=lb)
         plt.legend()
+        print("DONE")
 
     plt.figure()
+    print("1 grafico")
     plt.title("Raw fearures, single fold")
     plt.xscale('log')
     plt.xlabel("C")
     plt.ylabel("minDCFs")
-    oneGraphSingleFold(DTR, pi_T=0.5)
-    oneGraphSingleFold(DTR, pi_T=0.1)
-    oneGraphSingleFold(DTR, pi_T=0.9)
+    oneGraphSingleFold(DTR, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphSingleFold(DTR, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphSingleFold(DTR, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
     plt.savefig('Graph/SVM/singleFoldRAW.png' )
-    plt.show()
-
+    
+    print("2 grafico")
     plt.figure()
     plt.title("Gaussianized fearures, single fold")
     plt.xscale('log')
     plt.xlabel("C")
     plt.ylabel("minDCFs")
     gaussianizedFeatures = gaussianization(DTR)
-    oneGraphSingleFold(gaussianizedFeatures, pi_T=0.5)
-    oneGraphSingleFold(gaussianizedFeatures, pi_T=0.1)
-    oneGraphSingleFold(gaussianizedFeatures, pi_T=0.9)
+    oneGraphSingleFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphSingleFold(gaussianizedFeatures, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphSingleFold(gaussianizedFeatures, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
     plt.savefig('Graph/SVM/singleFoldGauss.png' )
-
+   
+    print("3 grafico")
     plt.figure()
     plt.title("Raw fearures, 5 fold")
     plt.xscale('log')
     plt.xlabel("C")
     plt.ylabel("minDCFs")
-    oneGraphKFold(DTR, pi_T=0.5)
-    oneGraphKFold(DTR, pi_T=0.1)
-    oneGraphKFold(DTR, pi_T=0.9)
+    oneGraphKFold(DTR, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphKFold(DTR, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphKFold(DTR, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
     plt.savefig('Graph/SVM/5FoldRAW.png' )
 
+    print("4 grafico")
     plt.figure()
     plt.title("Gaussianized fearures, 5 fold")
     plt.xscale('log')
     plt.xlabel("C")
     plt.ylabel("minDCFs")
     gaussianizedFeatures = gaussianization(DTR)
-    oneGraphKFold(gaussianizedFeatures, pi_T=0.5)
-    oneGraphKFold(gaussianizedFeatures, pi_T=0.1)
-    oneGraphKFold(gaussianizedFeatures, pi_T=0.9)
+    oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphKFold(gaussianizedFeatures, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphKFold(gaussianizedFeatures, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
     plt.savefig('Graph/SVM/5FoldGauss.png' )
-    plt.show()
+    #plt.show()
 
     
 
@@ -339,20 +360,20 @@ if __name__ == '__main__':
     ### -- LOGISTIC REGRESSION
     '''
     print("********************* LR GRAPHS MIN DCF ************************************")
-    print_graphs_LR_lambdas(DTR)
+    print_graphs_LR_lambdas(DTR,LTR, k=k)
     print("********************************************************************")
     '''
 
     '''
     print("********************* LR TABLE ************************************")
-    print("------> pi = 0.5")
+    print("------> applicazione prior = 0.5")
     print_table_LR_minDCF(DTR,LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k)
     print()
-    print("------> pi = 0.1")
-    print_table_LR_minDCF(DTR,LTR, prior=0.9, cost_fn=1, cost_fp=1, k=k)
+    print("------> applicazione con prior = 0.1")
+    print_table_LR_minDCF(DTR,LTR, prior=0.1, cost_fn=1, cost_fp=1, k=k)
     print()
-    print("------> pi = 0.9")
-    print_table_LR_minDCF(DTR, LTR, prior=0.1, cost_fn=1, cost_fp=1, k=k)
+    print("------> applicazione con prior = 0.9")
+    print_table_LR_minDCF(DTR, LTR, prior=0.9, cost_fn=1, cost_fp=1, k=k)
     print()
     print("********************************************************************")
 
@@ -360,7 +381,7 @@ if __name__ == '__main__':
     '''
 
     print("********************* SVM GRAPHS ************************************")
-    print_graphs_SVM_Cs(DTR, LTR, prior=0.1, cost_fn=1, cost_fp=1, k=k )
+    print_graphs_SVM_Cs(DTR, LTR, k=k )
     print("********************************************************************")
 
 
@@ -372,5 +393,4 @@ if __name__ == '__main__':
 
    
 
-           
-
+          
