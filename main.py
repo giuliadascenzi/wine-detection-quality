@@ -63,13 +63,13 @@ def print_table_MVG_classifiers_minDCF(DTR, prior, cost_fn, cost_fp, k):
         #Tied
         min_DCF_Tied = model_evaluation.singleFold_minDCF(data, LTR, MVGclassifiers.TIED_logLikelihoodRatios, prior , cost_fn, cost_fp)
         print("[Single Fold] - Tied MVG: ",min_DCF_Tied)
-        min_DCF_Tied = model_evaluation.k_cross_minDCF(DTR, LTR,k, MVGclassifiers.TIED_logLikelihoodRatios, prior , cost_fn, cost_fp)
+        min_DCF_Tied = model_evaluation.k_cross_minDCF(data, LTR,k, MVGclassifiers.TIED_logLikelihoodRatios, prior , cost_fn, cost_fp)
         print("[5- Fold] - Tied MVG: ",min_DCF_Tied)
 
         #Tied Diag_Cov
-        min_DCF_Tied_Diag_Cov = model_evaluation.singleFold_minDCF(DTR, LTR, MVGclassifiers.TIED_DIAG_COV_logLikelihoodRatios, prior , cost_fn, cost_fp)
+        min_DCF_Tied_Diag_Cov = model_evaluation.singleFold_minDCF(data, LTR, MVGclassifiers.TIED_DIAG_COV_logLikelihoodRatios, prior , cost_fn, cost_fp)
         print("[Single Fold] - Tied MVG with Diag Cov: ",min_DCF_Tied_Diag_Cov)
-        min_DCF_Tied_Diag_Cov = model_evaluation.k_cross_minDCF(DTR, LTR, k,  MVGclassifiers.TIED_DIAG_COV_logLikelihoodRatios, prior , cost_fn, cost_fp)
+        min_DCF_Tied_Diag_Cov = model_evaluation.k_cross_minDCF(data, LTR, k,  MVGclassifiers.TIED_DIAG_COV_logLikelihoodRatios, prior , cost_fn, cost_fp)
         print("[5 Fold] - Tied MVG with Diag Cov: ",min_DCF_Tied_Diag_Cov)
 
         print()
@@ -256,7 +256,7 @@ if __name__ == '__main__':
 
     ##EVAULATION OF THE CLASSIFIERS : 
     ### -- MVG CLASSIFIERS
-    '''
+    
     print("********************* MVG TABLE ************************************")
     print("------> pi = 0.5")
     print_table_MVG_classifiers_minDCF(DTR, prior=0.5, cost_fn=1, cost_fp=1, k=k)
@@ -269,14 +269,14 @@ if __name__ == '__main__':
     print()
     print("********************************************************************")
     
-    
+    '''
 
     ### -- LOGISTIC REGRESSION
      
     print("********************* LR GRAPHS MIN DCF ************************************")
     print_graphs_LR_lambdas(DTR)
     print("********************************************************************")
-    '''
+    
 
     
     print("********************* LR TABLE ************************************")
@@ -294,7 +294,7 @@ if __name__ == '__main__':
 
 
     
-    
+    '''
 
 
     
