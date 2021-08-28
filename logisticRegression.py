@@ -66,3 +66,30 @@ def LR_logLikelihoodRatios(DTR, LTR, DTE, params ):
 
     return scores.flatten()
 
+
+def expanded_data_elm(X):
+    val = numpy.dot(X, X.T)
+    v = mcol(val.flatten( 'F'))
+    ex_X = numpy.vstack((v, X))
+    return ex_X.flatten()
+
+def expand_features (original_data):
+
+    n_features = original_data.shape[0]
+    ex_features_rows = n_features**2 + n_features
+    ex_features_cols = original_data.shape[1]
+    expanded_features = numpy.zeros((ex_features_rows, ex_features_cols))
+    for i in range (ex_features_cols):
+        expanded_features[:, i] = expanded_data_elm(mcol(original_data[:,i]))
+    
+    return expanded_features
+
+
+def Quadratic_LR_logLikelihoodRatios(DTR, LTR, DTE, params ):
+
+    #expand the features of DTR and DTE
+    expanded_DTR = expand_features(DTR)
+    expanded_DTE = expand_features(DTE)
+
+    return LR_logLikelihoodRatios(expanded_DTR, LTR, expanded_DTE, params )
+
