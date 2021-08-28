@@ -220,7 +220,7 @@ def print_graphs_LR_lambdas(DTR, LTR,  k):
     oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
     oneGraphKFold(gaussianizedFeatures, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
     oneGraphKFold(gaussianizedFeatures, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
-    plt.savefig('Graph/LR/kFoldRAW.png' )
+    plt.savefig('Graph/LR/5FoldGauss.png' )
     #plt.show()
 
     
@@ -266,7 +266,7 @@ def print_graphs_SVM_Cs(DTR, LTR, k ):
     oneGraphSingleFold(DTR, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
     oneGraphSingleFold(DTR, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
     oneGraphSingleFold(DTR, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
-    plt.savefig('Graph/SVM/singleFoldRAW.png' )
+    plt.savefig('Graph/SVM/linear/singleFoldRAW.png' )
     
     print("2 grafico")
     plt.figure()
@@ -278,7 +278,7 @@ def print_graphs_SVM_Cs(DTR, LTR, k ):
     oneGraphSingleFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
     oneGraphSingleFold(gaussianizedFeatures, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
     oneGraphSingleFold(gaussianizedFeatures, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
-    plt.savefig('Graph/SVM/singleFoldGauss.png' )
+    plt.savefig('Graph/SVM/linear/singleFoldGauss.png' )
    
     print("3 grafico")
     plt.figure()
@@ -289,7 +289,7 @@ def print_graphs_SVM_Cs(DTR, LTR, k ):
     oneGraphKFold(DTR, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
     oneGraphKFold(DTR, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
     oneGraphKFold(DTR, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
-    plt.savefig('Graph/SVM/5FoldRAW.png' )
+    plt.savefig('Graph/SVM/linear/5FoldRAW.png' )
 
     print("4 grafico")
     plt.figure()
@@ -301,11 +301,148 @@ def print_graphs_SVM_Cs(DTR, LTR, k ):
     oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
     oneGraphKFold(gaussianizedFeatures, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
     oneGraphKFold(gaussianizedFeatures, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
-    plt.savefig('Graph/SVM/5FoldGauss.png' )
+    plt.savefig('Graph/SVM/linear/5FoldGauss.png' )
     #plt.show()
 
     
 
+def print_graphs_Polinomial_SVM_Cs(DTR, LTR, k ):
+
+    def oneGraphSingleFold(data, prior, cost_fn, cost_fp, pi_T):
+        print("working on single fold prior = ", prior)
+        exps = numpy.linspace(-3,1, 5)
+        Cs = 10** exps
+        minDCFs = 0 * exps
+        for i in range (Cs.size):
+            C= Cs[i]
+            minDCFs[i] = model_evaluation.singleFold_minDCF(data, LTR, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
+        
+        lb = "minDCF (prior="+ str(prior) +")"
+        plt.plot(Cs, minDCFs, label=lb)
+        plt.legend()
+        print("DONE")
+
+    def oneGraphKFold(data, prior, cost_fn, cost_fp, pi_T):
+        print("working on k fold prior = ", prior)
+        exps = numpy.linspace(-3,1, 5)
+        Cs = 10** exps
+        minDCFs = 0 * exps
+        for i in range (Cs.size):
+            C= Cs[i]
+            minDCFs[i] = model_evaluation.k_cross_minDCF(data, LTR,k, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
+        
+        lb = "minDCF (prior="+ str(prior) +")"
+        plt.plot(Cs, minDCFs, label=lb)
+        plt.legend()
+        print("DONE")
+
+    plt.figure()
+    print("1 grafico")
+    plt.title("Raw fearures, single fold")
+    plt.xscale('log')
+    plt.xlabel("C")
+    plt.ylabel("minDCFs")
+    oneGraphSingleFold(DTR, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphSingleFold(DTR, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphSingleFold(DTR, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
+    plt.savefig('Graph/SVM/Quadratic/singleFoldRAW.png' )
+    
+    print("2 grafico")
+    plt.figure()
+    plt.title("Gaussianized fearures, single fold")
+    plt.xscale('log')
+    plt.xlabel("C")
+    plt.ylabel("minDCFs")
+    gaussianizedFeatures = gaussianization(DTR)
+    oneGraphSingleFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphSingleFold(gaussianizedFeatures, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphSingleFold(gaussianizedFeatures, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
+    plt.savefig('Graph/SVM/Quadratic/singleFoldGauss.png' )
+   
+    print("3 grafico")
+    plt.figure()
+    plt.title("Raw fearures, 5 fold")
+    plt.xscale('log')
+    plt.xlabel("C")
+    plt.ylabel("minDCFs")
+    oneGraphKFold(DTR, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphKFold(DTR, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphKFold(DTR, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
+    plt.savefig('Graph/SVM/Quadratic/5FoldRAW.png' )
+
+    print("4 grafico")
+    plt.figure()
+    plt.title("Gaussianized fearures, 5 fold")
+    plt.xscale('log')
+    plt.xlabel("C")
+    plt.ylabel("minDCFs")
+    gaussianizedFeatures = gaussianization(DTR)
+    oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphKFold(gaussianizedFeatures, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphKFold(gaussianizedFeatures, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
+    plt.savefig('Graph/SVM/Quadratic/5FoldGauss.png' )
+    #plt.show()
+
+
+
+def print_graphs_RBF_SVM_Cs(DTR, LTR, k):
+
+    def oneGraphSingleFold(data, prior, cost_fn, cost_fp, pi_T, lam):
+        print("working on single fold prior = ", prior)
+        exps = numpy.linspace(-3,1, 5)
+        Cs = 10** exps
+        minDCFs = 0 * exps
+        for i in range (Cs.size):
+            C= Cs[i]
+            minDCFs[i] = model_evaluation.singleFold_minDCF(data, LTR, SVMClassifier.RBF_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, lam])
+        
+        lb = "minDCF (prior="+ str(prior) +")"
+        plt.plot(Cs, minDCFs, label=lb)
+        plt.legend()
+        print("DONE")
+
+    def oneGraphKFold(data, prior, cost_fn, cost_fp, pi_T, lam):
+        print("working on k fold prior = ", prior)
+        exps = numpy.linspace(-3,1, 5)
+        Cs = 10** exps
+        minDCFs = 0 * exps
+        for i in range (Cs.size):
+            C= Cs[i]
+            minDCFs[i] = model_evaluation.k_cross_minDCF(data, LTR,k, SVMClassifier.RBF_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, lam])
+        
+        lb = " (log(lam)="+ str(numpy.log(lam)) +")"
+        plt.plot(Cs, minDCFs, label=lb)
+        plt.legend()
+        print("DONE")
+
+    
+
+
+    print("1 grafico")
+    plt.figure()
+    plt.title("Raw fearures, 5 fold")
+    plt.xscale('log')
+    plt.xlabel("C")
+    plt.ylabel("minDCFs")
+    oneGraphKFold(DTR, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, lam = 10**0)
+    oneGraphKFold(DTR, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, lam = 10**-1)
+    oneGraphKFold(DTR, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, lam = 10**-2)
+    oneGraphKFold(DTR, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, lam = 10**-2)
+    plt.savefig('Graph/SVM/RBF/5FoldRAW.png' )
+
+    print("2 grafico")
+    plt.figure()
+    plt.title("Gaussianized fearures, 5 fold")
+    plt.xscale('log')
+    plt.xlabel("C")
+    plt.ylabel("minDCFs")
+    gaussianizedFeatures = gaussianization(DTR)
+    oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, lam = 10**0)
+    oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, lam = 10**-1)
+    oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, lam = 10**-2)
+    oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, lam = 10**-3)
+    plt.savefig('Graph/SVM/RBF/5FoldGauss.png' )
+    #plt.show()
 
 
 if __name__ == '__main__':
@@ -379,10 +516,24 @@ if __name__ == '__main__':
 
    
     '''
+    '''
 
     print("********************* SVM GRAPHS ************************************")
     print_graphs_SVM_Cs(DTR, LTR, k=k )
     print("********************************************************************")
+
+    '''
+    '''
+    print("********************* quadratic SVM GRAPHS ************************************")
+    print_graphs_Polinomial_SVM_Cs(DTR, LTR, k=k )
+    print("********************************************************************")
+
+    '''
+
+    print("********************* RBF SVM GRAPHS ************************************")
+    print_graphs_RBF_SVM_Cs(DTR, LTR, k=k )
+    print("********************************************************************")
+
 
 
     
