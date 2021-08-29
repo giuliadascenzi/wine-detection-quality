@@ -1,6 +1,4 @@
-
-
-# Banknode authentication
+# Wine quality detection
 
 ## - Introduction
 
@@ -29,6 +27,16 @@ Input variables (based on physicochemical tests):
 Output variable (based on sensory data):
 12 - quality (score between 0 and 10)
 
+### Classes balance:
+
+<img src="Stat\hist_number_of_data.png" style="zoom: 67%;" />
+
+## - Preprocessing
+
+Z - normalization (centering and scaling to unit variance)
+
+gaussianization to map the features to values whose empirical comulative distrubution function is well approximated by a gaussian p.p.f
+
 ## - Features analysis
 
 Plotting of the raw data features:
@@ -45,7 +53,9 @@ Plotting of the raw data features:
 
 
 
-After gaussialization
+
+
+After gaussianization:
 
 
 
@@ -57,62 +67,70 @@ After gaussialization
 | <img src="Stat\Hist\Gaussianized\hist_6.png" style="zoom:67%;" /> | <img src="Stat\Hist\Gaussianized\hist_7.png" style="zoom:67%;" /> | <img src="Stat\Hist\Gaussianized\hist_8.png" style="zoom:67%;" /> |
 | <img src="Stat\Hist\Gaussianized\hist_9.png" style="zoom:60%;" /> | <img src="Stat\Hist\Gaussianized\hist_9.png" style="zoom: 67%;" /> |                                                              |
 
-
-
-
-
-
-
-
-
 Correlation between the features:
 
-| <img src="Stat\HeatMaps\Gaussianized\whole_dataset.png" style="zoom:67%;" /> | <img src="Stat\HeatMaps\Gaussianized\high_quality.png" style="zoom:67%;" /> | <img src="Stat\HeatMaps\Gaussianized\low_quality.png" style="zoom:67%;" /> |
+| All dataset<img src="Stat\HeatMaps\Gaussianized\whole_dataset.png" style="zoom:67%;" /> | <img src="Stat\HeatMaps\Gaussianized\high_quality.png" style="zoom:67%;" /> | <img src="Stat\HeatMaps\Gaussianized\low_quality.png" style="zoom:67%;" /> |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 
-feature 5 and 6 strongly correlated
+feature 5 and 6 strongly correlated -> It suggests that we may benefit from using PCA to map data to 9, 8 , 7
 
-very similar covariance matrixes
+(very similar covariance matrixes)
+
+
+
+##### Methodologies:
+
+we analyze both options (#TODO: Riguardare )
+
+- Single Fold:
+- K Fold:
 
 ## - Classifier for the wine
 
-## * MVG classifiers
+## * MVG classifiers  
 |                                       | **Single Fold**                                              |                                                              |                                                              | **5-Fold**                                                   |                                                              |                                                              |
 | :-----------------------------------: | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 |                                       | ![img](file:///C:/Users/Utente/AppData/Local/Temp/msohtmlclip1/01/clip_image002.png) | ![img](file:///C:/Users/Utente/AppData/Local/Temp/msohtmlclip1/01/clip_image004.png) | ![img](file:///C:/Users/Utente/AppData/Local/Temp/msohtmlclip1/01/clip_image006.png) | ![img](file:///C:/Users/Utente/AppData/Local/Temp/msohtmlclip1/01/clip_image002.png) | ![img](file:///C:/Users/Utente/AppData/Local/Temp/msohtmlclip1/01/clip_image004.png) | ![img](file:///C:/Users/Utente/AppData/Local/Temp/msohtmlclip1/01/clip_image006.png) |
 |   ------ **Raw Features – no PCA**    | ---------------                                              | -----------                                                  | -----------                                                  | -----------                                                  | -----------                                                  | -----------                                                  |
-|            **Full - Cov**             | 0.346                                                        | 0.766                                                        | 0.824                                                        | 0.343                                                        | 0.795                                                        | 0.906                                                        |
+|            **Full - Cov**             | *0.346*                                                      | 0.766                                                        | 0.824                                                        | *0.343*                                                      | 0.795                                                        | 0.906                                                        |
 |             **Diag -Cov**             | 0.527                                                        | 0.911                                                        | 0.937                                                        | 0.548                                                        | 0.962                                                        | 0.973                                                        |
-|           **Tied Full-Cov**           | 0.355                                                        | 0.818                                                        | 0.836                                                        | 0.359                                                        | 0.843                                                        | 0.827                                                        |
+|           **Tied Full-Cov**           | *0.355*                                                      | 0.818                                                        | 0.836                                                        | *0.359*                                                      | 0.843                                                        | 0.827                                                        |
 |          **Tied Diag- Cov**           | 0.521                                                        | 0.913                                                        | 0.983                                                        | 0.543                                                        | 0.970                                                        | 0.952                                                        |
 |  **Gaussianized Features – no PCA**   | -----------                                                  | -----------                                                  | -----------                                                  | -----------                                                  | -----------                                                  | -----------                                                  |
-|            **Full - Cov**             | 0.277                                                        | 0.791                                                        | 0.824                                                        | 0.306                                                        | 0.772                                                        | 0.871                                                        |
+|            **Full - Cov**             | *0.277*                                                      | 0.791                                                        | 0.824                                                        | *0.306*                                                      | 0.772                                                        | 0.871                                                        |
 |             **Diag -Cov**             | 0.497                                                        | 0.901                                                        | 0.963                                                        | 0.516                                                        | 0.927                                                        | 0.975                                                        |
-|           **Tied Full-Cov**           | 0.355                                                        | 0.889                                                        | 0.906                                                        | 0.359                                                        | 0.843                                                        | 0.827                                                        |
-|          **Tied Diag- Cov**           | 0.521                                                        | 0.913                                                        | 0.983                                                        | 0.543                                                        | 0.970                                                        | 0.952                                                        |
+|           **Tied Full-Cov**           | 0.355                                                        | 0.889                                                        | 0.906                                                        | 0.379                                                        | 0.810                                                        | 0.928                                                        |
+|          **Tied Diag- Cov**           | 0.529                                                        | 0.913                                                        | 0.992                                                        | 0.543                                                        | 0.958                                                        | 0.995                                                        |
 |     **Raw Features – PCA (m=9)**      | -----------                                                  | -----------                                                  | -----------                                                  | -----------                                                  | -----------                                                  | -----------                                                  |
-|            **Full - Cov**             | 0.455                                                        | 0.966                                                        | 0.884                                                        | 0.495                                                        | 0.980                                                        | 0.975                                                        |
-|             **Diag -Cov**             | 0.541                                                        | 0.963                                                        | 0.947                                                        | 0.570                                                        | 1.0                                                          | 0.988                                                        |
-|           **Tied Full-Cov**           | 0.55                                                         | 0.974                                                        | 0.939                                                        | 0.359                                                        | 0.843                                                        | 0.827                                                        |
-|          **Tied Diag- Cov**           | 0.521                                                        | 0.913                                                        | 0.983                                                        | 0.543                                                        | 0.970                                                        | 0.952                                                        |
+|            **Full - Cov**             | 0.417                                                        | 0.858                                                        | 0.884                                                        | 0.425                                                        | 0.915                                                        | 0.959                                                        |
+|             **Diag -Cov**             | 0.469                                                        | 0.910                                                        | 0.963                                                        | 0.517                                                        | 0.937                                                        | 0.986                                                        |
+|           **Tied Full-Cov**           | 0.469                                                        | 0.934                                                        | 0.915                                                        | 0.489                                                        | 0.951                                                        | 0.816                                                        |
+|          **Tied Diag- Cov**           | 0.467                                                        | 0.934                                                        | 0.915                                                        | 0.491                                                        | 0.960                                                        | 0.921                                                        |
 | **Gaussianized Features – PCA (m=9)** | -----------                                                  | -----------                                                  | -----------                                                  | -----------                                                  | -----------                                                  | -----------                                                  |
-|            **Full - Cov**             | 0.300                                                        | 0.820                                                        | 0.858                                                        | 0.336                                                        | 0.805                                                        | 0.898                                                        |
-|             **Diag -Cov**             | 0.392                                                        | 0.834                                                        | 0.899                                                        | 0.407                                                        | 0.884                                                        | 0.899                                                        |
-|           **Tied Full-Cov**           | 0.421                                                        | 0.897                                                        | 0.903                                                        | 0.359                                                        | 0.843                                                        | 0.827                                                        |
-|          **Tied Diag- Cov**           | 0.521                                                        | 0.913                                                        | 0.983                                                        | 0.543                                                        | 0.970                                                        | 0.952                                                        |
+|            **Full - Cov**             | 0.398                                                        | 0.838                                                        | 0.872                                                        | 0.419                                                        | 0.911                                                        | 0.969                                                        |
+|             **Diag -Cov**             | 0.455                                                        | 0.904                                                        | 0.956                                                        | 0.489                                                        | 0.943                                                        | 0.974                                                        |
+|           **Tied Full-Cov**           | 0.469                                                        | 0.945                                                        | 0.935                                                        | 0.490                                                        | 0.938                                                        | 0.931                                                        |
+|          **Tied Diag- Cov**           | 0.465                                                        | 0.909                                                        | 0.920                                                        | 0.495                                                        | 0.934                                                        | 0.938                                                        |
 |     **Raw Features – PCA (m=8)**      | -----------                                                  | -----------                                                  | -----------                                                  | -----------                                                  | -----------                                                  | -----------                                                  |
-|            **Full - Cov**             | 0.490                                                        | 0.970                                                        | 0.930                                                        | 0.537                                                        | 0.998                                                        | 0.951                                                        |
-|             **Diag -Cov**             | 0.606                                                        | 0.992                                                        | 0.966                                                        | 0.611                                                        | 1.0                                                          | 0.963                                                        |
-|           **Tied Full-Cov**           | 0.585                                                        | 0.963                                                        | 0.947                                                        | 0.359                                                        | 0.843                                                        | 0.827                                                        |
-|          **Tied Diag- Cov**           | 0.521                                                        | 0.913                                                        | 0.983                                                        | 0.543                                                        | 0.970                                                        | 0.952                                                        |
+|            **Full - Cov**             | 0.421                                                        | 0.949                                                        | 0.915                                                        | 0.477                                                        | 0.990                                                        | 0.948                                                        |
+|             **Diag -Cov**             | 0.552                                                        | 0.979                                                        | 0.968                                                        | 0.598                                                        | 0.985                                                        | 0.986                                                        |
+|           **Tied Full-Cov**           | 0.504                                                        | 0.964                                                        | 0.887                                                        | 0.535                                                        | 0.982                                                        | 0.807                                                        |
+|          **Tied Diag- Cov**           | 0.517                                                        | 0.964                                                        | 0.843                                                        | 0.537                                                        | 0.983                                                        | 0.893                                                        |
 | **Gaussianized Features – PCA (m=8)** | -----------                                                  | -----------                                                  | -----------                                                  | -----------                                                  | -----------                                                  | -----------                                                  |
-|            **Full - Cov**             | 0.345                                                        | 0.870                                                        | 0.867                                                        | 0.385                                                        | 0.932                                                        | 0.892                                                        |
-|             **Diag -Cov**             | 0.427                                                        | 0.945                                                        | 0.927                                                        | 0.458                                                        | 0.982                                                        | 0.900                                                        |
-|           **Tied Full-Cov**           | 0.434                                                        | 0.987                                                        | 0.853                                                        | 0.359                                                        | 0.843                                                        | 0.827                                                        |
-|          **Tied Diag- Cov**           | 0.521                                                        | 0.913                                                        | 0.983                                                        | 0.543                                                        | 0.970                                                        | 0.952                                                        |
+|            **Full - Cov**             | 0.426                                                        | 0.902                                                        | 0.891                                                        | 0.471                                                        | 0.988                                                        | 0.946                                                        |
+|             **Diag -Cov**             | 0.526                                                        | 0.959                                                        | 0.920                                                        | 0.563                                                        | 0.982                                                        | 0.961                                                        |
+|           **Tied Full-Cov**           | 0.497                                                        | 0.984                                                        | 0.911                                                        | 0.510                                                        | 0.973                                                        | 0.930                                                        |
+|          **Tied Diag- Cov**           | 0.528                                                        | 0.974                                                        | 0.860                                                        | 0.535                                                        | 0.990                                                        | 0.919                                                        |
+
+notes:
+
+- gaussianization does not improve a lot
+- best one in any cases is full - cov
+- best - > full mvg, tied full cov
+- PCA peggiora!
+- gaussianized slightly improves the results
 
 
-********************************************************************
 
 ## * LOGISTIC REGRESSION
 
@@ -122,16 +140,16 @@ very similar covariance matrixes
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | <img src="Graph\LR\linear\singleFoldGauss.png" style="zoom:60%;" /> | <img src="Graph\LR\linear\5FoldGauss.png" style="zoom:60%;" /> |
 
-|                                                              | ![img](file:///C:/Users/Utente/AppData/Local/Temp/msohtmlclip1/01/clip_image002.png) | ![img](file:///C:/Users/Utente/AppData/Local/Temp/msohtmlclip1/01/clip_image004.png) | ![img](file:///C:/Users/Utente/AppData/Local/Temp/msohtmlclip1/01/clip_image006.png) |
-| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| **Raw Features**                                             | -----------                                                  | -----------                                                  | -----------                                                  |
-| Log Reg (**λ****=** ![img](file:///C:/Users/Utente/AppData/Local/Temp/msohtmlclip1/01/clip_image008.png) **,** ![img](file:///C:/Users/Utente/AppData/Local/Temp/msohtmlclip1/01/clip_image010.png)**)** | 0.559                                                        | 0.969                                                        | 0.934                                                        |
-| Log Reg (**λ****=** ![img](file:///C:/Users/Utente/AppData/Local/Temp/msohtmlclip1/01/clip_image008.png) **,** ![img](file:///C:/Users/Utente/AppData/Local/Temp/msohtmlclip1/01/clip_image012.png)**)** | 0.584                                                        | 0.977                                                        | 0.917                                                        |
-| Log Reg (**λ****=** ![img](file:///C:/Users/Utente/AppData/Local/Temp/msohtmlclip1/01/clip_image008.png) **,** ![img](file:///C:/Users/Utente/AppData/Local/Temp/msohtmlclip1/01/clip_image014.png)**)** | 0.556                                                        | 0.963                                                        | 0.952                                                        |
-| **Gaussianized features**                                    | -----------                                                  | -----------                                                  | -----------                                                  |
-| Log Reg (**λ****=** ![img](file:///C:/Users/Utente/AppData/Local/Temp/msohtmlclip1/01/clip_image008.png) **,** ![img](file:///C:/Users/Utente/AppData/Local/Temp/msohtmlclip1/01/clip_image010.png)**)** | 0.371                                                        | 0.854                                                        | 0.818                                                        |
-| Log Reg (**λ****=** ![img](file:///C:/Users/Utente/AppData/Local/Temp/msohtmlclip1/01/clip_image008.png) **,** ![img](file:///C:/Users/Utente/AppData/Local/Temp/msohtmlclip1/01/clip_image012.png)**)** | 0.375                                                        | 0.914                                                        | 0.827                                                        |
-| Log Reg (**λ****=** ![img](file:///C:/Users/Utente/AppData/Local/Temp/msohtmlclip1/01/clip_image008.png) **,** ![img](file:///C:/Users/Utente/AppData/Local/Temp/msohtmlclip1/01/clip_image014.png)**)** | 0.372                                                        | 0.791                                                        | 0.986                                                        |
+|                                   | prior=0.5   | prior=0.1   | prior=0.9   |
+| --------------------------------- | ----------- | ----------- | ----------- |
+| **Raw Features**                  | ----------- | ----------- | ----------- |
+| Log reg, lambda=10**-7, pi_T =0.5 | *0.377*     | 0.864       | 0.795       |
+| Log reg, lambda=10**-7, pi_T =0.9 | 0.390       | 0.903       | 0.742       |
+| Log reg, lambda=10**-7, pi_T =0.1 | *0.362*     | 0.852       | 0.828       |
+| **Gaussianized features**         | ----------- | ----------- | ----------- |
+| Log reg, lambda=10**-7, pi_T =0.5 | 0.371       | 0.854       | 0.818       |
+| Log reg, lambda=10**-7, pi_T =0.9 | 0.375       | 0.914       | 0.827       |
+| Log reg, lambda=10**-7, pi_T =0.1 | 0.372       | 0.791       | 0.986       |
 
 #### ** Quadratic Logistic Regression
 
@@ -139,7 +157,20 @@ very similar covariance matrixes
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | <img src="Graph\LR\quadratic\singleFoldGauss.png" style="zoom:60%;" /> | <img src="Graph\LR\quadratic\5FoldGauss.png" style="zoom:60%;" /> |
 
-## * SVM
+|                                        | prior=0.5   | prior=0.1   | prior=0.9   |
+| -------------------------------------- | ----------- | ----------- | ----------- |
+| **Raw Features**                       | ----------- | ----------- | ----------- |
+| Quad Log reg, lambda=10**-7, pi_T =0.5 | 0.274       | 0.743       | 0.752       |
+| Quad Log reg, lambda=10**-7, pi_T =0.9 | 0.301       | 0.781       | 0.753       |
+| QuadLog reg, lambda=10**-7, pi_T =0.1  | 0.269       | 0.752       | 0.729       |
+| **Gaussianized features**              | ----------- | ----------- | ----------- |
+| Quad Log reg, lambda=10**-7, pi_T =0.5 | 0.300       | 0.749       | 0.692       |
+| Quad Log reg, lambda=10**-7, pi_T =0.9 | 0.302       | 0.811       | 0.632       |
+| Quad Log reg, lambda=10**-7, pi_T =0.1 | 0.313       | 0.714       | 0.731       |
+
+## *SVM
+
+
 
 #### ** Linear SVM
 

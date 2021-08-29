@@ -334,7 +334,35 @@ def print_graphs_quadratic_LR_lambdas(DTR, LTR,  k):
     
     #plt.show()
 
+def print_table_Quadratic_LR_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
+
+    def Quad_LR_minDCF(data):
+            lam = 10**(-7)
+            pi_T = 0.5
+            min_DCF_LR = model_evaluation.k_cross_minDCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
+            print("[5-Folds]  -  lam = 10^-7, pi_T = 0.5: ",min_DCF_LR)  
+
+            pi_T = 0.1
+            min_DCF_LR = model_evaluation.k_cross_minDCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
+            print("[5-Folds]  -  lam = 10^-7, pi_T = 0.1: ",min_DCF_LR)
+
+            pi_T = 0.9
+            min_DCF_LR = model_evaluation.k_cross_minDCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
+            print("[5-Folds]  -  lam = 10^-7, pi_T = 0.9: ",min_DCF_LR)
+
+            print()
+
     
+    #------------------------RAW FEATURES -----------------
+    print("*** minDCF - RAW FEATURES ***")
+    Quad_LR_minDCF(Z_normalization(DTR))
+
+    #--------------- GAUSSIANIZED FEATURES-------------------------
+    gaussianizedFeatures = gaussianization(DTR)
+
+    print("*** minDCF - GAUSSIANIZED FEATURES  ***")
+    Quad_LR_minDCF(gaussianizedFeatures)
+
 
 
 def print_graphs_SVM_Cs(DTR, LTR, k ):
@@ -642,10 +670,22 @@ if __name__ == '__main__':
     print("********************* quadratic LR GRAPHS ************************************")
     print_graphs_quadratic_LR_lambdas(DTR, LTR,  k)
     print("********************************************************************")
-    
+    '''
+    print("********************* QUADRATIC LR TABLE ************************************")
+    print("------> applicazione prior = 0.5")
+    print_table_Quadratic_LR_minDCF(DTR,LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k)
+    print()
+    print("------> applicazione con prior = 0.1")
+    print_table_Quadratic_LR_minDCF(DTR,LTR, prior=0.1, cost_fn=1, cost_fp=1, k=k)
+    print()
+    print("------> applicazione con prior = 0.9")
+    print_table_Quadratic_LR_minDCF(DTR, LTR, prior=0.9, cost_fn=1, cost_fp=1, k=k)
+    print()
+    print("********************************************************************")
+
     ### -- SVM
     
-
+    '''
     print("********************* SVM GRAPHS ************************************")
     print_graphs_SVM_Cs(DTR, LTR, k=k )
     print("********************************************************************")
