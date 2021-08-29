@@ -118,9 +118,48 @@ very similar covariance matrixes
 
 #### ** Linear Logistic Regression
 
+| <img src="Graph\LR\linear\singleFoldRAW.png" style="zoom:60%;" /> | <img src="Graph\LR\linear\5FoldRAW.png" style="zoom:60%;" /> |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| <img src="Graph\LR\linear\singleFoldGauss.png" style="zoom:60%;" /> | <img src="Graph\LR\linear\5FoldGauss.png" style="zoom:60%;" /> |
+
+|                                                              | ![img](file:///C:/Users/Utente/AppData/Local/Temp/msohtmlclip1/01/clip_image002.png) | ![img](file:///C:/Users/Utente/AppData/Local/Temp/msohtmlclip1/01/clip_image004.png) | ![img](file:///C:/Users/Utente/AppData/Local/Temp/msohtmlclip1/01/clip_image006.png) |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| **Raw Features**                                             | -----------                                                  | -----------                                                  | -----------                                                  |
+| Log Reg (**λ****=** ![img](file:///C:/Users/Utente/AppData/Local/Temp/msohtmlclip1/01/clip_image008.png) **,** ![img](file:///C:/Users/Utente/AppData/Local/Temp/msohtmlclip1/01/clip_image010.png)**)** | 0.559                                                        | 0.969                                                        | 0.934                                                        |
+| Log Reg (**λ****=** ![img](file:///C:/Users/Utente/AppData/Local/Temp/msohtmlclip1/01/clip_image008.png) **,** ![img](file:///C:/Users/Utente/AppData/Local/Temp/msohtmlclip1/01/clip_image012.png)**)** | 0.584                                                        | 0.977                                                        | 0.917                                                        |
+| Log Reg (**λ****=** ![img](file:///C:/Users/Utente/AppData/Local/Temp/msohtmlclip1/01/clip_image008.png) **,** ![img](file:///C:/Users/Utente/AppData/Local/Temp/msohtmlclip1/01/clip_image014.png)**)** | 0.556                                                        | 0.963                                                        | 0.952                                                        |
+| **Gaussianized features**                                    | -----------                                                  | -----------                                                  | -----------                                                  |
+| Log Reg (**λ****=** ![img](file:///C:/Users/Utente/AppData/Local/Temp/msohtmlclip1/01/clip_image008.png) **,** ![img](file:///C:/Users/Utente/AppData/Local/Temp/msohtmlclip1/01/clip_image010.png)**)** | 0.371                                                        | 0.854                                                        | 0.818                                                        |
+| Log Reg (**λ****=** ![img](file:///C:/Users/Utente/AppData/Local/Temp/msohtmlclip1/01/clip_image008.png) **,** ![img](file:///C:/Users/Utente/AppData/Local/Temp/msohtmlclip1/01/clip_image012.png)**)** | 0.375                                                        | 0.914                                                        | 0.827                                                        |
+| Log Reg (**λ****=** ![img](file:///C:/Users/Utente/AppData/Local/Temp/msohtmlclip1/01/clip_image008.png) **,** ![img](file:///C:/Users/Utente/AppData/Local/Temp/msohtmlclip1/01/clip_image014.png)**)** | 0.372                                                        | 0.791                                                        | 0.986                                                        |
+
+#### ** Quadratic Logistic Regression
+
+| <img src="Graph\LR\quadratic\singleFoldRAW.png" style="zoom:60%;" /> | <img src="Graph\LR\quadratic\5FoldRAW.png" style="zoom:60%;" /> |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| <img src="Graph\LR\quadratic\singleFoldGauss.png" style="zoom:60%;" /> | <img src="Graph\LR\quadratic\5FoldGauss.png" style="zoom:60%;" /> |
+
+## * SVM
+
+#### ** Linear SVM
+
+| <img src="Graph\SVM\linear\singleFoldRAW.png" style="zoom:60%;" /> | <img src="Graph\SVM\linear\5FoldRAW.png" style="zoom:60%;" /> |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| <img src="Graph\SVM\linear\singleFoldGauss.png" style="zoom:60%;" /> | <img src="Graph\SVM\linear\5FoldGauss.png" style="zoom:60%;" /> |
 
 
 
+#### ** Quadratic SVM
+
+| <img src="Graph\SVM\quadratic\singleFoldRAW.png" style="zoom:60%;" /> | <img src="Graph\SVM\quadratic\5FoldRAW.png" style="zoom:60%;" /> |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| <img src="Graph\SVM\quadratic\singleFoldGauss.png" style="zoom:60%;" /> | <img src="Graph\SVM\quadratic\5FoldGauss.png" style="zoom:60%;" /> |
+
+#### ** RBF SVM
+
+|      |      |
+| ---- | ---- |
+|      |      |
 
 ## - Experimental validation
 
