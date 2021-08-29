@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 def mcol(v):
     return v.reshape((v.size, 1))
 
-def plot_hist(D, L):
+def plot_hist(D, L, path):
 
     D0 = D[:, L==0]
     D1 = D[:, L==1]
@@ -27,11 +27,11 @@ def plot_hist(D, L):
     for dIdx in range(D.shape[0]):
         plt.figure()
         plt.xlabel(hFea[dIdx])
-        plt.hist(D0[dIdx, :], bins = 20, density = True, alpha = 0.4, label = 'not authentic')
-        plt.hist(D1[dIdx, :], bins = 20, density = True, alpha = 0.4, label = 'authentic')
+        plt.hist(D0[dIdx, :], bins = 30, density = True, alpha = 0.4, label = 'low quality')
+        plt.hist(D1[dIdx, :], bins = 30, density = True, alpha = 0.4, label = 'high quality')
         
         plt.legend()
-        plt.savefig('Stat/Hist/hist_%d.png' % dIdx)
+        plt.savefig(str(path)+ '/hist_%d.png' % dIdx)
         
 
 
@@ -62,8 +62,8 @@ def plot_scatter(D, L):
             plt.figure()
             plt.xlabel(hFea[dIdx1])
             plt.ylabel(hFea[dIdx2])
-            plt.scatter(D0[dIdx1, :], D0[dIdx2, :], label = 'not authentic')
-            plt.scatter(D1[dIdx1, :], D1[dIdx2, :], label = 'authentic')
+            plt.scatter(D0[dIdx1, :], D0[dIdx2, :], label = 'low quality')
+            plt.scatter(D1[dIdx1, :], D1[dIdx2, :], label = 'high quality')
 
         
             plt.legend()
@@ -99,21 +99,4 @@ def plot_heatmaps (D, L):
     
 
     
-    
-def compute_stats (D, L, show_figures=True):
 
-    #plot_hist(D, L)
-    mu= D.mean(1)
-    center_data= D-mcol(mu)
-    #plot_hist(center_data, L)
-    
-    #plot_scatter(D, L)
-    
-
-    #calculate the matrix of the Pearson product-moment correlation coefficients.
-    #plot_heatmaps(D, L)
-
-    
-
-    if (show_figures):
-        plt.show()

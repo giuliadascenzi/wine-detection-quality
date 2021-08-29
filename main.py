@@ -40,7 +40,7 @@ def load(fname):
     return numpy.hstack(DList), numpy.array(labelsList, dtype=numpy.int32)
 
 
-def normalization(D):
+def Z_normalization(D): #centering and scaling to unit variance
     return (D-mcol(D.mean(1)))/mcol(numpy.std(D, axis=1))
 
 
@@ -86,20 +86,22 @@ def print_table_MVG_classifiers_minDCF(DTR, prior, cost_fn, cost_fp, k):
         print()
 
     
-    #------------------------RAW FEATURES -----------------
+    normalized_data = Z_normalization(DTR)
+    #------------------------RAW FEATURES (normalized) -----------------
     print("*** minDCF - RAW FEATURES - NO PCA ***")
-    MVG_Classifiers_minDCF(DTR)
+    MVG_Classifiers_minDCF(normalized_data)
     
-    #------------------------RAW FEATURES WITH PCA = 9 --------------------
+    #------------------------RAW FEATURES (normalized) WITH PCA = 9 --------------------
     
-    principal_components9= redTec.PCA(DTR, 9)
+
+    principal_components9= redTec.PCA(normalized_data, 9)
     print("*** minDCF - RAW FEATURES -  PCA (m=9) ***")
     MVG_Classifiers_minDCF(principal_components9)       
 
 
-    #------------------------RAW FEATURES WITH PCA = 8 --------------------
+    #------------------------RAW FEATURES (normalized) WITH PCA = 8 --------------------
     
-    principal_components8= redTec.PCA(DTR, 8)
+    principal_components8= redTec.PCA(normalized_data, 8)
     print("*** minDCF - RAW FEATURES -  PCA (m=8) ***")
     MVG_Classifiers_minDCF(principal_components8)    
 
@@ -538,23 +540,32 @@ if __name__ == '__main__':
     DTR, LTR = load('Data/wine/Train.txt')
     DTE, LTE = load('Data/wine/Test.txt')
 
-    ## DTR: Training Data
+    ## DTR: Training Data  
     ## DTE: Evaluation Data
     ## LTR: Training Labels
     ## LTE: Evaluation Labels
     
+
     ## - compute statistics to analyse the data and the given features
-    #stats.compute_stats(DTR, LTR, show_figures = True)
-
+    '''
+    # plot histograms of the raw training dataset
+    stats.plot_hist(DTR, LTR, "Stat/Hist/Raw")
+    
+    # plot histograms of the Z_normalized training dataset
+    stats.plot_hist(Z_normalization(DTR), LTR, "Stat/Hist/Normalized")
+    
     ## - gaussianize the features
-    #gaussianizedFeatures = gaussianization(DTR)
-    #stats.plot_hist(gaussianizedFeatures, LTR)
 
-
+    gaussianizedFeatures = gaussianization(DTR)
+    stats.plot_hist(gaussianizedFeatures, LTR, "Stat/Hist/Gaussianized")
+    
+    '''
     ##enstablish if data are balanced
+    '''
     n_high_qty = numpy.count_nonzero(LTR == 1)
     n_low_qty = numpy.count_nonzero(LTR == 0)
     ##-----> number of low qty >> number of high qty
+    '''
     
     ## for the balanced application:
     prior = 0.5
@@ -583,15 +594,15 @@ if __name__ == '__main__':
     
     '''
 
-    DTR = normalization(DTR)
+    DTR = Z_normalization(DTR)
     #DTR = sklearn.preprocessing.normalize(DTR, axis=1)
 
     ### -- LOGISTIC REGRESSION
-    
+    '''
     print("********************* LR GRAPHS MIN DCF ************************************")
     print_graphs_LR_lambdas(DTR,LTR, k=k)
     print("********************************************************************")
-    
+    '''
 
     '''
     print("********************* LR TABLE ************************************")
@@ -606,12 +617,12 @@ if __name__ == '__main__':
     print()
     print("********************************************************************")
     '''
-
+    '''
     
     print("********************* quadratic LR GRAPHS ************************************")
     print_graphs_quadratic_LR_lambdas(DTR, LTR,  k)
     print("********************************************************************")
-    
+    '''
 
 
     '''
