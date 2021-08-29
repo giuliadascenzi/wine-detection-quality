@@ -149,7 +149,7 @@ def print_table_LR_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
     
     #------------------------RAW FEATURES -----------------
     print("*** minDCF - RAW FEATURES ***")
-    LR_minDCF(DTR)
+    LR_minDCF(Z_normalization(DTR))
 
     #--------------- GAUSSIANIZED FEATURES-------------------------
     gaussianizedFeatures = gaussianization(DTR)
@@ -567,11 +567,23 @@ if __name__ == '__main__':
     stats.plot_hist(gaussianizedFeatures, LTR, "Stat/Hist/Gaussianized")
     
     '''
+    '''
+    ## heat maps of the gaussianized features to show correlations between features
+    stats.plot_heatmaps(gaussianization(DTR), LTR, "Stat/HeatMaps/Gaussianized")
+    stats.plot_heatmaps(Z_normalization(DTR), LTR, "Stat/HeatMaps/Normalized")
+    '''
+
     ##enstablish if data are balanced
     '''
     n_high_qty = numpy.count_nonzero(LTR == 1)
     n_low_qty = numpy.count_nonzero(LTR == 0)
     ##-----> number of low qty >> number of high qty
+    plt.figure()
+    plt.xlabel("nsamples")
+    plt.hist(numpy.zeros(n_low_qty),  label = 'low quality')
+    plt.hist(numpy.ones(n_high_qty), label = 'high quality')
+    plt.legend()
+    plt.savefig('Stat/hist_number_of_data.png')
     '''
     
     '''
@@ -607,7 +619,7 @@ if __name__ == '__main__':
 
 
     ### -- LOGISTIC REGRESSION
-    
+    '''
     print("********************* LR GRAPHS MIN DCF ************************************")
     print_graphs_LR_lambdas(DTR,LTR, k=k)
     print("********************************************************************")
@@ -631,7 +643,7 @@ if __name__ == '__main__':
     print_graphs_quadratic_LR_lambdas(DTR, LTR,  k)
     print("********************************************************************")
     
-
+    ### -- SVM
     
 
     print("********************* SVM GRAPHS ************************************")
@@ -649,18 +661,9 @@ if __name__ == '__main__':
     print("********************************************************************")
     
     
-    
+    '''
 
-    #minDCFs_raw = model_evaluation.singleFold_minDCF( normalizedata, LTR, logisticRegression.Quadratic_LR_logLikelihoodRatios, 0.5 , 1, 1, [10**-7, 0.5])    
-    #minDCFs_gauss = model_evaluation.singleFold_minDCF( gaussianization(DTR), LTR, logisticRegression.Quadratic_LR_logLikelihoodRatios, 0.5 , 1, 1, [10**-7, 0.5])    
 
-    #print("raw: ", minDCFs_raw)
-    #print("gauss: ", minDCFs_gauss)
-    
-
-    #stats.plot_scatter(principal_components,LTR)
-    #linear_discriminants = redTec.LDA(DTR,LTR, 1)
-    #redTec.plotLDA(linear_discriminants, LTR, "Applied LDA")
 
 
    

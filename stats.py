@@ -70,15 +70,18 @@ def plot_scatter(D, L):
             plt.savefig('Stat/Scatter/scatter_%d_%d.png' % (dIdx1, dIdx2))
 
         
-def plot_heatmaps (D, L):
+def plot_heatmaps (D, L, path):
     # show the correlation of the features in the whole dataset
     C =numpy.corrcoef(D)
+    print(C)
+    print()
+    print()
     plt.figure()
     #plt.imshow(C, cmap='Blues')
     plt.imshow(C, cmap='Greens')
     plt.colorbar()
     plt.title("Whole dataset")
-    plt.savefig('Stat/HeatMaps/whole_dataset')
+    plt.savefig(str(path)+'/whole_dataset')
 
     # show the correlation of the features in the samples of low quality wine
     C =numpy.corrcoef(D[:,L==0])
@@ -87,7 +90,7 @@ def plot_heatmaps (D, L):
     #plt.imshow(C, cmap='Oranges')
     plt.colorbar()
     plt.title("Samples of low quality wine")
-    plt.savefig('Stat/HeatMaps/low_quality')
+    plt.savefig(str(path)+'/low_quality')
 
     # show the correlation of the features in the samples of high quality wine
     C =numpy.corrcoef(D[:,L==1])
@@ -95,7 +98,7 @@ def plot_heatmaps (D, L):
     plt.imshow(C, cmap='Greens')
     plt.colorbar()
     plt.title("Samples of high quality wine")
-    plt.savefig('Stat/HeatMaps/high_quality')
+    plt.savefig(str(path)+'/high_quality')
     
 
     
