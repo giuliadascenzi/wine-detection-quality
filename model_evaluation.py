@@ -140,7 +140,7 @@ def k_cross_minDCF(D, L, k, llr_calculator, prior, cost_fn, cost_fp, otherParams
 
 def singleFold_minDCF(D, L, llr_calculator, prior, cost_fn, cost_fp, otherParams=None):
     (DTR, LTR), (DTE,LTE)= split_db_2tol(D,L)
-    llr =llr_calculator (DTR,LTR,DTE, otherParams)
+    llr = llr_calculator (DTR,LTR,DTE, otherParams)
     min_DCF,_,_ =compute_minimum_detection_cost(llr, LTE, prior , cost_fn, cost_fp)
     return min_DCF #minDCF
 
