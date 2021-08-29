@@ -85,42 +85,48 @@ def print_table_MVG_classifiers_minDCF(DTR, prior, cost_fn, cost_fp, k):
 
         print()
 
-    
+    #!!! normalization is important before PCA
     normalized_data = Z_normalization(DTR)
+
+
     #------------------------RAW FEATURES (normalized) -----------------
-    print("*** minDCF - RAW FEATURES - NO PCA ***")
+    print("*** minDCF - RAW (normalized) FEATURES - NO PCA ***")
     MVG_Classifiers_minDCF(normalized_data)
     
-    #------------------------RAW FEATURES (normalized) WITH PCA = 9 --------------------
-    
 
+    #------------------------RAW FEATURES (normalized) WITH PCA = 9 --------------------
     principal_components9= redTec.PCA(normalized_data, 9)
-    print("*** minDCF - RAW FEATURES -  PCA (m=9) ***")
+    print("*** minDCF - RAW (normalized) FEATURES -  PCA (m=9) ***")
     MVG_Classifiers_minDCF(principal_components9)       
 
 
     #------------------------RAW FEATURES (normalized) WITH PCA = 8 --------------------
     
     principal_components8= redTec.PCA(normalized_data, 8)
-    print("*** minDCF - RAW FEATURES -  PCA (m=8) ***")
+    print("*** minDCF - RAW (normalized) FEATURES -  PCA (m=8) ***")
     MVG_Classifiers_minDCF(principal_components8)    
 
 
+    ## Z --> PCA --> GAUSS
     #--------------- GAUSSIANIZED FEATURES-------------------------
     gaussianizedFeatures = gaussianization(DTR)
-
     print("*** minDCF - GAUSSIANIZED FEATURES - NO PCA ***")
     MVG_Classifiers_minDCF(gaussianizedFeatures)
 
+
     #------------------------GAUSSIANIZED FEATURES WITH PCA = 9 --------------------
     print("*** minDCF - GAUSSIANIZED FEATURES -  PCA m=9 ***")
-    gaussianized_principal_components_9= redTec.PCA(gaussianizedFeatures, 9)
+    principal_components9= redTec.PCA(normalized_data, 9)
+    gaussianized_principal_components_9 = gaussianization(principal_components9)
     MVG_Classifiers_minDCF(gaussianized_principal_components_9)     
-    
+
+
     #------------------------GAUSSIANIZED FEATURES WITH PCA = 8 --------------------
     print("*** minDCF - GAUSSIANIZED FEATURES -  PCA m=8 ***")
-    gaussianized_principal_components_8= redTec.PCA(gaussianizedFeatures, 8)
+    principal_components8= redTec.PCA(normalized_data, 8)
+    gaussianized_principal_components_8= gaussianization(principal_components8)
     MVG_Classifiers_minDCF(gaussianized_principal_components_8)
+
 
 def print_table_LR_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
 
@@ -184,6 +190,9 @@ def print_graphs_LR_lambdas(DTR, LTR,  k):
         plt.plot(lambdas, minDCFs, label=lb)
         plt.legend()
 
+    normalizedFeatures = Z_normalization(DTR)
+    gaussianizedFeatures = gaussianization(DTR)
+
     plt.figure()
     print("+++++++++++++++++++++++++++++++++++")
     print("Raw features, single fold")
@@ -191,12 +200,12 @@ def print_graphs_LR_lambdas(DTR, LTR,  k):
     plt.xscale('log')
     plt.xlabel("lambda")
     plt.ylabel("minDCFs")
-    oneGraphSingleFold(DTR, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
-    oneGraphSingleFold(DTR, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
-    oneGraphSingleFold(DTR, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphSingleFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphSingleFold(normalizedFeatures, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphSingleFold(normalizedFeatures, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
     plt.savefig('Graph/LR/linear/singleFoldRAW.png' )
 
-    '''
+    
     plt.figure()
     print("+++++++++++++++++++++++++++++++++++")
     print("Gaussianized features, single fold")
@@ -204,7 +213,6 @@ def print_graphs_LR_lambdas(DTR, LTR,  k):
     plt.xscale('log')
     plt.xlabel("lambda")
     plt.ylabel("minDCFs")
-    gaussianizedFeatures = gaussianization(DTR)
     oneGraphSingleFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
     oneGraphSingleFold(gaussianizedFeatures, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
     oneGraphSingleFold(gaussianizedFeatures, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
@@ -217,9 +225,9 @@ def print_graphs_LR_lambdas(DTR, LTR,  k):
     plt.xscale('log')
     plt.xlabel("lambda")
     plt.ylabel("minDCFs")
-    oneGraphKFold(DTR, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
-    oneGraphKFold(DTR, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
-    oneGraphKFold(DTR, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphKFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphKFold(normalizedFeatures, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphKFold(normalizedFeatures, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
     plt.savefig('Graph/LR/linear/5FoldRAW.png' )
 
     plt.figure()
@@ -229,12 +237,11 @@ def print_graphs_LR_lambdas(DTR, LTR,  k):
     plt.xscale('log')
     plt.xlabel("lambda")
     plt.ylabel("minDCFs")
-    gaussianizedFeatures = gaussianization(DTR)
     oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
     oneGraphKFold(gaussianizedFeatures, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
     oneGraphKFold(gaussianizedFeatures, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
     plt.savefig('Graph/LR/linear/5FoldGauss.png' )
-    '''
+    
 
     #plt.show()
 
@@ -272,6 +279,9 @@ def print_graphs_quadratic_LR_lambdas(DTR, LTR,  k):
         plt.plot(lambdas, minDCFs, label=lb)
         plt.legend()
 
+    normalizedFeatures = Z_normalization(DTR)
+    gaussianizedFeatures = gaussianization(DTR)
+
     plt.figure()
     print("+++++++++++++++++++++++++++++++++++")
     print("Raw features, single fold")
@@ -279,12 +289,12 @@ def print_graphs_quadratic_LR_lambdas(DTR, LTR,  k):
     plt.xscale('log')
     plt.xlabel("lambda")
     plt.ylabel("minDCFs")
-    oneGraphSingleFold(DTR, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
-    oneGraphSingleFold(DTR, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
-    oneGraphSingleFold(DTR, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphSingleFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphSingleFold(normalizedFeatures, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphSingleFold(normalizedFeatures, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
     plt.savefig('Graph/LR/quadratic/singleFoldRAW.png' )
 
-    '''
+    
     plt.figure()
     print("+++++++++++++++++++++++++++++++++++")
     print("Gaussianized features, single fold")
@@ -292,7 +302,6 @@ def print_graphs_quadratic_LR_lambdas(DTR, LTR,  k):
     plt.xscale('log')
     plt.xlabel("lambda")
     plt.ylabel("minDCFs")
-    gaussianizedFeatures = gaussianization(DTR)
     oneGraphSingleFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
     oneGraphSingleFold(gaussianizedFeatures, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
     oneGraphSingleFold(gaussianizedFeatures, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
@@ -305,9 +314,9 @@ def print_graphs_quadratic_LR_lambdas(DTR, LTR,  k):
     plt.xscale('log')
     plt.xlabel("lambda")
     plt.ylabel("minDCFs")
-    oneGraphKFold(DTR, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
-    oneGraphKFold(DTR, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
-    oneGraphKFold(DTR, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphKFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphKFold(normalizedFeatures, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphKFold(normalizedFeatures, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
     plt.savefig('Graph/LR/quadratic/5FoldRAW.png' )
 
     plt.figure()
@@ -317,12 +326,11 @@ def print_graphs_quadratic_LR_lambdas(DTR, LTR,  k):
     plt.xscale('log')
     plt.xlabel("lambda")
     plt.ylabel("minDCFs")
-    gaussianizedFeatures = gaussianization(DTR)
     oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
     oneGraphKFold(gaussianizedFeatures, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
     oneGraphKFold(gaussianizedFeatures, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
     plt.savefig('Graph/LR/quadratic/5FoldGauss.png' )
-    '''
+    
     
     #plt.show()
 
@@ -359,15 +367,18 @@ def print_graphs_SVM_Cs(DTR, LTR, k ):
         plt.legend()
         print("DONE")
 
+    normalizedFeatures = Z_normalization(DTR)
+    gaussianizedFeatures = gaussianization(DTR)
+
     plt.figure()
     print("1 grafico")
     plt.title("Raw features, single fold")
     plt.xscale('log')
     plt.xlabel("C")
     plt.ylabel("minDCFs")
-    oneGraphSingleFold(DTR, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
-    oneGraphSingleFold(DTR, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
-    oneGraphSingleFold(DTR, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphSingleFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphSingleFold(normalizedFeatures, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphSingleFold(normalizedFeatures, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
     plt.savefig('Graph/SVM/linear/singleFoldRAW.png' )
     
     print("2 grafico")
@@ -376,7 +387,6 @@ def print_graphs_SVM_Cs(DTR, LTR, k ):
     plt.xscale('log')
     plt.xlabel("C")
     plt.ylabel("minDCFs")
-    gaussianizedFeatures = gaussianization(DTR)
     oneGraphSingleFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
     oneGraphSingleFold(gaussianizedFeatures, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
     oneGraphSingleFold(gaussianizedFeatures, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
@@ -388,9 +398,9 @@ def print_graphs_SVM_Cs(DTR, LTR, k ):
     plt.xscale('log')
     plt.xlabel("C")
     plt.ylabel("minDCFs")
-    oneGraphKFold(DTR, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
-    oneGraphKFold(DTR, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
-    oneGraphKFold(DTR, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphKFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphKFold(normalizedFeatures, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphKFold(normalizedFeatures, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
     plt.savefig('Graph/SVM/linear/5FoldRAW.png' )
 
     print("4 grafico")
@@ -399,7 +409,6 @@ def print_graphs_SVM_Cs(DTR, LTR, k ):
     plt.xscale('log')
     plt.xlabel("C")
     plt.ylabel("minDCFs")
-    gaussianizedFeatures = gaussianization(DTR)
     oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
     oneGraphKFold(gaussianizedFeatures, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
     oneGraphKFold(gaussianizedFeatures, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
@@ -438,15 +447,18 @@ def print_graphs_Polinomial_SVM_Cs(DTR, LTR, k ):
         plt.legend()
         print("DONE")
 
+    normalizedFeatures = Z_normalization(DTR)
+    gaussianizedFeatures = gaussianization(DTR)
+
     plt.figure()
     print("1 grafico")
     plt.title("Raw features, single fold")
     plt.xscale('log')
     plt.xlabel("C")
     plt.ylabel("minDCFs")
-    oneGraphSingleFold(DTR, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
-    oneGraphSingleFold(DTR, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
-    oneGraphSingleFold(DTR, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphSingleFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphSingleFold(normalizedFeatures, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphSingleFold(normalizedFeatures, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
     plt.savefig('Graph/SVM/Quadratic/singleFoldRAW.png' )
     
     print("2 grafico")
@@ -455,7 +467,6 @@ def print_graphs_Polinomial_SVM_Cs(DTR, LTR, k ):
     plt.xscale('log')
     plt.xlabel("C")
     plt.ylabel("minDCFs")
-    gaussianizedFeatures = gaussianization(DTR)
     oneGraphSingleFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
     oneGraphSingleFold(gaussianizedFeatures, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
     oneGraphSingleFold(gaussianizedFeatures, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
@@ -467,9 +478,9 @@ def print_graphs_Polinomial_SVM_Cs(DTR, LTR, k ):
     plt.xscale('log')
     plt.xlabel("C")
     plt.ylabel("minDCFs")
-    oneGraphKFold(DTR, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
-    oneGraphKFold(DTR, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
-    oneGraphKFold(DTR, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphKFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphKFold(normalizedFeatures, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
+    oneGraphKFold(normalizedFeatures, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
     plt.savefig('Graph/SVM/Quadratic/5FoldRAW.png' )
 
     print("4 grafico")
@@ -478,7 +489,6 @@ def print_graphs_Polinomial_SVM_Cs(DTR, LTR, k ):
     plt.xscale('log')
     plt.xlabel("C")
     plt.ylabel("minDCFs")
-    gaussianizedFeatures = gaussianization(DTR)
     oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
     oneGraphKFold(gaussianizedFeatures, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
     oneGraphKFold(gaussianizedFeatures, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
@@ -488,8 +498,6 @@ def print_graphs_Polinomial_SVM_Cs(DTR, LTR, k ):
 
 
 def print_graphs_RBF_SVM_Cs(DTR, LTR, k):
-
-
 
     def oneGraphKFold(data, prior, cost_fn, cost_fp, pi_T, loglam):
         print("working on k fold loglam = ", loglam)
@@ -505,8 +513,8 @@ def print_graphs_RBF_SVM_Cs(DTR, LTR, k):
         plt.legend()
         print("DONE")
 
-    
-
+    normalizedFeatures = Z_normalization(DTR)
+    gaussianizedFeatures = gaussianization(DTR)
 
     print("1 grafico")
     plt.figure()
@@ -514,10 +522,10 @@ def print_graphs_RBF_SVM_Cs(DTR, LTR, k):
     plt.xscale('log')
     plt.xlabel("C")
     plt.ylabel("minDCFs")
-    oneGraphKFold(DTR, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = 0)
-    oneGraphKFold(DTR, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = -1)
-    oneGraphKFold(DTR, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = -2)
-    oneGraphKFold(DTR, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = -3)
+    oneGraphKFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = 0)
+    oneGraphKFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = -1)
+    oneGraphKFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = -2)
+    oneGraphKFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = -3)
     plt.savefig('Graph/SVM/RBF/5FoldRAW.png' )
 
     print("2 grafico")
@@ -526,7 +534,6 @@ def print_graphs_RBF_SVM_Cs(DTR, LTR, k):
     plt.xscale('log')
     plt.xlabel("C")
     plt.ylabel("minDCFs")
-    gaussianizedFeatures = gaussianization(DTR)
     oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = 0)
     oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = -1)
     oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = -2)
@@ -567,12 +574,15 @@ if __name__ == '__main__':
     ##-----> number of low qty >> number of high qty
     '''
     
+    '''
+    NON SERVE
     ## for the balanced application:
     prior = 0.5
     cost_fn = 1
     cost_fp = 1
     classes_prior_probabilties = numpy.array([prior, 1-prior])
-
+    '''
+    
     ##choose k for k cross validation
     k = 5
 
@@ -583,6 +593,7 @@ if __name__ == '__main__':
     print("------> pi = 0.5")
     print_table_MVG_classifiers_minDCF(DTR, prior=0.5, cost_fn=1, cost_fp=1, k=k)
     print()
+
     print("------> pi = 0.9")
     print_table_MVG_classifiers_minDCF(DTR, prior=0.9, cost_fn=1, cost_fp=1, k=k)
     print()
@@ -591,20 +602,18 @@ if __name__ == '__main__':
     print_table_MVG_classifiers_minDCF(DTR, prior=0.1, cost_fn=1, cost_fp=1, k=k)
     print()
     print("********************************************************************")
-    
     '''
+    
 
-    DTR = Z_normalization(DTR)
-    #DTR = sklearn.preprocessing.normalize(DTR, axis=1)
 
     ### -- LOGISTIC REGRESSION
-    '''
+    
     print("********************* LR GRAPHS MIN DCF ************************************")
     print_graphs_LR_lambdas(DTR,LTR, k=k)
     print("********************************************************************")
-    '''
+    
 
-    '''
+    
     print("********************* LR TABLE ************************************")
     print("------> applicazione prior = 0.5")
     print_table_LR_minDCF(DTR,LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k)
@@ -616,34 +625,30 @@ if __name__ == '__main__':
     print_table_LR_minDCF(DTR, LTR, prior=0.9, cost_fn=1, cost_fp=1, k=k)
     print()
     print("********************************************************************")
-    '''
-    '''
+    
     
     print("********************* quadratic LR GRAPHS ************************************")
     print_graphs_quadratic_LR_lambdas(DTR, LTR,  k)
     print("********************************************************************")
-    '''
+    
 
-
-    '''
+    
 
     print("********************* SVM GRAPHS ************************************")
     print_graphs_SVM_Cs(DTR, LTR, k=k )
     print("********************************************************************")
 
-    '''
-    '''
+    
     print("********************* quadratic SVM GRAPHS ************************************")
     print_graphs_Polinomial_SVM_Cs(DTR, LTR, k=k )
     print("********************************************************************")
 
-    '''
-    '''
+    
     print("********************* RBF SVM GRAPHS ************************************")
     print_graphs_RBF_SVM_Cs(DTR, LTR, k=k )
     print("********************************************************************")
-    '''
-
+    
+    
     
 
     #minDCFs_raw = model_evaluation.singleFold_minDCF( normalizedata, LTR, logisticRegression.Quadratic_LR_logLikelihoodRatios, 0.5 , 1, 1, [10**-7, 0.5])    
