@@ -152,7 +152,7 @@ def singleFold_DCF(D, L, llr_calculator, prior, cost_fn, cost_fp, otherParams=No
     min_DCF,_,_ =compute_minimum_detection_cost(llr, LTE, prior , cost_fn, cost_fp)
     return (min_DCF, actDCF) #minDCF
 
-def bayes_error_plot(D, L, k, llr_calculator, otherParams, title ):
+def bayes_error_plot(D, L, k, llr_calculator, otherParams, title, color ):
 
     llr, labels = k_cross_loglikelihoods(D,L, k, llr_calculator, otherParams)
 
@@ -170,8 +170,8 @@ def bayes_error_plot(D, L, k, llr_calculator, otherParams, title ):
         mindcf.append(m)
     
 
-    plt.plot(effPriorLogOdds, dcf, label=title+' DCF')
-    plt.plot(effPriorLogOdds, mindcf, label=title+ ' min DCF')
+    plt.plot(effPriorLogOdds, dcf, c=color label=title+' DCF')
+    plt.plot(effPriorLogOdds, mindcf, c=color, label=title+ ' min DCF', "s--")
     plt.ylim([0,1.1])
     plt.xlim([-3,3])
     plt.legend()

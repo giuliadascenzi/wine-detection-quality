@@ -604,13 +604,13 @@ def print_table_comparison_DCFs(DTR, LTR, k):
     print("*** MVG full, gaussianized, noPCA ***")
     actDCF_minDCF(gaussianizedFeatures, MVGclassifiers.MVG_logLikelihoodRatios,[])
 
-def print_err_bayes_plots(data, L, k, llr_calculators, other_params, titles):
+def print_err_bayes_plots(data, L, k, llr_calculators, other_params, titles, colors):
     plt.figure()
     plt.title("Bayes Error Plot")
     plt.xlabel("prior log odds")
     plt.ylabel("DCF")
     for i in range (len(llr_calculators)):
-        model_evaluation.bayes_error_plot(data[i], L, k, llr_calculators[i], other_params[i], titles[i] )
+        model_evaluation.bayes_error_plot(data[i], L, k, llr_calculators[i], other_params[i], titles[i], colors[i] )
     
     plt.savefig('Graph/Error_Bayes_Plots/EBP1.png' )
 if __name__ == '__main__':
@@ -757,7 +757,8 @@ if __name__ == '__main__':
     llr_calculators = [logisticRegression.Quadratic_LR_logLikelihoodRatios,MVGclassifiers.MVG_logLikelihoodRatios ]
     other_params = [[lam, pi_T], []]
     titles = ["Quad Log reg", "MVG Full cov"]
-    print_err_bayes_plots(data, LTR, k, llr_calculators, other_params, titles)
+    colors = ["r", "b"]
+    print_err_bayes_plots(data, LTR, k, llr_calculators, other_params, titles, colors)
 
 
     
