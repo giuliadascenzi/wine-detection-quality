@@ -473,7 +473,7 @@ def print_table_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
 
             pi_T = pi_emp_T
             minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
-            print("[5-Folds]  -  C= 0.1, pi_T=pi_emp_T: ",min_DCF)
+            print("[5-Folds]  -  C= 0.1, pi_T=pi_emp_T: ",minDCF)
 
             print()
 
@@ -595,7 +595,7 @@ def print_table_Quadratic_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k): #TOD
 
         pi_T = pi_emp_T
         minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
-        print("[5-Folds]  -  C= 0.1, pi_T=pi_emp_T: ",min_DCF)
+        print("[5-Folds]  -  C= 0.1, pi_T=pi_emp_T: ",minDCF)
 
         print()
 
@@ -686,7 +686,7 @@ def print_table_RBF_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k): #TODO
         pi_T = pi_emp_T
         loglam= 0
         minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
-        print("[5-Folds]  -  C= 0.1, pi_T=pi_emp_T: ",min_DCF)
+        print("[5-Folds]  -  C= 0.1, pi_T=pi_emp_T: ",minDCF)
 
         print()
 
