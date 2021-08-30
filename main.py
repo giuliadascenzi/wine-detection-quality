@@ -610,8 +610,9 @@ def print_err_bayes_plots(data, L, k, llr_calculators, other_params, titles, col
     plt.xlabel("prior log odds")
     plt.ylabel("DCF")
     for i in range (len(llr_calculators)):
+        print("Working on calculator "+ str(i))
         model_evaluation.bayes_error_plot(data[i], L, k, llr_calculators[i], other_params[i], titles[i], colors[i] )
-    
+        print("DONE")
     plt.savefig('Graph/Error_Bayes_Plots/EBP1.png' )
 if __name__ == '__main__':
 

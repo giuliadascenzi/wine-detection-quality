@@ -171,7 +171,7 @@ def bayes_error_plot(D, L, k, llr_calculator, otherParams, title, color ):
     
 
     plt.plot(effPriorLogOdds, dcf, c=color label=title+' DCF')
-    plt.plot(effPriorLogOdds, mindcf, c=color, label=title+ ' min DCF', "s--")
+    plt.plot(effPriorLogOdds, mindcf, c=color+"s--", label=title+ ' min DCF')
     plt.ylim([0,1.1])
     plt.xlim([-3,3])
     plt.legend()
