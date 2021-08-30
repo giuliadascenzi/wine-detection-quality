@@ -1,4 +1,5 @@
 import numpy
+import matplotlib.pyplot as plt
 
 def mcol(v):
     return v.reshape((v.size, 1))
@@ -97,8 +98,9 @@ def compute_actual_DCF(llrs, labels, prior , cost_fn, cost_fp):
    
     return (nbr)
 
-# TODO : cambia nome
-def k_cross_DCF(D, L, k, llr_calculator, prior, cost_fn, cost_fp, otherParams=None):
+
+
+def k_cross_loglikelihoods(D,L, k, llr_calculator, otherParams):
     step = int(D.shape[1]/k)
     numpy.random.seed(seed=0)
 
@@ -134,6 +136,10 @@ def k_cross_DCF(D, L, k, llr_calculator, prior, cost_fn, cost_fp, otherParams=No
 
     llr = numpy.concatenate(llr)
     labels = numpy.concatenate(labels)
+    return (llr, labels)
+
+def k_cross_DCF(D, L, k, llr_calculator, prior, cost_fn, cost_fp, otherParams=None):
+    llr, labels = k_cross_loglikelihoods(D,L,k, llr_calculator, otherParams)
     actDCF = compute_actual_DCF(llr, labels, prior , cost_fn, cost_fp)
     min_DCF,_,_ =compute_minimum_detection_cost(llr, labels, prior , cost_fn, cost_fp)
     return (min_DCF, actDCF)
@@ -146,3 +152,27 @@ def singleFold_DCF(D, L, llr_calculator, prior, cost_fn, cost_fp, otherParams=No
     min_DCF,_,_ =compute_minimum_detection_cost(llr, LTE, prior , cost_fn, cost_fp)
     return (min_DCF, actDCF) #minDCF
 
+def bayes_error_plot(D, L, k, llr_calculator, otherParams, title ):
+
+    llr, labels = k_cross_loglikelihoods(D,L, k, llr_calculator, otherParams)
+
+    effPriorLogOdds = numpy.linspace(-3,3,21)
+    effPriors = 1 / (1+ numpy.exp(-effPriorLogOdds))
+    dcf = []
+    mindcf = []
+
+    for effPrior in effPriors:
+        #calculate actual dcf considering effPrior
+        d = compute_actual_DCF(llr, labels, effPrior , 1, 1)
+        #calculate min dcf considering effPrior
+        m,_,_ =compute_minimum_detection_cost(llr, labels, effPrior , 1, 1)
+        dcf.append(d)
+        mindcf.append(m)
+    
+
+    plt.plot(effPriorLogOdds, dcf, label=title+' DCF')
+    plt.plot(effPriorLogOdds, mindcf, label=title+ ' min DCF')
+    plt.ylim([0,1.1])
+    plt.xlim([-3,3])
+    plt.legend()
+    
