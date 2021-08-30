@@ -654,7 +654,19 @@ def compute_DCF_with_optimal_treshold(D, L, k, llr_calculator, otherParams, prio
 
     print("DONE")
 
-    return (minDCF, actDCF, nbr) 
+    return (minDCF, actDCF, nbr, optimal_treshold) 
+
+
+def print_treshold_estimated_table(data, LTR, prior, cost_fn, cost_fp, k, llr_calculator, otherParams, title):
+    
+    minDCF, actDCF_th, actDCF_opt, optimal_treshold = compute_DCF_with_optimal_treshold(data, LTR, k, llr_calculator, otherParams, prior, cost_fn, cost_fp )
+
+    print("comparing different dcfs " + title + ":")
+    print("minDCF = ", minDCF)
+    print("actual theoretical DCF = ", actDCF_th)
+    print("actual optimal DCF = ", actDCF_opt)
+    
+    return optimal_treshold
 
 if __name__ == '__main__':
 
@@ -807,16 +819,20 @@ if __name__ == '__main__':
 
     lam = 10**(-7)
     pi_T = 0.1
-    data = [Z_normalization(DTR), gaussianization(DTR)]
-    llr_calculators = [logisticRegression.Quadratic_LR_logLikelihoodRatios,MVGclassifiers.MVG_logLikelihoodRatios ]
-    other_params = [[lam, pi_T], []]  
-    titles = ["Quad Log reg", "MVG Full cov"]
-  
-    minDCF1, actDCF_th1, actDCF_opt1 = compute_DCF_with_optimal_treshold(data[0], LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, [lam, pi_T], 0.5, 1, 1 )
-    minDCF2, actDCF_th2, actDCF_opt2 = compute_DCF_with_optimal_treshold(data[1], LTR, k, MVGclassifiers.MVG_logLikelihoodRatios, [], 0.5, 1, 1 )
 
-    print(minDCF1, actDCF_th1, actDCF_opt1)
-    print(minDCF2, actDCF_th2, actDCF_opt2)
+    print("------>Treshold estimated table:")
+    print("------> applicazione prior = 0.5")
+    prior = 0.5
+    print_treshold_estimated_table(Z_normalization(DTR), LTR, prior, 1, 1, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, [lam, pi_T], "Quad Log Reg")
+    print_treshold_estimated_table(gaussianization(DTR), LTR, prior, 1, 1, k, MVGclassifiers.MVG_logLikelihoodRatios, [], "MVG with full cov")
+    
+    print("------> applicazione prior = 0.1")
+    prior = 0.1
+    print_treshold_estimated_table(Z_normalization(DTR), LTR, prior, 1, 1, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, [lam, pi_T], "Quad Log Reg")
+    print_treshold_estimated_table(gaussianization(DTR), LTR, prior, 1, 1, k, MVGclassifiers.MVG_logLikelihoodRatios, [], "MVG with full cov")
 
-
+    print("------> applicazione prior = 0.9")
+    prior = 0.5
+    print_treshold_estimated_table(Z_normalization(DTR), LTR, prior, 1, 1, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, [lam, pi_T], "Quad Log Reg")
+    print_treshold_estimated_table(gaussianization(DTR), LTR, prior, 1, 1, k, MVGclassifiers.MVG_logLikelihoodRatios, [], "MVG with full cov")
     
