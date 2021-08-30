@@ -445,7 +445,49 @@ def print_graphs_SVM_Cs(DTR, LTR, k ):
     plt.savefig('Graph/SVM/linear/5FoldGauss.png' )
     #plt.show()
 
+def print_table_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
+
+    def linear_SVM_minDCF(data):
+            C = 0.1
+            pi_T = 0.5
+            minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
+            print("[5-Folds]  -  C= 0.1, pi_T=0.5: ",min_DCF)  
+
+            C = 0.1
+            pi_T = 0.1
+            minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
+            print("[5-Folds]  -  C= 0.1, pi_T=0.1: ",min_DCF)
+
+            C = 0.1
+            pi_T = 0.9
+            minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
+            print("[5-Folds]  -  C= 0.1, pi_T=0.9: ",min_DCF)
+
+
+            C = 0.1
+
+            N = LTR.size #tot number of samples
+            n_T = (1*(LTR==1)).sum() #num of samples belonging to the true class
+            n_F = (1*(LTR==0)).sum() #num of samples belonging to the false class
+            pi_emp_T = n_T / N
+
+            pi_T = pi_emp_T
+            minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
+            print("[5-Folds]  -  C= 0.1, pi_T=pi_emp_T: ",min_DCF)
+
+            print()
+
     
+    #------------------------RAW FEATURES -----------------
+    print("*** minDCF - RAW FEATURES ***")
+    linear_SVM_minDCF(Z_normalization(DTR))
+
+    #--------------- GAUSSIANIZED FEATURES-------------------------
+    gaussianizedFeatures = gaussianization(DTR)
+
+    print("*** minDCF - GAUSSIANIZED FEATURES  ***")
+    linear_SVM_minDCF(gaussianizedFeatures)
+
 
 def print_graphs_Polinomial_SVM_Cs(DTR, LTR, k ):
 
@@ -525,7 +567,48 @@ def print_graphs_Polinomial_SVM_Cs(DTR, LTR, k ):
     plt.savefig('Graph/SVM/Quadratic/5FoldGauss.png' )
     #plt.show()
 
+def print_table_Quadratic_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k): #TODO
 
+    def quadratic_SVM_minDCF(data):
+        C = 0.1
+        pi_T = 0.5
+        minDCF,_,_ = model_evaluation.singleFold_DCF(data, LTR, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
+        print("[5-Folds]  -  C= 0.1, pi_T=0.5: ",min_DCF)  
+
+        C = 0.1
+        pi_T = 0.1
+        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
+        print("[5-Folds]  -  C= 0.1, pi_T=0.1: ",min_DCF)
+
+        C = 0.1
+        pi_T = 0.9
+        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
+        print("[5-Folds]  -  C= 0.1, pi_T=0.9: ",min_DCF)
+
+
+        C = 0.1
+
+        N = LTR.size #tot number of samples
+        n_T = (1*(LTR==1)).sum() #num of samples belonging to the true class
+        n_F = (1*(LTR==0)).sum() #num of samples belonging to the false class
+        pi_emp_T = n_T / N
+
+        pi_T = pi_emp_T
+        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
+        print("[5-Folds]  -  C= 0.1, pi_T=pi_emp_T: ",min_DCF)
+
+        print()
+
+    
+    #------------------------RAW FEATURES -----------------
+    print("*** minDCF - RAW FEATURES ***")
+    quadratic_SVM_minDCF(Z_normalization(DTR))
+
+    #--------------- GAUSSIANIZED FEATURES-------------------------
+    gaussianizedFeatures = gaussianization(DTR)
+
+    print("*** minDCF - GAUSSIANIZED FEATURES  ***")
+    quadratic_SVM_minDCF(gaussianizedFeatures)
 
 def print_graphs_RBF_SVM_Cs(DTR, LTR, k):
 
@@ -570,6 +653,54 @@ def print_graphs_RBF_SVM_Cs(DTR, LTR, k):
     oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = -3)
     plt.savefig('Graph/SVM/RBF/5FoldGauss.png' )
     #plt.show()
+
+def print_table_RBF_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k): #TODO
+
+    def RBF_SVM_minDCF(data):
+        C = 0.1
+        pi_T = 0.5
+        loglam= 0
+        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.RBF_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, 10**loglam])
+        print("[5-Folds]  -  C= 0.1, pi_T=0.5: ",min_DCF)  
+
+        C = 0.1
+        pi_T = 0.1
+        loglam=0
+        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
+        print("[5-Folds]  -  C= 0.1, pi_T=0.1: ",min_DCF)
+
+        C = 0.1
+        pi_T = 0.9
+        loglam= 0
+        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
+        print("[5-Folds]  -  C= 0.1, pi_T=0.9: ",min_DCF)
+
+
+        C = 0.1
+
+        N = LTR.size #tot number of samples
+        n_T = (1*(LTR==1)).sum() #num of samples belonging to the true class
+        n_F = (1*(LTR==0)).sum() #num of samples belonging to the false class
+        pi_emp_T = n_T / N
+
+        pi_T = pi_emp_T
+        loglam= 0
+        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
+        print("[5-Folds]  -  C= 0.1, pi_T=pi_emp_T: ",min_DCF)
+
+        print()
+
+    
+    #------------------------RAW FEATURES -----------------
+    print("*** minDCF - RAW FEATURES ***")
+    RBF_SVM_minDCF(Z_normalization(DTR))
+
+    #--------------- GAUSSIANIZED FEATURES-------------------------
+    gaussianizedFeatures = gaussianization(DTR)
+
+    print("*** minDCF - GAUSSIANIZED FEATURES  ***")
+    RBF_SVM_minDCF(gaussianizedFeatures)
+
 
 def print_table_comparison_DCFs(DTR, LTR, k):
 
@@ -787,17 +918,46 @@ if __name__ == '__main__':
     print("********************* SVM GRAPHS ************************************")
     print_graphs_SVM_Cs(DTR, LTR, k=k )
     print("********************************************************************")
+    '''
 
+    print("********************* SVM TABLES ************************************")
+    print("------> applicazione con prior = 0.5")
+    print_table_SVM_minDCF(DTR, LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k )
+    print("------> applicazione con prior = 0.9")
+    print_table_SVM_minDCF(DTR, LTR, prior=0.9, cost_fn=1, cost_fp=1, k=k )
+    print("------> applicazione con prior = 0.1")
+    print_table_SVM_minDCF(DTR, LTR, prior=0.1, cost_fn=1, cost_fp=1, k=k )
+    print("********************************************************************")
+
+    '''
     
     print("********************* quadratic SVM GRAPHS ************************************")
     print_graphs_Polinomial_SVM_Cs(DTR, LTR, k=k )
     print("********************************************************************")
-
+    
+    #TODO 
+    print("********************* quadratic SVM TABLES ************************************")
+    print("------> applicazione con prior = 0.5")
+    print_table_Quadratic_SVM_minDCF(DTR, LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k )
+    print("------> applicazione con prior = 0.9")
+    print_table_Quadratic_SVM_minDCF(DTR, LTR, prior=0.9, cost_fn=1, cost_fp=1, k=k )
+    print("------> applicazione con prior = 0.1")
+    print_table_Quadratic_SVM_minDCF(DTR, LTR, prior=0.1, cost_fn=1, cost_fp=1, k=k )
+    print("********************************************************************")
     
     print("********************* RBF SVM GRAPHS ************************************")
     print_graphs_RBF_SVM_Cs(DTR, LTR, k=k )
     print("********************************************************************")
     
+    #TODO 
+    print("********************* RBF SVM TABLES ************************************")
+    print("------> applicazione con prior = 0.5")
+    print_table_RBF_SVM_minDCF(DTR, LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k )
+    print("------> applicazione con prior = 0.9")
+    print_table_RBF_SVM_minDCF(DTR, LTR, prior=0.9, cost_fn=1, cost_fp=1, k=k )
+    print("------> applicazione con prior = 0.1")
+    print_table_RBF_SVM_minDCF(DTR, LTR, prior=0.1, cost_fn=1, cost_fp=1, k=k )
+    print("********************************************************************")
     
     '''
     ## COMPARISON BETWEEN ACT DCF AND MIN DCF OF THE CHOSEN MODELS
