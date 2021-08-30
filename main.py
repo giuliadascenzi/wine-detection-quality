@@ -652,7 +652,6 @@ def compute_DCF_with_optimal_treshold(D, L, k, llr_calculator, otherParams, prio
     #minDCF 
     minDCF,_,_,_ = model_evaluation.compute_minimum_detection_cost(llr2, labels2, prior , cost_fn, cost_fp)
 
-    print("DONE")
 
     return (minDCF, actDCF, nbr, optimal_treshold) 
 
@@ -661,7 +660,7 @@ def print_treshold_estimated_table(data, LTR, prior, cost_fn, cost_fp, k, llr_ca
     
     minDCF, actDCF_th, actDCF_opt, optimal_treshold = compute_DCF_with_optimal_treshold(data, LTR, k, llr_calculator, otherParams, prior, cost_fn, cost_fp )
 
-    print("comparing different dcfs " + title + ":")
+    print(title + ":")
     print("minDCF = ", minDCF)
     print("actual theoretical DCF = ", actDCF_th)
     print("actual optimal DCF = ", actDCF_opt)
@@ -821,18 +820,22 @@ if __name__ == '__main__':
     pi_T = 0.1
 
     print("------>Treshold estimated table:")
+    print()
     print("------> applicazione prior = 0.5")
     prior = 0.5
     print_treshold_estimated_table(Z_normalization(DTR), LTR, prior, 1, 1, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, [lam, pi_T], "Quad Log Reg")
     print_treshold_estimated_table(gaussianization(DTR), LTR, prior, 1, 1, k, MVGclassifiers.MVG_logLikelihoodRatios, [], "MVG with full cov")
-    
+    print()
+
     print("------> applicazione prior = 0.1")
     prior = 0.1
     print_treshold_estimated_table(Z_normalization(DTR), LTR, prior, 1, 1, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, [lam, pi_T], "Quad Log Reg")
     print_treshold_estimated_table(gaussianization(DTR), LTR, prior, 1, 1, k, MVGclassifiers.MVG_logLikelihoodRatios, [], "MVG with full cov")
+    print()
+
 
     print("------> applicazione prior = 0.9")
     prior = 0.5
     print_treshold_estimated_table(Z_normalization(DTR), LTR, prior, 1, 1, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, [lam, pi_T], "Quad Log Reg")
     print_treshold_estimated_table(gaussianization(DTR), LTR, prior, 1, 1, k, MVGclassifiers.MVG_logLikelihoodRatios, [], "MVG with full cov")
-    
+    print()
