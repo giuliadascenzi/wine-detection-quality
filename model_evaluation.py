@@ -61,19 +61,6 @@ def compute_normalized_bayes_risk(bayes_risk ,prior, cost_fn, cost_fp):
 
 
 
-
-
-def compute_normalised_bayes_risk_wrapper(data, labels, prior, cost_fn, cost_fp):
-
-    #return 1 if a sample is greater than the trashold, 0 otherwise
-    predicted_labels = compute_optimal_bayes_decision(data, prior, cost_fn, cost_fp)
-
-    #Build the corresponding confusion matrix 
-    c_matrix_IP =compute_confusion_matrix(predicted_labels, labels, 2 )
-    bayes_risk= compute_bayes_risk(c_matrix_IP,prior, cost_fn, cost_fp)
-    normalized_bayes_risk=compute_normalized_bayes_risk(bayes_risk ,prior, cost_fn, cost_fp)
-    return (predicted_labels,c_matrix_IP, bayes_risk, normalized_bayes_risk)
-
 def compute_minimum_detection_cost(llrs, labels, prior, cost_fn, cost_fp):
     # 1) ordina in ordine crescente i test scores= data (logLikelihood ratios)
     llrs_sorted= numpy.sort(llrs)
@@ -97,8 +84,21 @@ def compute_minimum_detection_cost(llrs, labels, prior, cost_fn, cost_fp):
     
     return (DCF_min, FPRs, TPRs)
 
+def compute_actual_DCF(llrs, labels, prior , cost_fn, cost_fp):
+    #predicted labels using the theoretical threshold
+    p_label=compute_optimal_bayes_decision(llrs, prior, cost_fn, cost_fp)
+    #build confusion matrix
+    conf_matrix=compute_confusion_matrix(p_label, labels, numpy.unique(labels).size )
+    #bayes risk
+    br= compute_bayes_risk(conf_matrix, prior, cost_fn, cost_fp)
+    # normalized bayes risk -> actual DCF
+    nbr= compute_normalized_bayes_risk(br, prior, cost_fn, cost_fp)
 
-def k_cross_minDCF(D, L, k, llr_calculator, prior, cost_fn, cost_fp, otherParams=None):
+   
+    return (nbr)
+
+# TODO : cambia nome
+def k_cross_DCF(D, L, k, llr_calculator, prior, cost_fn, cost_fp, otherParams=None):
     step = int(D.shape[1]/k)
     numpy.random.seed(seed=0)
 
@@ -134,13 +134,15 @@ def k_cross_minDCF(D, L, k, llr_calculator, prior, cost_fn, cost_fp, otherParams
 
     llr = numpy.concatenate(llr)
     labels = numpy.concatenate(labels)
+    actDCF = compute_actual_DCF(llr, labels, prior , cost_fn, cost_fp)
     min_DCF,_,_ =compute_minimum_detection_cost(llr, labels, prior , cost_fn, cost_fp)
-    return min_DCF #minDCF
+    return (min_DCF, actDCF)
 
 
-def singleFold_minDCF(D, L, llr_calculator, prior, cost_fn, cost_fp, otherParams=None):
+def singleFold_DCF(D, L, llr_calculator, prior, cost_fn, cost_fp, otherParams=None):
     (DTR, LTR), (DTE,LTE)= split_db_2tol(D,L)
     llr = llr_calculator (DTR,LTR,DTE, otherParams)
+    actDCF = compute_actual_DCF(llr, labels, prior , cost_fn, cost_fp)
     min_DCF,_,_ =compute_minimum_detection_cost(llr, LTE, prior , cost_fn, cost_fp)
-    return min_DCF #minDCF
+    return (min_DCF, actDCF) #minDCF
 
