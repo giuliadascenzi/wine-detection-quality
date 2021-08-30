@@ -82,8 +82,10 @@ def compute_minimum_detection_cost(llrs, labels, prior, cost_fn, cost_fp):
         TPRs.append(1-compute_FNR(conf_matrix))
     
     DCF_min =min(DCFs)
+
+    index_t = DCFs.index(DCF_min)
     
-    return (DCF_min, FPRs, TPRs)
+    return (DCF_min, FPRs, TPRs, llrs_sorted[index_t])
 
 def compute_actual_DCF(llrs, labels, prior , cost_fn, cost_fp):
     #predicted labels using the theoretical threshold
@@ -141,15 +143,15 @@ def k_cross_loglikelihoods(D,L, k, llr_calculator, otherParams):
 def k_cross_DCF(D, L, k, llr_calculator, prior, cost_fn, cost_fp, otherParams=None):
     llr, labels = k_cross_loglikelihoods(D,L,k, llr_calculator, otherParams)
     actDCF = compute_actual_DCF(llr, labels, prior , cost_fn, cost_fp)
-    min_DCF,_,_ =compute_minimum_detection_cost(llr, labels, prior , cost_fn, cost_fp)
-    return (min_DCF, actDCF)
+    min_DCF,_,_,optimal_treshold =compute_minimum_detection_cost(llr, labels, prior , cost_fn, cost_fp)
+    return (min_DCF, actDCF, optimal_treshold)
 
 
 def singleFold_DCF(D, L, llr_calculator, prior, cost_fn, cost_fp, otherParams=None):
     (DTR, LTR), (DTE,LTE)= split_db_2tol(D,L)
     llr = llr_calculator (DTR,LTR,DTE, otherParams)
     actDCF = compute_actual_DCF(llr, labels, prior , cost_fn, cost_fp)
-    min_DCF,_,_ =compute_minimum_detection_cost(llr, LTE, prior , cost_fn, cost_fp)
+    min_DCF,_,_,_ =compute_minimum_detection_cost(llr, LTE, prior , cost_fn, cost_fp)
     return (min_DCF, actDCF) #minDCF
 
 def bayes_error_plot(D, L, k, llr_calculator, otherParams, title, color ):
@@ -165,7 +167,7 @@ def bayes_error_plot(D, L, k, llr_calculator, otherParams, title, color ):
         #calculate actual dcf considering effPrior
         d = compute_actual_DCF(llr, labels, effPrior , 1, 1)
         #calculate min dcf considering effPrior
-        m,_,_ =compute_minimum_detection_cost(llr, labels, effPrior , 1, 1)
+        m,_,_,_ =compute_minimum_detection_cost(llr, labels, effPrior , 1, 1)
         dcf.append(d)
         mindcf.append(m)
     
