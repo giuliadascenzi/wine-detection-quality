@@ -140,16 +140,18 @@ notes:
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | <img src="Graph\LR\linear\singleFoldGauss.png" style="zoom:60%;" /> | <img src="Graph\LR\linear\5FoldGauss.png" style="zoom:60%;" /> |
 
-|                                   | prior=0.5   | prior=0.1   | prior=0.9   |
-| --------------------------------- | ----------- | ----------- | ----------- |
-| **Raw Features**                  | ----------- | ----------- | ----------- |
-| Log reg, lambda=10**-7, pi_T =0.5 | *0.377*     | 0.864       | 0.795       |
-| Log reg, lambda=10**-7, pi_T =0.9 | 0.390       | 0.903       | 0.742       |
-| Log reg, lambda=10**-7, pi_T =0.1 | *0.362*     | 0.852       | 0.828       |
-| **Gaussianized features**         | ----------- | ----------- | ----------- |
-| Log reg, lambda=10**-7, pi_T =0.5 | 0.371       | 0.854       | 0.818       |
-| Log reg, lambda=10**-7, pi_T =0.9 | 0.375       | 0.914       | 0.827       |
-| Log reg, lambda=10**-7, pi_T =0.1 | 0.372       | 0.791       | 0.986       |
+|                                        | prior=0.5   | prior=0.1   | prior=0.9   |
+| -------------------------------------- | ----------- | ----------- | ----------- |
+| **Raw Features**                       | ----------- | ----------- | ----------- |
+| Log reg, lambda=10**-7, pi_T =0.5      | *0.377*     | 0.864       | 0.795       |
+| Log reg, lambda=10**-7, pi_T =0.9      | 0.390       | 0.903       | 0.742       |
+| Log reg, lambda=10**-7, pi_T =0.1      | *0.362*     | 0.852       | 0.828       |
+| Log reg, lambda=10**-7, pi_T =pi_emp_T | 0.368       | 0.862       | 0.792       |
+| **Gaussianized features**              | ----------- | ----------- | ----------- |
+| Log reg, lambda=10**-7, pi_T =0.5      | 0.371       | 0.854       | 0.818       |
+| Log reg, lambda=10**-7, pi_T =0.9      | 0.375       | 0.914       | 0.827       |
+| Log reg, lambda=10**-7, pi_T =0.1      | 0.372       | 0.791       | 0.986       |
+| Log reg, lambda=10**-7, pi_T =pi_emp_T | 0.378       | 0.840       | 0.882       |
 
 #### ** Quadratic Logistic Regression
 
@@ -157,16 +159,18 @@ notes:
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | <img src="Graph\LR\quadratic\singleFoldGauss.png" style="zoom:60%;" /> | <img src="Graph\LR\quadratic\5FoldGauss.png" style="zoom:60%;" /> |
 
-|                                        | prior=0.5   | prior=0.1   | prior=0.9   |
-| -------------------------------------- | ----------- | ----------- | ----------- |
-| **Raw Features**                       | ----------- | ----------- | ----------- |
-| Quad Log reg, lambda=10**-7, pi_T =0.5 | 0.274       | 0.743       | 0.752       |
-| Quad Log reg, lambda=10**-7, pi_T =0.9 | 0.301       | 0.781       | 0.753       |
-| QuadLog reg, lambda=10**-7, pi_T =0.1  | 0.269       | 0.752       | 0.729       |
-| **Gaussianized features**              | ----------- | ----------- | ----------- |
-| Quad Log reg, lambda=10**-7, pi_T =0.5 | 0.300       | 0.749       | 0.692       |
-| Quad Log reg, lambda=10**-7, pi_T =0.9 | 0.302       | 0.811       | 0.632       |
-| Quad Log reg, lambda=10**-7, pi_T =0.1 | 0.313       | 0.714       | 0.731       |
+|                                            | prior=0.5   | prior=0.1   | prior=0.9   |
+| ------------------------------------------ | ----------- | ----------- | ----------- |
+| **Raw Features**                           | ----------- | ----------- | ----------- |
+| Quad Log reg, lambda=10**-7, pi_T =0.5     | 0.274       | 0.743       | 0.752       |
+| Quad Log reg, lambda=10**-7, pi_T =0.9     | 0.301       | 0.781       | 0.753       |
+| QuadLog reg, lambda=10**-7, pi_T =0.1      | 0.269       | 0.752       | 0.729       |
+| QuadLog reg, lambda=10**-7, pi_T =pi_emp_T | 0.269       | 0.746       | 0.743       |
+| **Gaussianized features**                  | ----------- | ----------- | ----------- |
+| Quad Log reg, lambda=10**-7, pi_T =0.5     | 0.300       | 0.749       | 0.692       |
+| Quad Log reg, lambda=10**-7, pi_T =0.9     | 0.302       | 0.811       | 0.632       |
+| Quad Log reg, lambda=10**-7, pi_T =0.1     | 0.313       | 0.714       | 0.731       |
+| QuadLog reg, lambda=10**-7, pi_T =pi_emp_T | 0.296       | 0.739       | 0.724       |
 
 ## *SVM
 
@@ -178,22 +182,55 @@ notes:
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | <img src="Graph\SVM\linear\singleFoldGauss.png" style="zoom:60%;" /> | <img src="Graph\SVM\linear\5FoldGauss.png" style="zoom:60%;" /> |
 
-|                            | prior=0.5   | prior=0.1   | prior=0.9   |
-| -------------------------- | ----------- | ----------- | ----------- |
-| **Raw Features**           | ----------- | ----------- | ----------- |
-| Quad SVM, C=0.1, pi_T =0.5 | 0.367       | 0.874       | 0.802       |
-| Quad SVM, C=0.1, pi_T =0.1 | 0.734       | 1.0         | 1.014       |
-| Quad SVM, C=0.1, pi_T =0.9 | 0.412       | 0.951       | 0.793       |
-| Quad SVM, C=0.1            | 0.367       | 0.834       | 0.849       |
-| **Gaussianized features**  | ----------- | ----------- | ----------- |
-| Quad SVM, C=0.1, pi_T =0.5 | 0.368       | 0.853       | 0.911       |
-| Quad SVM, C=0.1, pi_T =0.1 | 0.694       | 0.949       | 0.997       |
-| Quad SVM, C=0.1, pi_T =0.9 | 0.598       | 0.976       | 0.934       |
-| Quad SVM, C=0.1            | 0.367       | 0.806       | 0.984       |
+|                           | prior=0.5   | prior=0.1   | prior=0.9   |
+| ------------------------- | ----------- | ----------- | ----------- |
+| **Raw Features**          | ----------- | ----------- | ----------- |
+| SVM, C=0.1, pi_T =0.5     | 0.367       | 0.874       | 0.802       |
+| SVM, C=0.1, pi_T =0.1     | 0.734       | 1.0         | 1.014       |
+| SVM, C=0.1, pi_T =0.9     | 0.412       | 0.951       | 0.793       |
+| SVM, C=0.1                | 0.367       | 0.834       | 0.849       |
+| **Gaussianized features** | ----------- | ----------- | ----------- |
+| SVM, C=0.1, pi_T =0.5     | 0.368       | 0.853       | 0.911       |
+| SVM, C=0.1, pi_T =0.1     | 0.694       | 0.949       | 0.997       |
+| SVM, C=0.1, pi_T =0.9     | 0.598       | 0.976       | 0.934       |
+| SVM, C=0.1                | 0.367       | 0.806       | 0.984       |
 
 (Done with k fold)
 
 #### ** Quadratic SVM
+
+About the parameters k and c:
+
+| <img src="Graph\SVM\Quadratic\kc\singleFoldRAW_kc.png" style="zoom:60%;" /> | <img src="Graph\SVM\Quadratic\kc\5FoldRAW_kc.png" style="zoom:60%;" /> |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| <img src="Graph\SVM\Quadratic\kc\singleFoldGAU_kc.png" style="zoom:60%;" /> | <img src="Graph\SVM\Quadratic\kc\singleFoldGAU_kc.png" style="zoom:60%;" /> |
+
+Best: 
+
+RAW 
+
+K=0, c=1, C=10
+
+K=1, c=1, C=10 (prova anche 100)
+
+GAUSSIANIZED
+
+K=1, c=1, C=0.1
+
+
+
+|                                         | prior=0.5   | prior=0.1   | prior=0.9   |
+| --------------------------------------- | ----------- | ----------- | ----------- |
+| **Raw Features**                        | ----------- | ----------- | ----------- |
+| Quad SVM, C=10, pi_T =0.5, c=1,K=0      | 0.241       | 0.762       | 0.760       |
+| Quad SVM, C=10, pi_T =pi_emp_t,c=1,K=0  | 0.362       | 0.843       | 0.841       |
+| Quad SVM, C=100, pi_T=0.5, c=1, K=0     | 0.248       | 0.764       | 0.734       |
+| Quad SVM, C=0.1, pi_T=0.5, c=1, K=1     | 0.263       | 0.771       | 0.702       |
+| **Gaussianized features**               | ----------- | ----------- | ----------- |
+| Quad SVM, C=10, pi_T =0.5, c=1,K=0      | 0.261       | 0.714       | 0.723       |
+| Quad SVM, C=10, pi_T =pi_emp_t, c=1,K=0 | 0.370       | 0.972       | 0.803       |
+| Quad SVM, C=100, pi_T=0.5, c=1, K=0     | 0.270       | 0.721       | 0.740       |
+| Quad SVM, C=0.1, pi_T=0.5, c=1, K=1     | 0.251       | 0.709       | 0.709       |
 
 | <img src="Graph\SVM\quadratic\singleFoldRAW.png" style="zoom:60%;" /> | <img src="Graph\SVM\quadratic\5FoldRAW.png" style="zoom:60%;" /> |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -238,3 +275,4 @@ After the threshold estimated protocol
 
 ## - Conclusions
 
+ 
