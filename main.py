@@ -487,7 +487,7 @@ def print_table_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
 def print_graphs_Polinomial_SVM_Cs_k_c(DTR, LTR, k ):
 
     def oneGraphSingleFold(data, prior, cost_fn, cost_fp, pi_T, K, c):
-        print("working on single fold k = ", k, "c = ", c)
+        print("working on single fold k = ", K, "c = ", c)
         exps = numpy.linspace(-2,2, 5)
         Cs = 10** exps
         minDCFs = 0 * exps
@@ -501,7 +501,7 @@ def print_graphs_Polinomial_SVM_Cs_k_c(DTR, LTR, k ):
         print("DONE")
 
     def oneGraphKFold(data, prior, cost_fn, cost_fp, pi_T, K, c):
-        print("working on k fold k = ", k, "c = ", c)
+        print("working on k fold k = ", K, "c = ", c)
         exps = numpy.linspace(-2,2, 5)
         Cs = 10** exps
         minDCFs = 0 * exps
@@ -730,38 +730,86 @@ def print_graphs_GMM_minDCF(DTR, LTR, k):
         plt.legend()
 
         plt.savefig('Graph/GMM/'+title+'.png' )
+
+
+      
+       
+def print_graphs_GMM_minDCF(DTR, LTR, k):
+
+    def bar_plot_gmm(raw_minDCFs, gau_minDCFs, gmm_comp, title):
+
+        widthbar = 0.2
+
+        x_ind = numpy.arange(len(gmm_comp))
+
+        raw_ind = x_ind - widthbar/2
+        gau_ind = x_ind + widthbar/2
+
+        lb1 = "minDCF (prior=0.5) - Raw"
+        lb2 = "minDCF (prior=0.5) - Gaussianized"
+        
+        plt.bar(raw_ind, raw_minDCFs, width = widthbar, color = 'orange', label = lb1)
+        plt.bar(gau_ind, gau_minDCFs, width = widthbar, color = 'red', label = lb2)
+
+        plt.xticks(x_ind ,gmm_comp)
+        plt.ylabel('minDCFs')
+        plt.xlabel('GMM components')
+        plt.legend()
+
+        plt.savefig('Graph/GMM/'+title+'.png' )
+
+
+    def GMM_compute_DCFs(DTR, LTR, k, covariance_type, prior, cost_fn, cost_fp):
+        gmm_comp = [1,2,4,8,16]
+        raw_minDCFs = []
+        gau_minDCFs = []
+
+        normalized_features = Z_normalization(DTR)
+        gaussianizedFeatures = gaussianization(DTR)
+
+        constrained=True
+        psi=0.01
+        alpha=0.1
     
-    gmm_comp = [1,2,4,8,16]
-    raw_minDCFs = []
-    gau_minDCFs = []
+        print("************************" + covariance_type + "*************************")
+        for i in range(len(gmm_comp)):
+            params = [constrained, psi, covariance_type, alpha, gmm_comp[i]]
+            print("-------> working on raw data, comp= ", gmm_comp[i])
+            # Raw features
+            raw_minDCFs_i,_,_ = model_evaluation.k_cross_DCF(normalized_features, LTR, k, gaussian_mixture_models.GMM_computeLogLikelihoodRatios, prior , cost_fn, cost_fp, params)
+            print("-------> DONE raw data")
+            # Gaussianized features
+            print("-------> working on gauss data, comp= ", gmm_comp[i])
+            gau_minDCFs_i,_,_ = model_evaluation.k_cross_DCF(gaussianizedFeatures, LTR,k, gaussian_mixture_models.GMM_computeLogLikelihoodRatios, prior , cost_fn, cost_fp, params)
+            print("-------> DONE gauss data")
+            raw_minDCFs.append(raw_minDCFs_i)
+            gau_minDCFs.append(gau_minDCFs_i)    
+        
+        raw_minDCFs=numpy.array(raw_minDCFs)
+        gau_minDCFs=numpy.array(gau_minDCFs)
+        return raw_minDCFs, gau_minDCFs, gmm_comp
 
-    prior= 0.5
-    cost_fn=1
-    cost_fp = 1
-
-    normalized_features = Z_normalization(DTR)
-    gaussianizedFeatures = gaussianization(DTR)
-
-    constrained=True
-    psi=0.01
-    alpha=0.1
     
     #### Full Cov
     covariance_type = "Full"
-    
-    
-    for i in range(len(gmm_comp)):
-        # Raw features
-        raw_minDCFs_i,_,_ = model_evaluation.k_cross_DCF(normalized_features, LTR,k, gaussian_mixture_models.GMM_computeLogLikelihoodRatios, prior , cost_fn, cost_fp, [constrained, psi, covariance_type, alpha, gmm_comp[i]])
-        # Gaussianized features
-        gau_minDCFs_i,_,_ = model_evaluation.k_cross_DCF(gaussianizedFeatures, LTR,k, gaussian_mixture_models.GMM_computeLogLikelihoodRatios, prior , cost_fn, cost_fp, [constrained, psi, covariance_type, alpha, gmm_comp[i]])
-        raw_minDCFs.append(raw_minDCFs_i)
-        gau_minDCFs.append(gau_minDCFs_i)    
-    
-    raw_minDCFs=numpy.array(raw_minDCFs)
-    gau_minDCFs=numpy.array(gau_minDCFs)
-
+    raw_minDCFs, gau_minDCFs, gmm_comp = GMM_compute_DCFs(DTR, LTR, k, covariance_type, 0.5, 1, 1)
     bar_plot_gmm(raw_minDCFs, gau_minDCFs, gmm_comp, "GMM_Full_covariance")
+
+    #### Diagonal Cov
+    covariance_type = "Diagonal"
+    raw_minDCFs, gau_minDCFs, gmm_comp = GMM_compute_DCFs(DTR, LTR, k, covariance_type, 0.5, 1, 1)
+    bar_plot_gmm(raw_minDCFs, gau_minDCFs, gmm_comp, "GMM_Diagonal_covariance")
+
+    #### Diagonal Cov
+    covariance_type = "Tied"
+    raw_minDCFs, gau_minDCFs, gmm_comp = GMM_compute_DCFs(DTR, LTR, k, covariance_type, 0.5, 1, 1)
+    bar_plot_gmm(raw_minDCFs, gau_minDCFs, gmm_comp, "GMM_Tied_covariance")
+    
+    #### Diagonal Cov
+    covariance_type = "Tied Diagonal"
+    raw_minDCFs, gau_minDCFs, gmm_comp = GMM_compute_DCFs(DTR, LTR, k, covariance_type, 0.5, 1, 1)
+    bar_plot_gmm(raw_minDCFs, gau_minDCFs, gmm_comp, "GMM_Tied_Diagonal_covariance")
+
     
     
 
@@ -902,17 +950,12 @@ if __name__ == '__main__':
     '''
 
     ##enstablish if data are balanced
-    '''
+    
     n_high_qty = numpy.count_nonzero(LTR == 1)
     n_low_qty = numpy.count_nonzero(LTR == 0)
     ##-----> number of low qty >> number of high qty
-    plt.figure()
-    plt.xlabel("nsamples")
-    plt.hist(numpy.zeros(n_low_qty),  label = 'low quality')
-    plt.hist(numpy.ones(n_high_qty), label = 'high quality')
-    plt.legend()
-    plt.savefig('Stat/hist_number_of_data.png')
-    '''
+    stats.bars_numsamples(n_high_qty, n_low_qty)
+    
     
     '''
     NON SERVE
@@ -1039,8 +1082,9 @@ if __name__ == '__main__':
     print("********************************************************************")
     '''
     ### GMM
-
+    '''
     print_graphs_GMM_minDCF(DTR, LTR, k)
+    '''
 
     ## COMPARISON BETWEEN ACT DCF AND MIN DCF OF THE CHOSEN MODELS
     '''
