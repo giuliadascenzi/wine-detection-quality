@@ -618,7 +618,8 @@ def print_table_Quadratic_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k): #TOD
 
         #--------------- GAUSSIANIZED FEATURES-------------------------
         print("*** minDCF - GAUSSIANIZED FEATURES  ***")
-        quadratic_SVM_minDCF(gaussianizedFeatures)
+        quadratic_SVM_minDCF(gaussianizedFeatures C=C, c=c, K=K)
+
 
         print("************************************************")
     
