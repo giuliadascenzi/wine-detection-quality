@@ -652,7 +652,7 @@ def print_graphs_RBF_SVM_Cs(DTR, LTR, k):
 
     def oneGraphKFold(data, prior, cost_fn, cost_fp, pi_T, loglam):
         print("working on k fold loglam = ", loglam)
-        exps = numpy.linspace(-1,3, 5)
+        exps = numpy.linspace(-1,2, 10)
         Cs = 10** exps
         minDCFs = 0 * exps
         for i in range (Cs.size):
@@ -674,9 +674,9 @@ def print_graphs_RBF_SVM_Cs(DTR, LTR, k):
     plt.xlabel("C")
     plt.ylabel("minDCFs")
     oneGraphKFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = 0)
-    oneGraphKFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = -1)
     oneGraphKFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = 1)
     oneGraphKFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = 2)
+    oneGraphKFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = 3)
     plt.savefig('Graph/SVM/RBF/5FoldRAW.png' )
 
     print("2 grafico")
@@ -686,9 +686,9 @@ def print_graphs_RBF_SVM_Cs(DTR, LTR, k):
     plt.xlabel("C")
     plt.ylabel("minDCFs")
     oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = 0)
-    oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = -1)
     oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = 1)
     oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = 2)
+    oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = 3)
     plt.savefig('Graph/SVM/RBF/5FoldGauss.png' )
     #plt.show()
 
@@ -1048,7 +1048,7 @@ if __name__ == '__main__':
     print_graphs_quadratic_LR_lambdas(DTR, LTR,  k)
     print("********************************************************************")
     '''
-    
+    '''
     print("********************* QUADRATIC LR TABLE ************************************")
     print("------> applicazione prior = 0.5")
     print_table_Quadratic_LR_minDCF(DTR,LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k)
@@ -1060,7 +1060,7 @@ if __name__ == '__main__':
     print_table_Quadratic_LR_minDCF(DTR, LTR, prior=0.9, cost_fn=1, cost_fp=1, k=k)
     print()
     print("********************************************************************")
-    
+    '''
     ### -- SVM
     
     '''
@@ -1101,11 +1101,11 @@ if __name__ == '__main__':
     print_table_Quadratic_SVM_minDCF(DTR, LTR, prior=0.1, cost_fn=1, cost_fp=1, k=k )
     print("********************************************************************")
     '''
-    '''
+    
     print("********************* RBF SVM GRAPHS ************************************")
     print_graphs_RBF_SVM_Cs(DTR, LTR, k=k )
     print("********************************************************************")
-    '''
+    
 
     '''
     #TODO 
