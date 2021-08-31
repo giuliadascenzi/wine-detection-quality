@@ -134,6 +134,7 @@ def print_table_MVG_classifiers_minDCF(DTR, prior, cost_fn, cost_fp, k):
 def print_table_LR_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
 
     def LR_minDCF(data):
+            
             lam = 10**(-7)
             pi_T = 0.5
             min_DCF_LR,_,_ = model_evaluation.k_cross_DCF(data, LTR, k, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
@@ -146,6 +147,16 @@ def print_table_LR_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
             pi_T = 0.9
             min_DCF_LR,_,_ = model_evaluation.k_cross_DCF(data, LTR, k, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
             print("[5-Folds]  -  lam = 10^-7, pi_T = 0.9: ",min_DCF_LR)
+            
+
+            N = LTR.size #tot number of samples
+            n_T = (1*(LTR==1)).sum() #num of samples belonging to the true class
+            pi_emp_T = n_T / N
+
+            pi_T = pi_emp_T
+            
+            min_DCF_LR,_,_ = model_evaluation.k_cross_DCF(data, LTR, k, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
+            print("[5-Folds]  -  lam = 10^-7, pi_T = pi_emp_T: ",min_DCF_LR)
 
             print()
 
@@ -341,6 +352,7 @@ def print_table_Quadratic_LR_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
 
     def Quad_LR_minDCF(data):
             lam = 10**(-7)
+            '''
             pi_T = 0.5
             min_DCF_LR,_,_ = model_evaluation.k_cross_DCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
             print("[5-Folds]  -  lam = 10^-7, pi_T = 0.5: ",min_DCF_LR)  
@@ -352,7 +364,16 @@ def print_table_Quadratic_LR_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
             pi_T = 0.9
             min_DCF_LR,_,_ = model_evaluation.k_cross_DCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
             print("[5-Folds]  -  lam = 10^-7, pi_T = 0.9: ",min_DCF_LR)
+            '''
 
+            N = LTR.size #tot number of samples
+            n_T = (1*(LTR==1)).sum() #num of samples belonging to the true class
+            pi_emp_T = n_T / N
+
+            pi_T = pi_emp_T
+            min_DCF_LR,_,_ = model_evaluation.k_cross_DCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
+            print("[5-Folds]  -  lam = 10^-7, pi_T = pi_emp_T: ",min_DCF_LR)
+            
             print()
 
     
@@ -1006,7 +1027,8 @@ if __name__ == '__main__':
     print_graphs_LR_lambdas(DTR,LTR, k=k)
     print("********************************************************************")
     
-
+    '''
+    '''
     
     print("********************* LR TABLE ************************************")
     print("------> applicazione prior = 0.5")
@@ -1019,13 +1041,14 @@ if __name__ == '__main__':
     print_table_LR_minDCF(DTR, LTR, prior=0.9, cost_fn=1, cost_fp=1, k=k)
     print()
     print("********************************************************************")
-    
+    '''
+    '''
     
     print("********************* quadratic LR GRAPHS ************************************")
     print_graphs_quadratic_LR_lambdas(DTR, LTR,  k)
     print("********************************************************************")
     '''
-    '''
+    
     print("********************* QUADRATIC LR TABLE ************************************")
     print("------> applicazione prior = 0.5")
     print_table_Quadratic_LR_minDCF(DTR,LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k)
@@ -1037,7 +1060,7 @@ if __name__ == '__main__':
     print_table_Quadratic_LR_minDCF(DTR, LTR, prior=0.9, cost_fn=1, cost_fp=1, k=k)
     print()
     print("********************************************************************")
-    '''
+    
     ### -- SVM
     
     '''
@@ -1078,11 +1101,12 @@ if __name__ == '__main__':
     print_table_Quadratic_SVM_minDCF(DTR, LTR, prior=0.1, cost_fn=1, cost_fp=1, k=k )
     print("********************************************************************")
     '''
-    
+    '''
     print("********************* RBF SVM GRAPHS ************************************")
     print_graphs_RBF_SVM_Cs(DTR, LTR, k=k )
     print("********************************************************************")
-    
+    '''
+
     '''
     #TODO 
     print("********************* RBF SVM TABLES ************************************")
