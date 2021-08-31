@@ -732,8 +732,8 @@ def print_graphs_GMM_minDCF(DTR, LTR, k):
         plt.savefig('Graph/GMM/'+title+'.png' )
     
     gmm_comp = [1,2,4,8,16]
-    raw_minDCFs = gmm_comp *0
-    gau_minDCFs = gmm_comp *0
+    raw_minDCFs = []
+    gau_minDCFs = []
 
     prior= 0.5
     cost_fn=1
@@ -749,13 +749,17 @@ def print_graphs_GMM_minDCF(DTR, LTR, k):
     #### Full Cov
     covariance_type = "Full"
     
-    i=0
-    for number_components in gmm_comp:
+    
+    for i in range(len(gmm_comp)):
         # Raw features
-        raw_minDCFs[i],_,_ = model_evaluation.k_cross_DCF(normalized_features, LTR,k, gaussian_mixture_models.GMM_computeLogLikelihoodRatios, prior , cost_fn, cost_fp, [constrained, psi, covariance_type, alpha, number_components])
+        raw_minDCFs_i,_,_ = model_evaluation.k_cross_DCF(normalized_features, LTR,k, gaussian_mixture_models.GMM_computeLogLikelihoodRatios, prior , cost_fn, cost_fp, [constrained, psi, covariance_type, alpha, gmm_comp[i]])
         # Gaussianized features
-        gau_minDCFs[i],_,_ = model_evaluation.k_cross_DCF(gaussianizedFeatures, LTR,k, gaussian_mixture_models.GMM_computeLogLikelihoodRatios, prior , cost_fn, cost_fp, [constrained, psi, covariance_type, alpha, number_components])
-        i=i+1
+        gau_minDCFs_i,_,_ = model_evaluation.k_cross_DCF(gaussianizedFeatures, LTR,k, gaussian_mixture_models.GMM_computeLogLikelihoodRatios, prior , cost_fn, cost_fp, [constrained, psi, covariance_type, alpha, gmm_comp[i]])
+        raw_minDCFs.append(raw_minDCFs_i)
+        gau_minDCFs.append(gau_minDCFs_i)    
+    
+    raw_minDCFs=numpy.array(raw_minDCFs)
+    gau_minDCFs=numpy.array(gau_minDCFs)
 
     bar_plot_gmm(raw_minDCFs, gau_minDCFs, gmm_comp, "GMM_Full_covariance")
     
