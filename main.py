@@ -9,6 +9,7 @@ import probability as prob
 import logisticRegression
 import matplotlib.pyplot as plt
 import SVMClassifier
+import gaussian_mixture_models 
 
 from numpy.random import permutation
 
@@ -483,108 +484,30 @@ def print_table_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
     print("*** minDCF - GAUSSIANIZED FEATURES  ***")
     linear_SVM_minDCF(gaussianizedFeatures)
 
-def print_graphs_Polinomial_SVM_Cs(DTR, LTR, k ):
-
-    def oneGraphSingleFold(data, prior, cost_fn, cost_fp, pi_T):
-        print("working on single fold prior = ", prior)
-        exps = numpy.linspace(-3,1, 5)
-        Cs = 10** exps
-        minDCFs = 0 * exps
-        for i in range (Cs.size):
-            C= Cs[i]
-            minDCFs[i],_ = model_evaluation.singleFold_DCF(data, LTR, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
-        
-        lb = "minDCF (prior="+ str(prior) +")"
-        plt.plot(Cs, minDCFs, label=lb)
-        plt.legend()
-        print("DONE")
-
-    def oneGraphKFold(data, prior, cost_fn, cost_fp, pi_T):
-        print("working on k fold prior = ", prior)
-        exps = numpy.linspace(-3,1, 5)
-        Cs = 10** exps
-        minDCFs = 0 * exps
-        for i in range (Cs.size):
-            C= Cs[i]
-            minDCFs[i],_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
-        
-        lb = "minDCF (prior="+ str(prior) +")"
-        plt.plot(Cs, minDCFs, label=lb)
-        plt.legend()
-        print("DONE")
-
-    normalizedFeatures = Z_normalization(DTR)
-    gaussianizedFeatures = gaussianization(DTR)
-
-    plt.figure()
-    print("1 grafico")
-    plt.title("Raw features, single fold")
-    plt.xscale('log')
-    plt.xlabel("C")
-    plt.ylabel("minDCFs")
-    oneGraphSingleFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
-    oneGraphSingleFold(normalizedFeatures, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
-    oneGraphSingleFold(normalizedFeatures, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
-    plt.savefig('Graph/SVM/Quadratic/singleFoldRAW.png' )
-    
-    print("2 grafico")
-    plt.figure()
-    plt.title("Gaussianized features, single fold")
-    plt.xscale('log')
-    plt.xlabel("C")
-    plt.ylabel("minDCFs")
-    oneGraphSingleFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
-    oneGraphSingleFold(gaussianizedFeatures, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
-    oneGraphSingleFold(gaussianizedFeatures, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
-    plt.savefig('Graph/SVM/Quadratic/singleFoldGauss.png' )
-   
-    print("3 grafico")
-    plt.figure()
-    plt.title("Raw features, 5 fold")
-    plt.xscale('log')
-    plt.xlabel("C")
-    plt.ylabel("minDCFs")
-    oneGraphKFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
-    oneGraphKFold(normalizedFeatures, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
-    oneGraphKFold(normalizedFeatures, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
-    plt.savefig('Graph/SVM/Quadratic/5FoldRAW.png' )
-
-    print("4 grafico")
-    plt.figure()
-    plt.title("Gaussianized features, 5 fold")
-    plt.xscale('log')
-    plt.xlabel("C")
-    plt.ylabel("minDCFs")
-    oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
-    oneGraphKFold(gaussianizedFeatures, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
-    oneGraphKFold(gaussianizedFeatures, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
-    plt.savefig('Graph/SVM/Quadratic/5FoldGauss.png' )
-    #plt.show()
-
 def print_graphs_Polinomial_SVM_Cs_k_c(DTR, LTR, k ):
 
-    def oneGraphSingleFold(data, prior, cost_fn, cost_fp, pi_T, k, c):
-        print("working on single fold prior = ", prior)
-        exps = numpy.linspace(-3,1, 5)
+    def oneGraphSingleFold(data, prior, cost_fn, cost_fp, pi_T, K, c):
+        print("working on single fold k = ", k, "c = ", c)
+        exps = numpy.linspace(-2,2, 5)
         Cs = 10** exps
         minDCFs = 0 * exps
         for i in range (Cs.size):
             C= Cs[i]
-            minDCFs[i],_,_ = model_evaluation.singleFold_DCF(data, LTR, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, c, k])
+            minDCFs[i],_,_ = model_evaluation.singleFold_DCF(data, LTR, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, c, K])
         
         lb = "minDCF (k="+ str(k) +" c= "+ str(c)+ ")"
         plt.plot(Cs, minDCFs, label=lb)
         plt.legend()
         print("DONE")
 
-    def oneGraphKFold(data, prior, cost_fn, cost_fp, pi_T, k, c):
-        print("working on k fold prior = ", prior)
-        exps = numpy.linspace(-3,1, 5)
+    def oneGraphKFold(data, prior, cost_fn, cost_fp, pi_T, K, c):
+        print("working on k fold k = ", k, "c = ", c)
+        exps = numpy.linspace(-2,2, 5)
         Cs = 10** exps
         minDCFs = 0 * exps
         for i in range (Cs.size):
             C= Cs[i]
-            minDCFs[i],_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
+            minDCFs[i],_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, c, K])
         
         lb = "minDCF (prior="+ str(prior) +")"
         plt.plot(Cs, minDCFs, label=lb)
@@ -600,12 +523,52 @@ def print_graphs_Polinomial_SVM_Cs_k_c(DTR, LTR, k ):
     plt.xscale('log')
     plt.xlabel("C")
     plt.ylabel("minDCFs")
-    oneGraphSingleFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, k=0.0, c=0.0)
-    oneGraphSingleFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, k=0.0, c=1.0)
-    oneGraphSingleFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, k=1.0, c=0.0)
-    oneGraphSingleFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, k=1.0, c=1.0)
+    oneGraphSingleFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, K=0.0, c=0.0)
+    oneGraphSingleFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, K=0.0, c=1.0)
+    oneGraphSingleFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, K=1.0, c=0.0)
+    oneGraphSingleFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, K=1.0, c=1.0)
 
-    plt.savefig('Graph/SVM/Quadratic/singleFoldRAW_kc.png' )
+    plt.savefig('Graph/SVM/Quadratic/kc/singleFoldRAW_kc.png' )
+    
+    plt.figure()
+    print("2 grafico")
+    plt.title("Gaussianized features, single fold")
+    plt.xscale('log')
+    plt.xlabel("C")
+    plt.ylabel("minDCFs")
+    oneGraphSingleFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, K=0.0, c=0.0)
+    oneGraphSingleFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, K=0.0, c=1.0)
+    oneGraphSingleFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, K=1.0, c=0.0)
+    oneGraphSingleFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, K=1.0, c=1.0)
+
+    plt.savefig('Graph/SVM/Quadratic/kc/singleFoldGAU_kc.png' )
+    
+    plt.figure()
+    print("3 grafico")
+    plt.title("Raw features, 5 fold")
+    plt.xscale('log')
+    plt.xlabel("C")
+    plt.ylabel("minDCFs")
+    oneGraphKFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, K=0.0, c=0.0)
+    oneGraphKFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, K=0.0, c=1.0)
+    oneGraphKFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, K=1.0, c=0.0)
+    oneGraphKFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, K=1.0, c=1.0)
+
+    plt.savefig('Graph/SVM/Quadratic/kc/5FoldRAW_kc.png' )
+    
+    plt.figure()
+    print("4 grafico")
+    plt.title("Gaussianized features, 5 fold")
+    plt.xscale('log')
+    plt.xlabel("C")
+    plt.ylabel("minDCFs")
+    oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, K=0.0, c=0.0)
+    oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, K=0.0, c=1.0)
+    oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, K=1.0, c=0.0)
+    oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, K=1.0, c=1.0)
+
+    plt.savefig('Graph/SVM/Quadratic/kc/5FoldGAU_kc.png' )
+    
     
  
     
@@ -744,6 +707,65 @@ def print_table_RBF_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k): #TODO
     print("*** minDCF - GAUSSIANIZED FEATURES  ***")
     RBF_SVM_minDCF(gaussianizedFeatures)
 
+def print_graphs_GMM_minDCF(DTR, LTR, k):
+
+    def bar_plot_gmm(raw_minDCFs, gau_minDCFs, gmm_comp, title):
+
+        widthbar = 0.2
+
+        x_ind = numpy.arange(len(gmm_comp))
+
+        raw_ind = x_ind - widthbar/2
+        gau_ind = x_ind + widthbar/2
+
+        lb1 = "minDCF (prior=0.5) - Raw"
+        lb2 = "minDCF (prior=0.5) - Gaussianized"
+        
+        plt.bar(raw_ind, raw_minDCFs, width = widthbar, color = 'orange', label = lb1)
+        plt.bar(gau_ind, gau_minDCFs, width = widthbar, color = 'red', label = lb2)
+
+        plt.xticks(x_ind ,gmm_comp)
+        plt.ylabel('minDCFs')
+        plt.xlabel('GMM components')
+        plt.legend()
+
+        plt.savefig('Graph/GMM/'+title+'.png' )
+    
+    gmm_comp = [1,2,4,8,16]
+    raw_minDCFs = gmm_comp *0
+    gau_minDCFs = gmm_comp *0
+
+    prior= 0.5
+    cost_fn=1
+    cost_fp = 1
+
+    normalized_features = Z_normalization(DTR)
+    gaussianizedFeatures = gaussianization(DTR)
+
+    constrained=True
+    psi=0.01
+    alpha=0.1
+    
+    #### Full Cov
+    covariance_type = "Full"
+    
+    i=0
+    for number_components in gmm_comp:
+        # Raw features
+        raw_minDCFs[i],_,_ = model_evaluation.k_cross_DCF(normalized_features, LTR,k, gaussian_mixture_models.GMM_computeLogLikelihoodRatios, prior , cost_fn, cost_fp, [constrained, psi, covariance_type, alpha, number_components])
+        # Gaussianized features
+        gau_minDCFs[i],_,_ = model_evaluation.k_cross_DCF(gaussianizedFeatures, LTR,k, gaussian_mixture_models.GMM_computeLogLikelihoodRatios, prior , cost_fn, cost_fp, [constrained, psi, covariance_type, alpha, number_components])
+        i=i+1
+
+    bar_plot_gmm(raw_minDCFs, gau_minDCFs, gmm_comp, "GMM_Full_covariance")
+    
+    
+
+        
+
+    
+
+
 
 def print_table_comparison_DCFs(DTR, LTR, k):
 
@@ -792,7 +814,7 @@ def print_err_bayes_plots(data, L, k, llr_calculators, other_params, titles, col
     plt.savefig('Graph/Error_Bayes_Plots/EBP1.png' )
 
 
-def compute_DCF_with_optimal_treshold(D, L, k, llr_calculator, otherParams, prior, cost_fn, cost_fp, ):
+def compute_DCF_with_optimal_treshold(D, L, k, llr_calculator, otherParams, prior, cost_fn, cost_fp ):
                 
     #1st: calculate the loglikelihood ratios using k-cross method
     llr, labels = model_evaluation.k_cross_loglikelihoods(D, L, k, llr_calculator, otherParams)
@@ -840,6 +862,9 @@ def print_treshold_estimated_table(data, LTR, prior, cost_fn, cost_fp, k, llr_ca
     print("actual optimal DCF = ", actDCF_opt)
     
     return optimal_treshold
+
+
+
 
 if __name__ == '__main__':
 
@@ -979,9 +1004,11 @@ if __name__ == '__main__':
     print_graphs_Polinomial_SVM_Cs(DTR, LTR, k=k )
     print("********************************************************************")
     '''
+    '''
     print("********************* quadratic SVM GRAPHS changing C,k,c ************************************")
     print_graphs_Polinomial_SVM_Cs_k_c(DTR, LTR, k=k )
     print("********************************************************************")
+    '''
     '''
     #TODO 
     print("********************* quadratic SVM TABLES ************************************")
@@ -1007,7 +1034,10 @@ if __name__ == '__main__':
     print_table_RBF_SVM_minDCF(DTR, LTR, prior=0.1, cost_fn=1, cost_fp=1, k=k )
     print("********************************************************************")
     '''
-    
+    ### GMM
+
+    print_graphs_GMM_minDCF(DTR, LTR, k)
+
     ## COMPARISON BETWEEN ACT DCF AND MIN DCF OF THE CHOSEN MODELS
     '''
     print_table_comparison_DCFs(DTR, LTR, k=k)
