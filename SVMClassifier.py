@@ -105,21 +105,23 @@ def SVM_computeLogLikelihoods(DTR, LTR, DTE, params):  #params=[pi_T, C]
     return scores.flatten()
 
 
-def Polinomial_SVM_computeLogLikelihoods(DTR, LTR, DTE, params):  #params=[pi_T, C]
+def Polinomial_SVM_computeLogLikelihoods(DTR, LTR, DTE, params):  #params=[pi_T, C, c, K]
     pi_T = params[0]
     C =params[1]
+    c= params[2]
+    K= params[3]
 
     
     #Creating D_hat
     D_hat = DTR
     #Creating H_hat
     # 1) creating G_hat using the polinomial kernel
-    K = 0.0
+    
     epsilon = K**2
     
 
     d = 2.0
-    c = 0.0
+    
     
     G_hat= polinomial_kernel(DTR,c,d)
 

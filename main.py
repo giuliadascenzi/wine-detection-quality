@@ -483,7 +483,6 @@ def print_table_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
     print("*** minDCF - GAUSSIANIZED FEATURES  ***")
     linear_SVM_minDCF(gaussianizedFeatures)
 
-
 def print_graphs_Polinomial_SVM_Cs(DTR, LTR, k ):
 
     def oneGraphSingleFold(data, prior, cost_fn, cost_fp, pi_T):
@@ -561,6 +560,55 @@ def print_graphs_Polinomial_SVM_Cs(DTR, LTR, k ):
     oneGraphKFold(gaussianizedFeatures, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
     plt.savefig('Graph/SVM/Quadratic/5FoldGauss.png' )
     #plt.show()
+
+def print_graphs_Polinomial_SVM_Cs_k_c(DTR, LTR, k ):
+
+    def oneGraphSingleFold(data, prior, cost_fn, cost_fp, pi_T, k, c):
+        print("working on single fold prior = ", prior)
+        exps = numpy.linspace(-3,1, 5)
+        Cs = 10** exps
+        minDCFs = 0 * exps
+        for i in range (Cs.size):
+            C= Cs[i]
+            minDCFs[i],_,_ = model_evaluation.singleFold_DCF(data, LTR, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, c, k])
+        
+        lb = "minDCF (k="+ str(k) +" c= "+ str(c)+ ")"
+        plt.plot(Cs, minDCFs, label=lb)
+        plt.legend()
+        print("DONE")
+
+    def oneGraphKFold(data, prior, cost_fn, cost_fp, pi_T, k, c):
+        print("working on k fold prior = ", prior)
+        exps = numpy.linspace(-3,1, 5)
+        Cs = 10** exps
+        minDCFs = 0 * exps
+        for i in range (Cs.size):
+            C= Cs[i]
+            minDCFs[i],_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
+        
+        lb = "minDCF (prior="+ str(prior) +")"
+        plt.plot(Cs, minDCFs, label=lb)
+        plt.legend()
+        print("DONE")
+
+    normalizedFeatures = Z_normalization(DTR)
+    gaussianizedFeatures = gaussianization(DTR)
+
+    plt.figure()
+    print("1 grafico")
+    plt.title("Raw features, single fold")
+    plt.xscale('log')
+    plt.xlabel("C")
+    plt.ylabel("minDCFs")
+    oneGraphSingleFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, k=0.0, c=0.0)
+    oneGraphSingleFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, k=0.0, c=1.0)
+    oneGraphSingleFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, k=1.0, c=0.0)
+    oneGraphSingleFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, k=1.0, c=1.0)
+
+    plt.savefig('Graph/SVM/Quadratic/singleFoldRAW_kc.png' )
+    
+ 
+    
 
 def print_table_Quadratic_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k): #TODO
 
@@ -914,7 +962,7 @@ if __name__ == '__main__':
     print_graphs_SVM_Cs(DTR, LTR, k=k )
     print("********************************************************************")
     '''
-
+    '''
     print("********************* SVM TABLES ************************************")
     print("------> applicazione con prior = 0.5")
     print_table_SVM_minDCF(DTR, LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k )
@@ -923,13 +971,18 @@ if __name__ == '__main__':
     print("------> applicazione con prior = 0.1")
     print_table_SVM_minDCF(DTR, LTR, prior=0.1, cost_fn=1, cost_fp=1, k=k )
     print("********************************************************************")
+    '''
 
     '''
     
     print("********************* quadratic SVM GRAPHS ************************************")
     print_graphs_Polinomial_SVM_Cs(DTR, LTR, k=k )
     print("********************************************************************")
-    
+    '''
+    print("********************* quadratic SVM GRAPHS changing C,k,c ************************************")
+    print_graphs_Polinomial_SVM_Cs_k_c(DTR, LTR, k=k )
+    print("********************************************************************")
+    '''
     #TODO 
     print("********************* quadratic SVM TABLES ************************************")
     print("------> applicazione con prior = 0.5")
@@ -953,8 +1006,8 @@ if __name__ == '__main__':
     print("------> applicazione con prior = 0.1")
     print_table_RBF_SVM_minDCF(DTR, LTR, prior=0.1, cost_fn=1, cost_fp=1, k=k )
     print("********************************************************************")
-    
     '''
+    
     ## COMPARISON BETWEEN ACT DCF AND MIN DCF OF THE CHOSEN MODELS
     '''
     print_table_comparison_DCFs(DTR, LTR, k=k)
