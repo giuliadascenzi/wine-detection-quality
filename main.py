@@ -495,7 +495,7 @@ def print_graphs_Polinomial_SVM_Cs_k_c(DTR, LTR, k ):
             C= Cs[i]
             minDCFs[i],_,_ = model_evaluation.singleFold_DCF(data, LTR, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, c, K])
         
-        lb = "minDCF (k="+ str(k) +" c= "+ str(c)+ ")"
+        lb = "minDCF (k="+ str(K) +" c= "+ str(c)+ ")"
         plt.plot(Cs, minDCFs, label=lb)
         plt.legend()
         print("DONE")
@@ -509,7 +509,7 @@ def print_graphs_Polinomial_SVM_Cs_k_c(DTR, LTR, k ):
             C= Cs[i]
             minDCFs[i],_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, c, K])
         
-        lb = "minDCF (prior="+ str(prior) +")"
+        lb = "minDCF (k="+ str(K) +" c= "+ str(c)+ ")"
         plt.plot(Cs, minDCFs, label=lb)
         plt.legend()
         print("DONE")
