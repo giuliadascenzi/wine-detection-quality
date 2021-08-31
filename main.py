@@ -1068,7 +1068,7 @@ if __name__ == '__main__':
     print("********************************************************************")
     '''
     
-    #TODO 
+    '''
     print("********************* quadratic SVM TABLES ************************************")
     print("------> applicazione con prior = 0.5")
     print_table_Quadratic_SVM_minDCF(DTR, LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k )
@@ -1078,10 +1078,12 @@ if __name__ == '__main__':
     print_table_Quadratic_SVM_minDCF(DTR, LTR, prior=0.1, cost_fn=1, cost_fp=1, k=k )
     print("********************************************************************")
     '''
+    
     print("********************* RBF SVM GRAPHS ************************************")
     print_graphs_RBF_SVM_Cs(DTR, LTR, k=k )
     print("********************************************************************")
     
+    '''
     #TODO 
     print("********************* RBF SVM TABLES ************************************")
     print("------> applicazione con prior = 0.5")
