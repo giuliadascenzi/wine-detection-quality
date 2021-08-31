@@ -579,17 +579,17 @@ def print_table_Quadratic_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k): #TOD
         
         pi_T = 0.5
         minDCF,_,_ = model_evaluation.singleFold_DCF(data, LTR, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, c, K])
-        print("[5-Folds]  -  C= 0.1, pi_T=0.5, c= ", c, " k = ",K ,"  : ",minDCF)  
+        print("[5-Folds]  -  C= ", C, ", pi_T=0.5, c= ", c, " k = ",K ,"  : ",minDCF)  
 
         
         pi_T = 0.1
         minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, c, K])
-        print("[5-Folds]  -  C= 0.1, pi_T=0.1, c= ", c, " k = ",K ,"  : ",minDCF)
+        print("[5-Folds]  -  C= ", C, ", pi_T=0.1, c= ", c, " k = ",K ,"  : ",minDCF)
 
         
         pi_T = 0.9
         minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, c, K])
-        print("[5-Folds]  -  C= 0.1, pi_T=0.9, c= ", c, " k = ",K, "  : ",minDCF)
+        print("[5-Folds]  -  C= ", C, ", pi_T=0.9, c= ", c, " k = ",K, "  : ",minDCF)
 
 
         
@@ -600,7 +600,7 @@ def print_table_Quadratic_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k): #TOD
 
         pi_T = pi_emp_T
         minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp,[pi_T, C, c, K])
-        print("[5-Folds]  -  C= 0.1, c= ", c, " k = ",K , "  : ",minDCF)
+        print("[5-Folds]  - C= ", C, ", pi_T=pi_emp_T, c= ", c, " k = ",K , "  : ",minDCF)
 
 
         print()
@@ -631,7 +631,7 @@ def print_graphs_RBF_SVM_Cs(DTR, LTR, k):
 
     def oneGraphKFold(data, prior, cost_fn, cost_fp, pi_T, loglam):
         print("working on k fold loglam = ", loglam)
-        exps = numpy.linspace(-1,3, 10)
+        exps = numpy.linspace(-1,3, 5)
         Cs = 10** exps
         minDCFs = 0 * exps
         for i in range (Cs.size):
@@ -654,8 +654,8 @@ def print_graphs_RBF_SVM_Cs(DTR, LTR, k):
     plt.ylabel("minDCFs")
     oneGraphKFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = 0)
     oneGraphKFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = -1)
-    oneGraphKFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = -2)
-    oneGraphKFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = -3)
+    oneGraphKFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = 1)
+    oneGraphKFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = 2)
     plt.savefig('Graph/SVM/RBF/5FoldRAW.png' )
 
     print("2 grafico")
@@ -666,8 +666,8 @@ def print_graphs_RBF_SVM_Cs(DTR, LTR, k):
     plt.ylabel("minDCFs")
     oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = 0)
     oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = -1)
-    oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = -2)
-    oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = -3)
+    oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = 1)
+    oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = 2)
     plt.savefig('Graph/SVM/RBF/5FoldGauss.png' )
     #plt.show()
 
