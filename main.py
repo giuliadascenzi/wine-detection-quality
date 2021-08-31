@@ -575,46 +575,56 @@ def print_graphs_Polinomial_SVM_Cs_k_c(DTR, LTR, k ):
 
 def print_table_Quadratic_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k): #TODO
 
-    def quadratic_SVM_minDCF(data):
-        C = 0.1
+    def quadratic_SVM_minDCF(data, C, c, K):
+        
         pi_T = 0.5
-        minDCF,_,_ = model_evaluation.singleFold_DCF(data, LTR, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
-        print("[5-Folds]  -  C= 0.1, pi_T=0.5: ",minDCF)  
+        minDCF,_,_ = model_evaluation.singleFold_DCF(data, LTR, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, c, K])
+        print("[5-Folds]  -  C= 0.1, pi_T=0.5, c= ", c, " k = ",K ,"  : ",minDCF)  
 
-        C = 0.1
+        
         pi_T = 0.1
-        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
-        print("[5-Folds]  -  C= 0.1, pi_T=0.1: ",minDCF)
+        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, c, K])
+        print("[5-Folds]  -  C= 0.1, pi_T=0.1, c= ", c, " k = ",K ,"  : ",minDCF)
 
-        C = 0.1
+        
         pi_T = 0.9
-        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
-        print("[5-Folds]  -  C= 0.1, pi_T=0.9: ",minDCF)
+        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, c, K])
+        print("[5-Folds]  -  C= 0.1, pi_T=0.9, c= ", c, " k = ",K, "  : ",minDCF)
 
 
-        C = 0.1
-
+        
         N = LTR.size #tot number of samples
         n_T = (1*(LTR==1)).sum() #num of samples belonging to the true class
         n_F = (1*(LTR==0)).sum() #num of samples belonging to the false class
         pi_emp_T = n_T / N
 
         pi_T = pi_emp_T
-        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
-        print("[5-Folds]  -  C= 0.1, pi_T=pi_emp_T: ",minDCF)
+        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp,[pi_T, C, c, K])
+        print("[5-Folds]  -  C= 0.1, c= ", c, " k = ",K , "  : ",minDCF)
+
 
         print()
 
+    def fun_parametri(C,c, K):
+        gaussianizedFeatures = gaussianization(DTR)
+        normalizedFeatures = Z_normalization(DTR)
+        
+        
+        print("PARAMETRI: (C = " + str(C) + " c= "+ str(c) + "K= " + str(K)+ ")") 
+
+        #------------------------RAW FEATURES -----------------
+        print("*** minDCF - RAW FEATURES ***")
+        quadratic_SVM_minDCF(normalizedFeatures, C=C, c=c, K=K)
+
+        #--------------- GAUSSIANIZED FEATURES-------------------------
+        print("*** minDCF - GAUSSIANIZED FEATURES  ***")
+        quadratic_SVM_minDCF(gaussianizedFeatures)
+
+        print("************************************************")
     
-    #------------------------RAW FEATURES -----------------
-    print("*** minDCF - RAW FEATURES ***")
-    quadratic_SVM_minDCF(Z_normalization(DTR))
-
-    #--------------- GAUSSIANIZED FEATURES-------------------------
-    gaussianizedFeatures = gaussianization(DTR)
-
-    print("*** minDCF - GAUSSIANIZED FEATURES  ***")
-    quadratic_SVM_minDCF(gaussianizedFeatures)
+    fun_parametri(10,1,0)
+    fun_parametri(100,1,0)
+    fun_parametri(0.1,1,1)
 
 def print_graphs_RBF_SVM_Cs(DTR, LTR, k):
 
@@ -950,12 +960,12 @@ if __name__ == '__main__':
     '''
 
     ##enstablish if data are balanced
-    
+    '''
     n_high_qty = numpy.count_nonzero(LTR == 1)
     n_low_qty = numpy.count_nonzero(LTR == 0)
     ##-----> number of low qty >> number of high qty
     stats.bars_numsamples(n_high_qty, n_low_qty)
-    
+    '''
     
     '''
     NON SERVE
@@ -1056,7 +1066,7 @@ if __name__ == '__main__':
     print_graphs_Polinomial_SVM_Cs_k_c(DTR, LTR, k=k )
     print("********************************************************************")
     '''
-    '''
+    
     #TODO 
     print("********************* quadratic SVM TABLES ************************************")
     print("------> applicazione con prior = 0.5")
@@ -1066,7 +1076,7 @@ if __name__ == '__main__':
     print("------> applicazione con prior = 0.1")
     print_table_Quadratic_SVM_minDCF(DTR, LTR, prior=0.1, cost_fn=1, cost_fp=1, k=k )
     print("********************************************************************")
-    
+    '''
     print("********************* RBF SVM GRAPHS ************************************")
     print_graphs_RBF_SVM_Cs(DTR, LTR, k=k )
     print("********************************************************************")
