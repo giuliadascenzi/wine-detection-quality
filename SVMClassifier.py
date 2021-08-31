@@ -74,6 +74,9 @@ def SVM_computeLogLikelihoods(DTR, LTR, DTE, params):  #params=[pi_T, C]
     n_F = (1*(LTR==0)).sum() #num of samples belonging to the false class
     pi_emp_T = n_T / N
     pi_emp_F = n_F / N
+    
+    if(pi_T == -1):
+        pi_T = pi_emp_T
 
     C_T = C * pi_T / pi_emp_T
     C_F = C * (1-pi_T) / pi_emp_F 

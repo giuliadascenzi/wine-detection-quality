@@ -150,9 +150,9 @@ def k_cross_DCF(D, L, k, llr_calculator, prior, cost_fn, cost_fp, otherParams=No
 def singleFold_DCF(D, L, llr_calculator, prior, cost_fn, cost_fp, otherParams=None):
     (DTR, LTR), (DTE,LTE)= split_db_2tol(D,L)
     llr = llr_calculator (DTR,LTR,DTE, otherParams)
-    actDCF = compute_actual_DCF(llr, labels, prior , cost_fn, cost_fp)
-    min_DCF,_,_,_ =compute_minimum_detection_cost(llr, LTE, prior , cost_fn, cost_fp)
-    return (min_DCF, actDCF) #minDCF
+    actDCF = compute_actual_DCF(llr, LTE, prior , cost_fn, cost_fp)
+    min_DCF,_,_,optimal_treshold =compute_minimum_detection_cost(llr, LTE, prior , cost_fn, cost_fp)
+    return (min_DCF, actDCF, optimal_treshold) #minDCF
 
 def bayes_error_plot(D, L, k, llr_calculator, otherParams, title, color ):
 

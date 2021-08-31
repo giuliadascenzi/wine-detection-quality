@@ -448,6 +448,7 @@ def print_graphs_SVM_Cs(DTR, LTR, k ):
 def print_table_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
 
     def linear_SVM_minDCF(data):
+            
             C = 0.1
             pi_T = 0.5
             minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
@@ -463,15 +464,9 @@ def print_table_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
             minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
             print("[5-Folds]  -  C= 0.1, pi_T=0.9: ",minDCF)
 
-
+            #unbalanced application
             C = 0.1
-
-            N = LTR.size #tot number of samples
-            n_T = (1*(LTR==1)).sum() #num of samples belonging to the true class
-            n_F = (1*(LTR==0)).sum() #num of samples belonging to the false class
-            pi_emp_T = n_T / N
-
-            pi_T = pi_emp_T
+            pi_T = -1
             minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
             print("[5-Folds]  -  C= 0.1, pi_T=pi_emp_T: ",minDCF)
 
