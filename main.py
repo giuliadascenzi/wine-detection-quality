@@ -780,9 +780,10 @@ def print_graphs_GMM_minDCF(DTR, LTR, k):
         lb1 = "minDCF (prior=0.5) - Raw"
         lb2 = "minDCF (prior=0.5) - Gaussianized"
         
+        plt.figure()
         plt.bar(raw_ind, raw_minDCFs, width = widthbar, color = 'orange', label = lb1)
         plt.bar(gau_ind, gau_minDCFs, width = widthbar, color = 'red', label = lb2)
-
+        plt.title(title)
         plt.xticks(x_ind ,gmm_comp)
         plt.ylabel('minDCFs')
         plt.xlabel('GMM components')
@@ -792,7 +793,7 @@ def print_graphs_GMM_minDCF(DTR, LTR, k):
 
 
     def GMM_compute_DCFs(DTR, LTR, k, covariance_type, prior, cost_fn, cost_fp):
-        gmm_comp = [1,2,4,8,16]
+        gmm_comp = [1,2,4,8,16,32,64]
         raw_minDCFs = []
         gau_minDCFs = []
 
