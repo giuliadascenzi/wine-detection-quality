@@ -1,4 +1,4 @@
-Wine quality detection
+# Wine quality detection
 
 ## - Introduction
 
@@ -243,7 +243,11 @@ K=1, c=1, C=0.1
 | <img src="Graph\SVM\RBF\5FoldRAW.png" style="zoom:60%;" /> | <img src="Graph\SVM\RBF\5FoldGauss.png" style="zoom:60%;" /> |
 | ---------------------------------------------------------- | ------------------------------------------------------------ |
 
+## *GMM
 
+| <img src="Graph\GMM\GMM_Full_covariance.png" style="zoom:60%;" /> | <img src="Graph\GMM\GMM_Tied_covariance.png" style="zoom:60%;" /> |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| <img src="Graph\GMM\GMM_Diagonal_covariance.png" style="zoom:60%;" /> | <img src="Graph\GMM\GMM_Tied_Diagonal_covariance.png" style="zoom:60%;" /> |
 
 
 
@@ -251,9 +255,9 @@ K=1, c=1, C=0.1
 
 *******************************
 
+## 
 
-
-*** COMPARISON BETWEEN ACTUAL DCF and MIN DCF
+##### *** COMPARISON BETWEEN ACTUAL DCF and MIN DCF
 
 |                                            | prior=0.5 |        | prior=0.1 |        | prior=0.9 |        |
 | ------------------------------------------ | --------- | ------ | --------- | ------ | --------- | ------ |
