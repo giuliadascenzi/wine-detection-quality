@@ -122,7 +122,7 @@ def compute_EM_algorithm(X, initial_GMM, threshold = 10**(-6), constrained=False
 
 
 
-def compute_LBG_algorithm(X, number_components, constrained=False , psi=-1, covariance_type="Full", alpha=0.1):
+def compute_LBG_algorithm(X, number_components, constrained=False , psi=-1, covariance_type="Full", alpha=0.1, delta_l=10**(-6)):
 
     x = numpy.sort(X)
     mean = x.mean(1).reshape((x.shape[0], 1))
@@ -138,7 +138,7 @@ def compute_LBG_algorithm(X, number_components, constrained=False , psi=-1, cova
     estimated_GMM = initial_gmm
     while (len(estimated_GMM)<number_components):
         estimated_GMM = split2GMM(estimated_GMM, alpha)
-        estimated_GMM = compute_EM_algorithm(x, initial_GMM= estimated_GMM, constrained=constrained,psi= psi, covariance_type=covariance_type)
+        estimated_GMM = compute_EM_algorithm(x, initial_GMM= estimated_GMM, threshold=delta_l, constrained=constrained,psi= psi, covariance_type=covariance_type)
     return estimated_GMM
 
 def split2GMM(gmm, alpha= 0.1):
@@ -167,12 +167,13 @@ def newCov_constrained (cov, psi):
 
 
 
-def GMM_computeLogLikelihoodRatios(DTR, LTR, DTE, otherParams): #otherparams= [constrained, psi, covariance_type, alpha, number_components]
+def GMM_computeLogLikelihoodRatios(DTR, LTR, DTE, otherParams): #otherparams= [constrained, psi, covariance_type, alpha, number_components, delta_l]
     constrained= otherParams[0]
     psi=otherParams[1]
     covariance_type=otherParams[2]
     alpha=otherParams[3]
     number_components=otherParams[4]
+    delta_l=otherParams[5]
 
     #train a gmm for each class
     n_classes = len(numpy.unique(LTR))
@@ -181,7 +182,7 @@ def GMM_computeLogLikelihoodRatios(DTR, LTR, DTE, otherParams): #otherparams= [c
     #obtain one gmm for each class
     for i in range (n_classes):
         data = DTR[:, LTR == i]
-        gmm_classes.append(compute_LBG_algorithm(data, number_components= number_components, constrained=constrained, psi=psi, covariance_type= covariance_type,alpha= alpha))
+        gmm_classes.append(compute_LBG_algorithm(data, number_components= number_components, constrained=constrained, psi=psi, covariance_type= covariance_type,alpha= alpha, delta_l=delta_l))
         log_class_conditional_distribution[i,:]=mrow(logpdf_GMM(GMM=gmm_classes[i], X= DTE))
      
     llr = log_class_conditional_distribution[1,:]- log_class_conditional_distribution[0,:]

@@ -738,32 +738,6 @@ def print_table_RBF_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k): #TODO
 
     print("*** minDCF - GAUSSIANIZED FEATURES  ***")
     RBF_SVM_minDCF(gaussianizedFeatures)
-
-def print_graphs_GMM_minDCF(DTR, LTR, k):
-
-    def bar_plot_gmm(raw_minDCFs, gau_minDCFs, gmm_comp, title):
-
-        widthbar = 0.2
-
-        x_ind = numpy.arange(len(gmm_comp))
-
-        raw_ind = x_ind - widthbar/2
-        gau_ind = x_ind + widthbar/2
-
-        lb1 = "minDCF (prior=0.5) - Raw"
-        lb2 = "minDCF (prior=0.5) - Gaussianized"
-        
-        plt.bar(raw_ind, raw_minDCFs, width = widthbar, color = 'orange', label = lb1)
-        plt.bar(gau_ind, gau_minDCFs, width = widthbar, color = 'red', label = lb2)
-
-        plt.xticks(x_ind ,gmm_comp)
-        plt.ylabel('minDCFs')
-        plt.xlabel('GMM components')
-        plt.legend()
-
-        plt.savefig('Graph/GMM/'+title+'.png' )
-
-
       
        
 def print_graphs_GMM_minDCF(DTR, LTR, k):
@@ -794,6 +768,7 @@ def print_graphs_GMM_minDCF(DTR, LTR, k):
 
     def GMM_compute_DCFs(DTR, LTR, k, covariance_type, prior, cost_fn, cost_fp):
         gmm_comp = [1,2,4,8,16,32,64]
+
         raw_minDCFs = []
         gau_minDCFs = []
 
@@ -803,10 +778,11 @@ def print_graphs_GMM_minDCF(DTR, LTR, k):
         constrained=True
         psi=0.01
         alpha=0.1
+        delta_l=10**(-6)
     
         print("************************" + covariance_type + "*************************")
         for i in range(len(gmm_comp)):
-            params = [constrained, psi, covariance_type, alpha, gmm_comp[i]]
+            params = [constrained, psi, covariance_type, alpha, gmm_comp[i],delta_l]
             print("-------> working on raw data, comp= ", gmm_comp[i])
             # Raw features
             raw_minDCFs_i,_,_ = model_evaluation.k_cross_DCF(normalized_features, LTR, k, gaussian_mixture_models.GMM_computeLogLikelihoodRatios, prior , cost_fn, cost_fp, params)
@@ -948,6 +924,35 @@ def print_treshold_estimated_table(data, LTR, prior, cost_fn, cost_fp, k, llr_ca
     
     return optimal_treshold
 
+
+
+
+def GMM_choosing_hyperparams(DTR, LTR, k, covariance_type, prior, cost_fn, cost_fp):
+    gmm_comp = 2
+    normalized_features = Z_normalization(DTR)
+    gaussianizedFeatures = gaussianization(DTR)
+
+    constrained=True
+    psi_s=[0.00001, 0.0001, 0.001, 0.01, 0.1, 1, 10]
+    alpha_s=[0.0001, 0.001, 0.01, 0.1, 1, 10]
+    delta_l_s=[10**(-6), 10**(-5), 10**(-6), 10**(-5), 10**(-4), 10**(-3)]
+    
+    print("************************" + covariance_type + "*************************")
+    for psi in psi_s:
+        for alpha in alpha_s:
+            for delta_l in delta_l_s:
+    
+                params = [constrained, psi, covariance_type, alpha, gmm_comp ,delta_l]
+                # Raw features
+                raw_minDCFs_i,_,_ = model_evaluation.k_cross_DCF(normalized_features, LTR, k, gaussian_mixture_models.GMM_computeLogLikelihoodRatios, prior , cost_fn, cost_fp, params)
+                # Gaussianized features
+                gau_minDCFs_i,_,_ = model_evaluation.k_cross_DCF(gaussianizedFeatures, LTR,k, gaussian_mixture_models.GMM_computeLogLikelihoodRatios, prior , cost_fn, cost_fp, params)
+                
+                print("psi: " + str(psi) + ", alpha: " + str(alpha) + ", delta_l: " + str(delta_l) + " -----> " + "RAW: " + str(raw_minDCFs_i))
+                print("psi: " + str(psi) + ", alpha: " + str(alpha) + ", delta_l: " + str(delta_l) + " -----> " + "GAU: " + str(gau_minDCFs_i))
+
+    return  
+                
 
 
 
@@ -1103,10 +1108,11 @@ if __name__ == '__main__':
     print("********************************************************************")
     '''
     
+    '''
     print("********************* RBF SVM GRAPHS ************************************")
     print_graphs_RBF_SVM_Cs(DTR, LTR, k=k )
     print("********************************************************************")
-    
+    '''
 
     '''
     #TODO 
@@ -1120,6 +1126,34 @@ if __name__ == '__main__':
     print("********************************************************************")
     '''
     ### GMM
+
+    
+    
+    
+
+    
+    #### Full Cov
+    covariance_type = "Full"
+    GMM_choosing_hyperparams(DTR, LTR, k, covariance_type, 0.5, 1, 1)
+    #print("GMM_Full_covariance", raw_minDCFs, gau_minDCFs, gmm_comp)
+
+
+    #### Diagonal Cov
+    covariance_type = "Diagonal"
+    GMM_choosing_hyperparams(DTR, LTR, k, covariance_type, 0.5, 1, 1)
+    #print("GMM_Diagonal_covariance", raw_minDCFs, gau_minDCFs, gmm_comp)
+
+    #### Diagonal Cov
+    covariance_type = "Tied"
+    GMM_choosing_hyperparams(DTR, LTR, k, covariance_type, 0.5, 1, 1)
+    #print("GMM_Tied_covariance", raw_minDCFs, gau_minDCFs, gmm_comp)
+    
+    #### Diagonal Cov
+    covariance_type = "Tied Diagonal"
+    GMM_choosing_hyperparams(DTR, LTR, k, covariance_type, 0.5, 1, 1)
+    #print("GMM_Tied_Diagonal_covariance", raw_minDCFs, gau_minDCFs, gmm_comp)
+
+
     '''
     print_graphs_GMM_minDCF(DTR, LTR, k)
     '''
