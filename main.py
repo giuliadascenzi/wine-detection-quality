@@ -695,21 +695,21 @@ def print_graphs_RBF_SVM_Cs(DTR, LTR, k):
 def print_table_RBF_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k): #TODO
 
 
-    def RBF_SVM_minDCF(data, C, lam):
+    def RBF_SVM_minDCF(data, C, loglam):
         
         pi_T = 0.5
-        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.RBF_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, lam])
-        print("[5-Folds]  -  C= ", C, ", lam= ", lam, " pi_T=0.5: ",minDCF)   
+        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.RBF_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, 10**loglam])
+        print("[5-Folds]  -  C= ", C, ", loglam= ", loglam, " pi_T=0.5: ",minDCF)   
 
         
         pi_T = 0.1
-        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.RBF_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, lam])
-        print("[5-Folds]  -  C= ", C, ", lam= ", lam, " pi_T=0.1: ",minDCF)   
+        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.RBF_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, 10**loglam])
+        print("[5-Folds]  -  C= ", C, ", loglam= ", loglam, " pi_T=0.1: ",minDCF)   
 
         
         pi_T = 0.9
-        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.RBF_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, lam])
-        print("[5-Folds]  -  C= ", C, ", lam= ", lam, " pi_T=0.9: ",minDCF)   
+        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.RBF_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, 10**loglam])
+        print("[5-Folds]  -  C= ", C, ", loglam= ", loglam, " pi_T=0.9: ",minDCF)   
 
 
         
@@ -719,13 +719,13 @@ def print_table_RBF_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k): #TODO
         pi_emp_T = n_T / N
 
         pi_T = pi_emp_T
-        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.RBF_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, lam])
-        print("[5-Folds]  -  C= ", C, ", lam= ", lam, " pi_T=pi_emp_T: ",minDCF)   
+        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.RBF_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, 10**loglam])
+        print("[5-Folds]  -  C= ", C, ", loglam= ", loglam, " pi_T=pi_emp_T: ",minDCF)   
 
 
         print()
 
-    def fun_parametri(C,lam):
+    def fun_parametri(C,loglam):
         gaussianizedFeatures = gaussianization(DTR)
         normalizedFeatures = Z_normalization(DTR)
         
@@ -734,11 +734,11 @@ def print_table_RBF_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k): #TODO
 
         #------------------------RAW FEATURES -----------------
         print("*** minDCF - RAW FEATURES ***")
-        RBF_SVM_minDCF(normalizedFeatures, C=C, lam=lam)
+        RBF_SVM_minDCF(normalizedFeatures, C=C, loglam=lam)
 
         #--------------- GAUSSIANIZED FEATURES-------------------------
         print("*** minDCF - GAUSSIANIZED FEATURES  ***")
-        RBF_SVM_minDCF(gaussianizedFeatures ,C=C, lam=lam)
+        RBF_SVM_minDCF(gaussianizedFeatures ,C=C, loglam=lam)
 
 
         print("************************************************")
