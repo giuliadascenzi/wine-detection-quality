@@ -728,16 +728,60 @@ def print_table_RBF_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k): #TODO
 
         print()
 
+
+    def RBF_SVM_minDCF(data, C, lam):
+        
+        pi_T = 0.5
+        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.RBF_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, lam])
+        print("[5-Folds]  -  C= ", C, ", lam= ", lam, " pi_T=0.5: ",minDCF)   
+
+        
+        pi_T = 0.1
+        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.RBF_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, lam])
+        print("[5-Folds]  -  C= ", C, ", lam= ", lam, " pi_T=0.1: ",minDCF)   
+
+        
+        pi_T = 0.9
+        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.RBF_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, lam])
+        print("[5-Folds]  -  C= ", C, ", lam= ", lam, " pi_T=0.9: ",minDCF)   
+
+
+        
+        N = LTR.size #tot number of samples
+        n_T = (1*(LTR==1)).sum() #num of samples belonging to the true class
+        n_F = (1*(LTR==0)).sum() #num of samples belonging to the false class
+        pi_emp_T = n_T / N
+
+        pi_T = pi_emp_T
+        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.RBF_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, lam])
+        print("[5-Folds]  -  C= ", C, ", lam= ", lam, " pi_T=pi_emp_T: ",minDCF)   
+
+
+        print()
+
+    def fun_parametri(C,lam):
+        gaussianizedFeatures = gaussianization(DTR)
+        normalizedFeatures = Z_normalization(DTR)
+        
+        
+        print("PARAMETRI: (C = " + str(C) + " lam= "+ str(lam)+ ")") 
+
+        #------------------------RAW FEATURES -----------------
+        print("*** minDCF - RAW FEATURES ***")
+        RBF_SVM_minDCF(normalizedFeatures, C=C, lam=lam)
+
+        #--------------- GAUSSIANIZED FEATURES-------------------------
+        print("*** minDCF - GAUSSIANIZED FEATURES  ***")
+        RBF_SVM_minDCF(gaussianizedFeatures ,C=C, lam=lam)
+
+
+        print("************************************************")
     
-    #------------------------RAW FEATURES -----------------
-    print("*** minDCF - RAW FEATURES ***")
-    RBF_SVM_minDCF(Z_normalization(DTR))
+    fun_parametri(10,0)
+    fun_parametri(5,0)
 
-    #--------------- GAUSSIANIZED FEATURES-------------------------
-    gaussianizedFeatures = gaussianization(DTR)
+    
 
-    print("*** minDCF - GAUSSIANIZED FEATURES  ***")
-    RBF_SVM_minDCF(gaussianizedFeatures)
       
        
 def print_graphs_GMM_minDCF(DTR, LTR, k):
@@ -1118,8 +1162,8 @@ if __name__ == '__main__':
     print("********************************************************************")
     '''
 
-    '''
-    #TODO 
+    
+    
     print("********************* RBF SVM TABLES ************************************")
     print("------> applicazione con prior = 0.5")
     print_table_RBF_SVM_minDCF(DTR, LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k )
@@ -1139,7 +1183,7 @@ if __name__ == '__main__':
     #### Full Cov
     covariance_type = "Full"
     print( GMM_choosing_hyperparams(DTR, LTR, k, covariance_type, 0.5, 1, 1))
-
+    '''
     '''
     #### Diagonal Cov
     covariance_type = "Diagonal"
