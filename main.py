@@ -734,11 +734,11 @@ def print_table_RBF_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k): #TODO
 
         #------------------------RAW FEATURES -----------------
         print("*** minDCF - RAW FEATURES ***")
-        RBF_SVM_minDCF(normalizedFeatures, C=C, loglam=lam)
+        RBF_SVM_minDCF(normalizedFeatures, C=C, loglam=loglam)
 
         #--------------- GAUSSIANIZED FEATURES-------------------------
         print("*** minDCF - GAUSSIANIZED FEATURES  ***")
-        RBF_SVM_minDCF(gaussianizedFeatures ,C=C, loglam=lam)
+        RBF_SVM_minDCF(gaussianizedFeatures ,C=C, loglam=lgolam)
 
 
         print("************************************************")
