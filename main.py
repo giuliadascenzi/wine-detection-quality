@@ -730,7 +730,7 @@ def print_table_RBF_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k): #TODO
         normalizedFeatures = Z_normalization(DTR)
         
         
-        print("PARAMETRI: (C = " + str(C) + " lam= "+ str(lam)+ ")") 
+        print("PARAMETRI: (C = " + str(C) + " loglam= "+ str(loglam)+ ")") 
 
         #------------------------RAW FEATURES -----------------
         print("*** minDCF - RAW FEATURES ***")
