@@ -767,7 +767,7 @@ def print_graphs_GMM_minDCF(DTR, LTR, k):
 
 
     def GMM_compute_DCFs(DTR, LTR, k, covariance_type, prior, cost_fn, cost_fp):
-        gmm_comp = [1,2,4,8,16,32,64]
+        gmm_comp = [1,2,4,8]
 
         raw_minDCFs = []
         gau_minDCFs = []
@@ -776,8 +776,8 @@ def print_graphs_GMM_minDCF(DTR, LTR, k):
         gaussianizedFeatures = gaussianization(DTR)
 
         constrained=True
-        psi=0.01
-        alpha=0.1
+        psi=1
+        alpha=0.0001
         delta_l=10**(-6)
     
         print("************************" + covariance_type + "*************************")
@@ -928,14 +928,16 @@ def print_treshold_estimated_table(data, LTR, prior, cost_fn, cost_fp, k, llr_ca
 
 
 def GMM_choosing_hyperparams(DTR, LTR, k, covariance_type, prior, cost_fn, cost_fp):
-    gmm_comp = 2
+    gmm_comp = 1
     normalized_features = Z_normalization(DTR)
     gaussianizedFeatures = gaussianization(DTR)
 
     constrained=True
-    psi_s=[0.00001, 0.0001, 0.001, 0.01, 0.1, 1, 10]
-    alpha_s=[0.0001, 0.001, 0.01, 0.1, 1, 10]
-    delta_l_s=[10**(-6), 10**(-5), 10**(-6), 10**(-5), 10**(-4), 10**(-3)]
+    psi_s=[0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1, 10, 100, 1000]
+    alpha_s=[0.00001, 0.0001, 0.001, 0.01, 0.1, 1, 10, 100, 1000, 10000]
+    delta_l_s=[10**(-6), 10**(-7)]
+
+    optimal_result = []
     
     print("************************" + covariance_type + "*************************")
     for psi in psi_s:
@@ -951,7 +953,9 @@ def GMM_choosing_hyperparams(DTR, LTR, k, covariance_type, prior, cost_fn, cost_
                 print("psi: " + str(psi) + ", alpha: " + str(alpha) + ", delta_l: " + str(delta_l) + " -----> " + "RAW: " + str(raw_minDCFs_i))
                 print("psi: " + str(psi) + ", alpha: " + str(alpha) + ", delta_l: " + str(delta_l) + " -----> " + "GAU: " + str(gau_minDCFs_i))
 
-    return  
+                if(raw_minDCFs_i < 0.4 or gau_minDCFs_i < 0.4):
+                    optimal_result.append([raw_minDCFs_i, gau_minDCFs_i])
+    return optimal_result
                 
 
 
@@ -1134,26 +1138,22 @@ if __name__ == '__main__':
     
     #### Full Cov
     covariance_type = "Full"
-    GMM_choosing_hyperparams(DTR, LTR, k, covariance_type, 0.5, 1, 1)
-    #print("GMM_Full_covariance", raw_minDCFs, gau_minDCFs, gmm_comp)
+    print( GMM_choosing_hyperparams(DTR, LTR, k, covariance_type, 0.5, 1, 1))
 
-
+    '''
     #### Diagonal Cov
     covariance_type = "Diagonal"
-    GMM_choosing_hyperparams(DTR, LTR, k, covariance_type, 0.5, 1, 1)
-    #print("GMM_Diagonal_covariance", raw_minDCFs, gau_minDCFs, gmm_comp)
+    print(GMM_choosing_hyperparams(DTR, LTR, k, covariance_type, 0.5, 1, 1))
 
     #### Diagonal Cov
     covariance_type = "Tied"
-    GMM_choosing_hyperparams(DTR, LTR, k, covariance_type, 0.5, 1, 1)
-    #print("GMM_Tied_covariance", raw_minDCFs, gau_minDCFs, gmm_comp)
+    print(GMM_choosing_hyperparams(DTR, LTR, k, covariance_type, 0.5, 1, 1))
     
     #### Diagonal Cov
     covariance_type = "Tied Diagonal"
-    GMM_choosing_hyperparams(DTR, LTR, k, covariance_type, 0.5, 1, 1)
-    #print("GMM_Tied_Diagonal_covariance", raw_minDCFs, gau_minDCFs, gmm_comp)
-
-
+    print(GMM_choosing_hyperparams(DTR, LTR, k, covariance_type, 0.5, 1, 1))
+    '''
+    
     '''
     print_graphs_GMM_minDCF(DTR, LTR, k)
     '''
