@@ -694,40 +694,6 @@ def print_graphs_RBF_SVM_Cs(DTR, LTR, k):
 
 def print_table_RBF_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k): #TODO
 
-    def RBF_SVM_minDCF(data):
-        C = 0.1
-        pi_T = 0.5
-        loglam= 0
-        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.RBF_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, 10**loglam])
-        print("[5-Folds]  -  C= 0.1, pi_T=0.5: ",minDCF)  
-
-        C = 0.1
-        pi_T = 0.1
-        loglam=0
-        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
-        print("[5-Folds]  -  C= 0.1, pi_T=0.1: ",minDCF)
-
-        C = 0.1
-        pi_T = 0.9
-        loglam= 0
-        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
-        print("[5-Folds]  -  C= 0.1, pi_T=0.9: ",minDCF)
-
-
-        C = 0.1
-
-        N = LTR.size #tot number of samples
-        n_T = (1*(LTR==1)).sum() #num of samples belonging to the true class
-        n_F = (1*(LTR==0)).sum() #num of samples belonging to the false class
-        pi_emp_T = n_T / N
-
-        pi_T = pi_emp_T
-        loglam= 0
-        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
-        print("[5-Folds]  -  C= 0.1, pi_T=pi_emp_T: ",minDCF)
-
-        print()
-
 
     def RBF_SVM_minDCF(data, C, lam):
         
@@ -777,8 +743,8 @@ def print_table_RBF_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k): #TODO
 
         print("************************************************")
     
-    fun_parametri(10,0)
-    fun_parametri(5,0)
+    fun_parametri(1,0)
+    fun_parametri(0.5,0)
 
     
 
