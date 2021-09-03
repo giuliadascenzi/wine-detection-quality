@@ -59,42 +59,58 @@ def gaussianization(D):
     gaussianizedFeatures = scipy.stats.norm.ppf(r)
     return gaussianizedFeatures
 
-def print_table_MVG_classifiers_minDCF(DTR, prior, cost_fn, cost_fp, k):
+def gaussianizationEval(D, X):
+    N = D.shape[1]
+    r = numpy.zeros(X.shape)
+    for k in range(X.shape[0]):
+        featureVectorD = D[k,:]
+        for i in range (X.shape[1]):
+            ranks = scipy.stats.rankdata(numpy.append(featureVectorD, X[k][i]), method='min') -1
+            r[k,i] = ranks[-1]
 
-    def MVG_Classifiers_minDCF(data):
+    r = (r + 1)/(N+2)
+    gaussianizedFeatures = scipy.stats.norm.ppf(r)
+    return gaussianizedFeatures
+
+
+def print_table_MVG_classifiers_minDCF(DTR, prior, cost_fn, cost_fp, k, eval=False, eval_data=None):
+
+    def MVG_Classifiers_minDCF(data, eval_data):
         #Full_Cov 
-        min_DCF_MVG,_ = model_validation.singleFold_DCF(data, LTR, MVGclassifiers.MVG_logLikelihoodRatios, prior , cost_fn, cost_fp)
+        min_DCF_MVG,_,_ = model_validation.singleFold_DCF(data, LTR, MVGclassifiers.MVG_logLikelihoodRatios, prior , cost_fn, cost_fp,  eval_data=eval_data)
         print("[Single Fold] -  MVG: ",min_DCF_MVG)  
-        min_DCF_MVG,_,_ = model_validation.k_cross_DCF(data, LTR, k, MVGclassifiers.MVG_logLikelihoodRatios, prior , cost_fn, cost_fp)
+        min_DCF_MVG,_,_ = model_validation.k_cross_DCF(data, LTR, k, MVGclassifiers.MVG_logLikelihoodRatios, prior , cost_fn, cost_fp,  eval_data=eval_data)
         print("[5-Folds]  -  MVG: ",min_DCF_MVG)  
 
         #Diag_Cov == Naive
-        min_DCF_Diag_Cov,_ = model_validation.singleFold_DCF(data, LTR, MVGclassifiers.NAIVE_logLikelihoodRatios, prior , cost_fn, cost_fp)
+        min_DCF_Diag_Cov,_,_ = model_validation.singleFold_DCF(data, LTR, MVGclassifiers.NAIVE_logLikelihoodRatios, prior , cost_fn, cost_fp, eval_data=eval_data)
         print("[Single Fold]  - MVG with Diag cov: ",min_DCF_Diag_Cov)
-        min_DCF_Diag_Cov,_,_ = model_validation.k_cross_DCF(data, LTR,k, MVGclassifiers.NAIVE_logLikelihoodRatios, prior , cost_fn, cost_fp)
+        min_DCF_Diag_Cov,_,_ = model_validation.k_cross_DCF(data, LTR,k, MVGclassifiers.NAIVE_logLikelihoodRatios, prior , cost_fn, cost_fp,  eval_data=eval_data)
         print("[5- Fold] - MVG with Diag cov: ",min_DCF_Diag_Cov)
 
         #Tied
-        min_DCF_Tied,_ = model_validation.singleFold_DCF(data, LTR, MVGclassifiers.TIED_logLikelihoodRatios, prior , cost_fn, cost_fp)
+        min_DCF_Tied,_,_ = model_validation.singleFold_DCF(data, LTR, MVGclassifiers.TIED_logLikelihoodRatios, prior , cost_fn, cost_fp, eval_data=eval_data)
         print("[Single Fold] - Tied MVG: ",min_DCF_Tied)
-        min_DCF_Tied,_,_ = model_validation.k_cross_DCF(data, LTR,k, MVGclassifiers.TIED_logLikelihoodRatios, prior , cost_fn, cost_fp)
+        min_DCF_Tied,_,_ = model_validation.k_cross_DCF(data, LTR,k, MVGclassifiers.TIED_logLikelihoodRatios, prior , cost_fn, cost_fp,  eval_data=eval_data)
         print("[5- Fold] - Tied MVG: ",min_DCF_Tied)
 
         #Tied Diag_Cov
-        min_DCF_Tied_Diag_Cov,_ = model_validation.singleFold_DCF(data, LTR, MVGclassifiers.TIED_DIAG_COV_logLikelihoodRatios, prior , cost_fn, cost_fp)
+        min_DCF_Tied_Diag_Cov,_,_ = model_validation.singleFold_DCF(data, LTR, MVGclassifiers.TIED_DIAG_COV_logLikelihoodRatios, prior , cost_fn, cost_fp,  eval_data=eval_data)
         print("[Single Fold] - Tied MVG with Diag Cov: ",min_DCF_Tied_Diag_Cov)
-        min_DCF_Tied_Diag_Cov,_,_ = model_validation.k_cross_DCF(data, LTR, k,  MVGclassifiers.TIED_DIAG_COV_logLikelihoodRatios, prior , cost_fn, cost_fp)
+        min_DCF_Tied_Diag_Cov,_,_ = model_validation.k_cross_DCF(data, LTR, k,  MVGclassifiers.TIED_DIAG_COV_logLikelihoodRatios, prior , cost_fn, cost_fp, eval_data=eval_data)
         print("[5 Fold] - Tied MVG with Diag Cov: ",min_DCF_Tied_Diag_Cov)
 
         print()
 
     #!!! normalization is important before PCA
     normalized_data = Z_normalization(DTR)
+    if (eval_data!=None):
+        eval_data[0] =Z_normalization(eval_data[0])
 
 
     #------------------------RAW FEATURES (normalized) -----------------
     print("*** minDCF - RAW (normalized) FEATURES - NO PCA ***")
-    MVG_Classifiers_minDCF(normalized_data)
+    MVG_Classifiers_minDCF(normalized_data, eval_data)
     
 
     #------------------------RAW FEATURES (normalized) WITH PCA = 9 --------------------
@@ -594,7 +610,7 @@ def print_graphs_Polinomial_SVM_Cs_k_c(DTR, LTR, k ):
  
     
 
-def print_table_Quadratic_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k): #TODO
+def print_table_Quadratic_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k): 
 
     def quadratic_SVM_minDCF(data, C, c, K):
         
@@ -1031,12 +1047,12 @@ if __name__ == '__main__':
 
     ##EVAULATION OF THE CLASSIFIERS : 
     ### -- MVG CLASSIFIERS
-    '''
+    
     print("********************* MVG TABLE ************************************")
     print("------> pi = 0.5")
-    print_table_MVG_classifiers_minDCF(DTR, prior=0.5, cost_fn=1, cost_fp=1, k=k)
+    print_table_MVG_classifiers_minDCF(DTR, prior=0.5, cost_fn=1, cost_fp=1, k=k, eval_data=[DTE,LTE])
     print()
-
+    '''
     print("------> pi = 0.9")
     print_table_MVG_classifiers_minDCF(DTR, prior=0.9, cost_fn=1, cost_fp=1, k=k)
     print()
@@ -1056,12 +1072,13 @@ if __name__ == '__main__':
     print("********************************************************************")
     
     '''
-    '''
+    
     
     print("********************* LR TABLE ************************************")
     print("------> applicazione prior = 0.5")
     print_table_LR_minDCF(DTR,LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k)
     print()
+    '''
     print("------> applicazione con prior = 0.1")
     print_table_LR_minDCF(DTR,LTR, prior=0.1, cost_fn=1, cost_fp=1, k=k)
     print()
@@ -1171,9 +1188,9 @@ if __name__ == '__main__':
     print(GMM_choosing_hyperparams(DTR, LTR, k, covariance_type, 0.5, 1, 1))
     '''
     
-    
+    '''
     print_graphs_GMM_minDCF(DTR, LTR, k)
-    
+    '''
 
     ## COMPARISON BETWEEN ACT DCF AND MIN DCF OF THE CHOSEN MODELS
     '''

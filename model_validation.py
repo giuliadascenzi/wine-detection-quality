@@ -140,15 +140,25 @@ def k_cross_loglikelihoods(D,L, k, llr_calculator, otherParams):
     labels = numpy.concatenate(labels)
     return (llr, labels)
 
-def k_cross_DCF(D, L, k, llr_calculator, prior, cost_fn, cost_fp, otherParams=None):
-    llr, labels = k_cross_loglikelihoods(D,L,k, llr_calculator, otherParams)
+def k_cross_DCF(D, L, k, llr_calculator, prior, cost_fn, cost_fp, otherParams=None, eval_data=None):
+    if (eval_data!=None): 
+        DEV = eval_data[0]
+        labels= eval_data[1]
+        llr = llr_calculator(D, L, DEV, otherParams)
+    else :
+        llr, labels = k_cross_loglikelihoods(D,L,k, llr_calculator, otherParams)
+
     actDCF = compute_actual_DCF(llr, labels, prior , cost_fn, cost_fp)
     min_DCF,_,_,optimal_treshold =compute_minimum_detection_cost(llr, labels, prior , cost_fn, cost_fp)
     return (min_DCF, actDCF, optimal_treshold)
 
 
-def singleFold_DCF(D, L, llr_calculator, prior, cost_fn, cost_fp, otherParams=None):
+def singleFold_DCF(D, L, llr_calculator, prior, cost_fn, cost_fp, otherParams=None,  eval_data=None): #eval_data=[DTE,LTE]
     (DTR, LTR), (DTE,LTE)= split_db_2tol(D,L)
+    if (eval_data!=None):
+        DTE = eval_data[0]
+        LTE= eval_data[1]
+
     llr = llr_calculator (DTR,LTR,DTE, otherParams)
     actDCF = compute_actual_DCF(llr, LTE, prior , cost_fn, cost_fp)
     min_DCF,_,_,optimal_treshold =compute_minimum_detection_cost(llr, LTE, prior , cost_fn, cost_fp)
