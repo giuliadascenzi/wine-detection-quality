@@ -749,7 +749,9 @@ def print_table_RBF_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k): #TODO
     
 
       
-       
+
+
+
 def print_graphs_GMM_minDCF(DTR, LTR, k):
 
     def bar_plot_gmm(raw_minDCFs, gau_minDCFs, gmm_comp, title):
@@ -777,7 +779,7 @@ def print_graphs_GMM_minDCF(DTR, LTR, k):
 
 
     def GMM_compute_DCFs(DTR, LTR, k, covariance_type, prior, cost_fn, cost_fp):
-        gmm_comp = [1]
+        gmm_comp = [1,2,4,8,16,32]
 
         raw_minDCFs = []
         gau_minDCFs = []
@@ -796,11 +798,11 @@ def print_graphs_GMM_minDCF(DTR, LTR, k):
             print("-------> working on raw data, comp= ", gmm_comp[i])
             # Raw features
             raw_minDCFs_i,_,_ = model_evaluation.k_cross_DCF(normalized_features, LTR, k, gaussian_mixture_models.GMM_computeLogLikelihoodRatios, prior , cost_fn, cost_fp, params)
-            print("-------> DONE raw data")
+            print("RAW DATA, num components = " + str(gmm_comp[i]) + ", minDCF = " + str(raw_minDCFs_i) )
             # Gaussianized features
             print("-------> working on gauss data, comp= ", gmm_comp[i])
             gau_minDCFs_i,_,_ = model_evaluation.k_cross_DCF(gaussianizedFeatures, LTR,k, gaussian_mixture_models.GMM_computeLogLikelihoodRatios, prior , cost_fn, cost_fp, params)
-            print("-------> DONE gauss data")
+            print("GAUSS DATA, num components = " + str(gmm_comp[i]) + ", minDCF = " + str(gau_minDCFs_i) )
             raw_minDCFs.append(raw_minDCFs_i)
             gau_minDCFs.append(gau_minDCFs_i)    
         
