@@ -771,7 +771,7 @@ def print_graphs_GMM_minDCF(DTR, LTR, k):
         plt.xticks(x_ind ,gmm_comp)
         plt.ylabel('minDCFs')
         plt.xlabel('GMM components')
-        plt.legend()
+        plt.legend(loc="lower left")
 
         plt.savefig('Graph/GMM/'+title+'.png' )
 
