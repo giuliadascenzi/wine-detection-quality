@@ -777,7 +777,7 @@ def print_graphs_GMM_minDCF(DTR, LTR, k):
 
 
     def GMM_compute_DCFs(DTR, LTR, k, covariance_type, prior, cost_fn, cost_fp):
-        gmm_comp = [1,2,4,8]
+        gmm_comp = [1]
 
         raw_minDCFs = []
         gau_minDCFs = []
@@ -786,8 +786,8 @@ def print_graphs_GMM_minDCF(DTR, LTR, k):
         gaussianizedFeatures = gaussianization(DTR)
 
         constrained=True
-        psi=1
-        alpha=0.0001
+        psi=0.01
+        alpha=0.1
         delta_l=10**(-6)
     
         print("************************" + covariance_type + "*************************")
