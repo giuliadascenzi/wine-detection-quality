@@ -933,9 +933,14 @@ def GMM_choosing_hyperparams(DTR, LTR, k, covariance_type, prior, cost_fn, cost_
     gaussianizedFeatures = gaussianization(DTR)
 
     constrained=True
-    psi_s=[0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1, 10, 100, 1000]
-    alpha_s=[0.00001, 0.0001, 0.001, 0.01, 0.1, 1, 10, 100, 1000, 10000]
-    delta_l_s=[10**(-6), 10**(-7)]
+    #psi_s=[0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1, 10, 100, 1000]
+    #alpha_s=[0.00001, 0.0001, 0.001, 0.01, 0.1, 1, 10, 100, 1000, 10000]
+    #delta_l_s=[10**(-6), 10**(-7)]
+
+    psi_s = [0.01]
+    alpha_s = [0.1]
+    delta_l_s = [10**-6]
+
 
     optimal_result = []
     
@@ -1135,12 +1140,12 @@ if __name__ == '__main__':
     
     
 
-    
+    '''
     #### Full Cov
     covariance_type = "Full"
     print( GMM_choosing_hyperparams(DTR, LTR, k, covariance_type, 0.5, 1, 1))
 
-    '''
+    
     #### Diagonal Cov
     covariance_type = "Diagonal"
     print(GMM_choosing_hyperparams(DTR, LTR, k, covariance_type, 0.5, 1, 1))
@@ -1154,9 +1159,9 @@ if __name__ == '__main__':
     print(GMM_choosing_hyperparams(DTR, LTR, k, covariance_type, 0.5, 1, 1))
     '''
     
-    '''
+    
     print_graphs_GMM_minDCF(DTR, LTR, k)
-    '''
+    
 
     ## COMPARISON BETWEEN ACT DCF AND MIN DCF OF THE CHOSEN MODELS
     '''

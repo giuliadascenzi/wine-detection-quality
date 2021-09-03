@@ -34,11 +34,13 @@ def logpdf_GAU_ND(x, mu, C):
 def logpdf_GMM(X, GMM):
     #x = samples, matrix of shape (D=size of a sample, N= number of samples)
     # gmm = [(w1,mu1, C1), (w2,mu2,C2),...]
-    S= compute_matrix_sub_class_log_conditional_densities(X,GMM)
-    logdens = scipy.special.logsumexp(S, axis=0) #shape(N,), the i-th component contains the log density for sample xi
-    return logdens
+    S= compute_joint_log_densities(X,GMM)
+    
+    #compute log marginal log density
+    marginal_logdens = scipy.special.logsumexp(S, axis=0) #shape(N,), the i-th component contains the log density for sample xi
+    return marginal_logdens
 
-def compute_matrix_sub_class_log_conditional_densities(X, gmm):
+def compute_joint_log_densities(X, gmm):
     N_samples = X.shape[1]
     M_components= len(gmm)
     S = numpy.zeros((M_components, N_samples))
@@ -62,7 +64,7 @@ def compute_EM_algorithm(X, initial_GMM, threshold = 10**(-6), constrained=False
 
     while(True):
         # E STEP
-        joint_log_densities = compute_matrix_sub_class_log_conditional_densities(X, estimated_gmm) #matrix S (num_gmm,num_data)
+        joint_log_densities = compute_joint_log_densities(X, estimated_gmm) #matrix S (num_gmm,num_data)
         marginal_log_densities = logpdf_GMM(X, estimated_gmm) # (num_data,)
         log_posterior_distribution= joint_log_densities - marginal_log_densities
         posterior_distributions = numpy.exp(log_posterior_distribution) # responsabilities (1 for each component and for each sample = num_gmm x num_samples)
@@ -124,7 +126,7 @@ def compute_EM_algorithm(X, initial_GMM, threshold = 10**(-6), constrained=False
 
 def compute_LBG_algorithm(X, number_components, constrained=False , psi=-1, covariance_type="Full", alpha=0.1, delta_l=10**(-6)):
 
-    x = numpy.sort(X)
+    x = X
     mean = x.mean(1).reshape((x.shape[0], 1))
 
     X_centered = x - mean
@@ -185,7 +187,7 @@ def GMM_computeLogLikelihoodRatios(DTR, LTR, DTE, otherParams): #otherparams= [c
         gmm_classes.append(compute_LBG_algorithm(data, number_components= number_components, constrained=constrained, psi=psi, covariance_type= covariance_type,alpha= alpha, delta_l=delta_l))
         log_class_conditional_distribution[i,:]=mrow(logpdf_GMM(GMM=gmm_classes[i], X= DTE))
      
-    llr = log_class_conditional_distribution[1,:]- log_class_conditional_distribution[0,:]
+    llr = log_class_conditional_distribution[1,:] - log_class_conditional_distribution[0,:]
     return llr #loglikelihoodRatio
     
 
