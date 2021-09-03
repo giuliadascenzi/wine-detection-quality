@@ -247,6 +247,32 @@ loglam = 0, C=1, 0.5
 
 
 
+|                                     | prior=0.5   | prior=0.1   | prior=0.9   |
+| ----------------------------------- | ----------- | ----------- | ----------- |
+| **Raw Features**                    | ----------- | ----------- | ----------- |
+| RBF SVM, C=1, lam=1, pi_T =0.5      | 0.241       | 0.619       | 0.537       |
+| RBF SVM, C=1, lam=1, pi_T =0.1      | 0.380       | 0.709       | 0.541       |
+| RBF SVM, C=1, lam=1, pi_T =0.9      | 0.304       | 0.592       | 0.587       |
+| RBF SVM, C=1, lam=1, pi_T =pi_emp_T | 0.250       | 0.641       | 0.522       |
+| **Gaussianized features**           | ----------- | ----------- | ----------- |
+| RBF SVM, C=1, lam=1, pi_T =0.5      | 0.248       | 0.610       | 0.542       |
+| RBF SVM, C=1, lam=1, pi_T =0.1      | 0.360       | 0.646       | 0.557       |
+| RBF SVM, C=1, lam=1, pi_T =0.9      | 0.284       | 0.597       | 0.567       |
+| RBF SVM, C=1, lam=1, pi_T =pi_emp_T | 0.261       | 0.605       | 0.544       |
+
+|                                       | prior=0.5   | prior=0.1   | prior=0.9   |
+| ------------------------------------- | ----------- | ----------- | ----------- |
+| **Raw Features**                      | ----------- | ----------- | ----------- |
+| RBF SVM, C=0.5, lam=1, pi_T =0.5      | 0.243       | 0.690       | 0.590       |
+| RBF SVM, C=0.5, lam=1, pi_T =0.1      | 0.443       | 0.785       | 0.623       |
+| RBF SVM, C=0.5, lam=1, pi_T =0.9      | 0.343       | 0.599       | 0.630       |
+| RBF SVM, C=0.5, lam=1, pi_T =pi_emp_T | 0.261       | 0.725       | 0.584       |
+| **Gaussianized features**             | ----------- | ----------- | ----------- |
+| RBF SVM, C=0.5, lam=1, pi_T =0.5      | 0.234       | 0.623       | 0.566       |
+| RBF SVM, C=0.5, lam=1, pi_T =0.1      | 0.397       | 0.699       | 0.627       |
+| RBF SVM, C=0.5, lam=1, pi_T =0.9      | 0.334       | 0.546       | 0.588       |
+| RBF SVM, C=0.5, lam=1, pi_T =pi_emp_T | 0.265       | 0.659       | 0.575       |
+
 ## *GMM
 
 | <img src="Graph\GMM\GMM_Full_covariance.png" style="zoom:60%;" /> | <img src="Graph\GMM\GMM_Tied_covariance.png" style="zoom:60%;" /> |
