@@ -4,7 +4,7 @@ import dimensionality_reduction_techniques as redTec
 import numpy
 import scipy.stats
 import MVGclassifiers
-import model_evaluation
+import model_validation
 import probability as prob
 import logisticRegression
 import matplotlib.pyplot as plt
@@ -63,27 +63,27 @@ def print_table_MVG_classifiers_minDCF(DTR, prior, cost_fn, cost_fp, k):
 
     def MVG_Classifiers_minDCF(data):
         #Full_Cov 
-        min_DCF_MVG,_ = model_evaluation.singleFold_DCF(data, LTR, MVGclassifiers.MVG_logLikelihoodRatios, prior , cost_fn, cost_fp)
+        min_DCF_MVG,_ = model_validation.singleFold_DCF(data, LTR, MVGclassifiers.MVG_logLikelihoodRatios, prior , cost_fn, cost_fp)
         print("[Single Fold] -  MVG: ",min_DCF_MVG)  
-        min_DCF_MVG,_,_ = model_evaluation.k_cross_DCF(data, LTR, k, MVGclassifiers.MVG_logLikelihoodRatios, prior , cost_fn, cost_fp)
+        min_DCF_MVG,_,_ = model_validation.k_cross_DCF(data, LTR, k, MVGclassifiers.MVG_logLikelihoodRatios, prior , cost_fn, cost_fp)
         print("[5-Folds]  -  MVG: ",min_DCF_MVG)  
 
         #Diag_Cov == Naive
-        min_DCF_Diag_Cov,_ = model_evaluation.singleFold_DCF(data, LTR, MVGclassifiers.NAIVE_logLikelihoodRatios, prior , cost_fn, cost_fp)
+        min_DCF_Diag_Cov,_ = model_validation.singleFold_DCF(data, LTR, MVGclassifiers.NAIVE_logLikelihoodRatios, prior , cost_fn, cost_fp)
         print("[Single Fold]  - MVG with Diag cov: ",min_DCF_Diag_Cov)
-        min_DCF_Diag_Cov,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, MVGclassifiers.NAIVE_logLikelihoodRatios, prior , cost_fn, cost_fp)
+        min_DCF_Diag_Cov,_,_ = model_validation.k_cross_DCF(data, LTR,k, MVGclassifiers.NAIVE_logLikelihoodRatios, prior , cost_fn, cost_fp)
         print("[5- Fold] - MVG with Diag cov: ",min_DCF_Diag_Cov)
 
         #Tied
-        min_DCF_Tied,_ = model_evaluation.singleFold_DCF(data, LTR, MVGclassifiers.TIED_logLikelihoodRatios, prior , cost_fn, cost_fp)
+        min_DCF_Tied,_ = model_validation.singleFold_DCF(data, LTR, MVGclassifiers.TIED_logLikelihoodRatios, prior , cost_fn, cost_fp)
         print("[Single Fold] - Tied MVG: ",min_DCF_Tied)
-        min_DCF_Tied,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, MVGclassifiers.TIED_logLikelihoodRatios, prior , cost_fn, cost_fp)
+        min_DCF_Tied,_,_ = model_validation.k_cross_DCF(data, LTR,k, MVGclassifiers.TIED_logLikelihoodRatios, prior , cost_fn, cost_fp)
         print("[5- Fold] - Tied MVG: ",min_DCF_Tied)
 
         #Tied Diag_Cov
-        min_DCF_Tied_Diag_Cov,_ = model_evaluation.singleFold_DCF(data, LTR, MVGclassifiers.TIED_DIAG_COV_logLikelihoodRatios, prior , cost_fn, cost_fp)
+        min_DCF_Tied_Diag_Cov,_ = model_validation.singleFold_DCF(data, LTR, MVGclassifiers.TIED_DIAG_COV_logLikelihoodRatios, prior , cost_fn, cost_fp)
         print("[Single Fold] - Tied MVG with Diag Cov: ",min_DCF_Tied_Diag_Cov)
-        min_DCF_Tied_Diag_Cov,_,_ = model_evaluation.k_cross_DCF(data, LTR, k,  MVGclassifiers.TIED_DIAG_COV_logLikelihoodRatios, prior , cost_fn, cost_fp)
+        min_DCF_Tied_Diag_Cov,_,_ = model_validation.k_cross_DCF(data, LTR, k,  MVGclassifiers.TIED_DIAG_COV_logLikelihoodRatios, prior , cost_fn, cost_fp)
         print("[5 Fold] - Tied MVG with Diag Cov: ",min_DCF_Tied_Diag_Cov)
 
         print()
@@ -137,15 +137,15 @@ def print_table_LR_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
             
             lam = 10**(-7)
             pi_T = 0.5
-            min_DCF_LR,_,_ = model_evaluation.k_cross_DCF(data, LTR, k, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
+            min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
             print("[5-Folds]  -  lam = 10^-7, pi_T = 0.5: ",min_DCF_LR)  
 
             pi_T = 0.1
-            min_DCF_LR,_,_ = model_evaluation.k_cross_DCF(data, LTR, k, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
+            min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
             print("[5-Folds]  -  lam = 10^-7, pi_T = 0.1: ",min_DCF_LR)
 
             pi_T = 0.9
-            min_DCF_LR,_,_ = model_evaluation.k_cross_DCF(data, LTR, k, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
+            min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
             print("[5-Folds]  -  lam = 10^-7, pi_T = 0.9: ",min_DCF_LR)
             
 
@@ -155,7 +155,7 @@ def print_table_LR_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
 
             pi_T = pi_emp_T
             
-            min_DCF_LR,_,_ = model_evaluation.k_cross_DCF(data, LTR, k, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
+            min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
             print("[5-Folds]  -  lam = 10^-7, pi_T = pi_emp_T: ",min_DCF_LR)
 
             print()
@@ -181,7 +181,7 @@ def print_graphs_LR_lambdas(DTR, LTR,  k):
         minDCFs = 0 * exps
         for i in range (lambdas.size):
             lam= lambdas[i]
-            minDCFs[i],_ = model_evaluation.singleFold_DCF(data, LTR, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
+            minDCFs[i],_ = model_validation.singleFold_DCF(data, LTR, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
         
         lb = "minDCF (prior="+ str(prior)+ " )"
         print("DONE")
@@ -197,7 +197,7 @@ def print_graphs_LR_lambdas(DTR, LTR,  k):
         k=5
         for i in range (lambdas.size):
             lam= lambdas[i]
-            minDCFs[i],_,_ = model_evaluation.k_cross_DCF(data, LTR,k, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
+            minDCFs[i],_,_ = model_validation.k_cross_DCF(data, LTR,k, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
         
         lb = "minDCF (prior="+ str(prior)+ " )"
         print("DONE")
@@ -270,7 +270,7 @@ def print_graphs_quadratic_LR_lambdas(DTR, LTR,  k):
         minDCFs = 0 * exps
         for i in range (lambdas.size):
             lam= lambdas[i]
-            minDCFs[i],_ = model_evaluation.singleFold_DCF(data, LTR, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
+            minDCFs[i],_ = model_validation.singleFold_DCF(data, LTR, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
         
         lb = "minDCF (prior="+ str(prior)+ " )"
         print("DONE")
@@ -286,7 +286,7 @@ def print_graphs_quadratic_LR_lambdas(DTR, LTR,  k):
         k=5
         for i in range (lambdas.size):
             lam= lambdas[i]
-            minDCFs[i],_,_ = model_evaluation.k_cross_DCF(data, LTR,k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
+            minDCFs[i],_,_ = model_validation.k_cross_DCF(data, LTR,k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
         
         lb = "minDCF (prior="+ str(prior)+ " )"
         print("DONE")
@@ -354,15 +354,15 @@ def print_table_Quadratic_LR_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
             lam = 10**(-7)
             '''
             pi_T = 0.5
-            min_DCF_LR,_,_ = model_evaluation.k_cross_DCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
+            min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
             print("[5-Folds]  -  lam = 10^-7, pi_T = 0.5: ",min_DCF_LR)  
 
             pi_T = 0.1
-            min_DCF_LR,_,_ = model_evaluation.k_cross_DCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
+            min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
             print("[5-Folds]  -  lam = 10^-7, pi_T = 0.1: ",min_DCF_LR)
 
             pi_T = 0.9
-            min_DCF_LR,_,_ = model_evaluation.k_cross_DCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
+            min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
             print("[5-Folds]  -  lam = 10^-7, pi_T = 0.9: ",min_DCF_LR)
             '''
 
@@ -371,7 +371,7 @@ def print_table_Quadratic_LR_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
             pi_emp_T = n_T / N
 
             pi_T = pi_emp_T
-            min_DCF_LR,_,_ = model_evaluation.k_cross_DCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
+            min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
             print("[5-Folds]  -  lam = 10^-7, pi_T = pi_emp_T: ",min_DCF_LR)
             
             print()
@@ -398,7 +398,7 @@ def print_graphs_SVM_Cs(DTR, LTR, k ):
         minDCFs = 0 * exps
         for i in range (Cs.size):
             C= Cs[i]
-            minDCFs[i],_ = model_evaluation.singleFold_DCF(data, LTR, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
+            minDCFs[i],_ = model_validation.singleFold_DCF(data, LTR, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
         
         lb = "minDCF (prior="+ str(prior) +")"
         plt.plot(Cs, minDCFs, label=lb)
@@ -412,7 +412,7 @@ def print_graphs_SVM_Cs(DTR, LTR, k ):
         minDCFs = 0 * exps
         for i in range (Cs.size):
             C= Cs[i]
-            minDCFs[i],_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
+            minDCFs[i],_,_ = model_validation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
         
         lb = "minDCF (prior="+ str(prior) +")"
         plt.plot(Cs, minDCFs, label=lb)
@@ -473,23 +473,23 @@ def print_table_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
             
             C = 0.1
             pi_T = 0.5
-            minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
+            minDCF,_,_ = model_validation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
             print("[5-Folds]  -  C= 0.1, pi_T=0.5: ",minDCF)  
 
             C = 0.1
             pi_T = 0.1
-            minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
+            minDCF,_,_ = model_validation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
             print("[5-Folds]  -  C= 0.1, pi_T=0.1: ",minDCF)
 
             C = 0.1
             pi_T = 0.9
-            minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
+            minDCF,_,_ = model_validation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
             print("[5-Folds]  -  C= 0.1, pi_T=0.9: ",minDCF)
 
             #unbalanced application
             C = 0.1
             pi_T = -1
-            minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
+            minDCF,_,_ = model_validation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
             print("[5-Folds]  -  C= 0.1, pi_T=pi_emp_T: ",minDCF)
 
             print()
@@ -514,7 +514,7 @@ def print_graphs_Polinomial_SVM_Cs_k_c(DTR, LTR, k ):
         minDCFs = 0 * exps
         for i in range (Cs.size):
             C= Cs[i]
-            minDCFs[i],_,_ = model_evaluation.singleFold_DCF(data, LTR, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, c, K])
+            minDCFs[i],_,_ = model_validation.singleFold_DCF(data, LTR, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, c, K])
         
         lb = "minDCF (k="+ str(K) +" c= "+ str(c)+ ")"
         plt.plot(Cs, minDCFs, label=lb)
@@ -528,7 +528,7 @@ def print_graphs_Polinomial_SVM_Cs_k_c(DTR, LTR, k ):
         minDCFs = 0 * exps
         for i in range (Cs.size):
             C= Cs[i]
-            minDCFs[i],_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, c, K])
+            minDCFs[i],_,_ = model_validation.k_cross_DCF(data, LTR,k, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, c, K])
         
         lb = "minDCF (k="+ str(K) +" c= "+ str(c)+ ")"
         plt.plot(Cs, minDCFs, label=lb)
@@ -599,17 +599,17 @@ def print_table_Quadratic_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k): #TOD
     def quadratic_SVM_minDCF(data, C, c, K):
         
         pi_T = 0.5
-        minDCF,_,_ = model_evaluation.singleFold_DCF(data, LTR, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, c, K])
+        minDCF,_,_ = model_validation.singleFold_DCF(data, LTR, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, c, K])
         print("[5-Folds]  -  C= ", C, ", pi_T=0.5, c= ", c, " k = ",K ,"  : ",minDCF)  
 
         
         pi_T = 0.1
-        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, c, K])
+        minDCF,_,_ = model_validation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, c, K])
         print("[5-Folds]  -  C= ", C, ", pi_T=0.1, c= ", c, " k = ",K ,"  : ",minDCF)
 
         
         pi_T = 0.9
-        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, c, K])
+        minDCF,_,_ = model_validation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, c, K])
         print("[5-Folds]  -  C= ", C, ", pi_T=0.9, c= ", c, " k = ",K, "  : ",minDCF)
 
 
@@ -620,7 +620,7 @@ def print_table_Quadratic_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k): #TOD
         pi_emp_T = n_T / N
 
         pi_T = pi_emp_T
-        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp,[pi_T, C, c, K])
+        minDCF,_,_ = model_validation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp,[pi_T, C, c, K])
         print("[5-Folds]  - C= ", C, ", pi_T=pi_emp_T, c= ", c, " k = ",K , "  : ",minDCF)
 
 
@@ -657,7 +657,7 @@ def print_graphs_RBF_SVM_Cs(DTR, LTR, k):
         minDCFs = 0 * exps
         for i in range (Cs.size):
             C= Cs[i]
-            minDCFs[i],_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.RBF_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, 10**loglam])
+            minDCFs[i],_,_ = model_validation.k_cross_DCF(data, LTR,k, SVMClassifier.RBF_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, 10**loglam])
         
         lb = " (log(lam)="+ str(loglam) +")"
         plt.plot(Cs, minDCFs, label=lb)
@@ -698,17 +698,17 @@ def print_table_RBF_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k): #TODO
     def RBF_SVM_minDCF(data, C, loglam):
         
         pi_T = 0.5
-        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.RBF_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, 10**loglam])
+        minDCF,_,_ = model_validation.k_cross_DCF(data, LTR,k, SVMClassifier.RBF_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, 10**loglam])
         print("[5-Folds]  -  C= ", C, ", loglam= ", loglam, " pi_T=0.5: ",minDCF)   
 
         
         pi_T = 0.1
-        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.RBF_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, 10**loglam])
+        minDCF,_,_ = model_validation.k_cross_DCF(data, LTR,k, SVMClassifier.RBF_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, 10**loglam])
         print("[5-Folds]  -  C= ", C, ", loglam= ", loglam, " pi_T=0.1: ",minDCF)   
 
         
         pi_T = 0.9
-        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.RBF_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, 10**loglam])
+        minDCF,_,_ = model_validation.k_cross_DCF(data, LTR,k, SVMClassifier.RBF_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, 10**loglam])
         print("[5-Folds]  -  C= ", C, ", loglam= ", loglam, " pi_T=0.9: ",minDCF)   
 
 
@@ -719,7 +719,7 @@ def print_table_RBF_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k): #TODO
         pi_emp_T = n_T / N
 
         pi_T = pi_emp_T
-        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.RBF_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, 10**loglam])
+        minDCF,_,_ = model_validation.k_cross_DCF(data, LTR,k, SVMClassifier.RBF_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, 10**loglam])
         print("[5-Folds]  -  C= ", C, ", loglam= ", loglam, " pi_T=pi_emp_T: ",minDCF)   
 
 
@@ -797,14 +797,15 @@ def print_graphs_GMM_minDCF(DTR, LTR, k):
             params = [constrained, psi, covariance_type, alpha, gmm_comp[i],delta_l]
             print("-------> working on raw data, comp= ", gmm_comp[i])
             # Raw features
-            raw_minDCFs_i,_,_ = model_evaluation.k_cross_DCF(normalized_features, LTR, k, gaussian_mixture_models.GMM_computeLogLikelihoodRatios, prior , cost_fn, cost_fp, params)
+            raw_minDCFs_i,_,_ = model_validation.k_cross_DCF(normalized_features, LTR, k, gaussian_mixture_models.GMM_computeLogLikelihoodRatios, prior , cost_fn, cost_fp, params)
             print("RAW DATA, num components = " + str(gmm_comp[i]) + ", minDCF = " + str(raw_minDCFs_i) )
             # Gaussianized features
             print("-------> working on gauss data, comp= ", gmm_comp[i])
-            gau_minDCFs_i,_,_ = model_evaluation.k_cross_DCF(gaussianizedFeatures, LTR,k, gaussian_mixture_models.GMM_computeLogLikelihoodRatios, prior , cost_fn, cost_fp, params)
+            gau_minDCFs_i,_,_ = model_validation.k_cross_DCF(gaussianizedFeatures, LTR,k, gaussian_mixture_models.GMM_computeLogLikelihoodRatios, prior , cost_fn, cost_fp, params)
             print("GAUSS DATA, num components = " + str(gmm_comp[i]) + ", minDCF = " + str(gau_minDCFs_i) )
             raw_minDCFs.append(raw_minDCFs_i)
-            gau_minDCFs.append(gau_minDCFs_i)    
+            gau_minDCFs.append(gau_minDCFs_i)
+            print()    
         
         raw_minDCFs=numpy.array(raw_minDCFs)
         gau_minDCFs=numpy.array(gau_minDCFs)
@@ -846,19 +847,19 @@ def print_table_comparison_DCFs(DTR, LTR, k):
             prior=0.5
             cost_fn=1
             cost_fp=1
-            min_DCF_LR,act_DCF_LR,_ = model_evaluation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params)
+            min_DCF_LR,act_DCF_LR,_ = model_validation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params)
             print("[5-Folds]  -  prior= 0.5  minDCF: ",min_DCF_LR, " actDCF= ",act_DCF_LR)  
 
             prior=0.1
             cost_fn=1
             cost_fp=1
-            min_DCF_LR,act_DCF_LR,_ = model_evaluation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params)
+            min_DCF_LR,act_DCF_LR,_ = model_validation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params)
             print("[5-Folds]  -  prior= 0.1  minDCF: ",min_DCF_LR, " actDCF= ",act_DCF_LR) 
 
             prior=0.9
             cost_fn=1
             cost_fp=1
-            min_DCF_LR,act_DCF_LR,_,_ = model_evaluation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params)
+            min_DCF_LR,act_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params)
             print("[5-Folds]  -  prior= 0.9  minDCF: ",min_DCF_LR, " actDCF= ",act_DCF_LR) 
 
             print()
@@ -882,7 +883,7 @@ def print_err_bayes_plots(data, L, k, llr_calculators, other_params, titles, col
     plt.ylabel("DCF")
     for i in range (len(llr_calculators)):
         print("Working on calculator "+ str(i))
-        model_evaluation.bayes_error_plot(data[i], L, k, llr_calculators[i], other_params[i], titles[i], colors[i] )
+        model_validation.bayes_error_plot(data[i], L, k, llr_calculators[i], other_params[i], titles[i], colors[i] )
         print("DONE")
     plt.savefig('Graph/Error_Bayes_Plots/EBP1.png' )
 
@@ -890,7 +891,7 @@ def print_err_bayes_plots(data, L, k, llr_calculators, other_params, titles, col
 def compute_DCF_with_optimal_treshold(D, L, k, llr_calculator, otherParams, prior, cost_fn, cost_fp ):
                 
     #1st: calculate the loglikelihood ratios using k-cross method
-    llr, labels = model_evaluation.k_cross_loglikelihoods(D, L, k, llr_calculator, otherParams)
+    llr, labels = model_validation.k_cross_loglikelihoods(D, L, k, llr_calculator, otherParams)
     
     #2nd: shuffle the loglikelihood ratios = scores
     num_scores = llr.size
@@ -905,21 +906,21 @@ def compute_DCF_with_optimal_treshold(D, L, k, llr_calculator, otherParams, prio
     labels2 = labels[int(num_scores/2):]
 
     #minDCF 
-    minDCF,_,_,optimal_treshold = model_evaluation.compute_minimum_detection_cost(llr1, labels1, prior , cost_fn, cost_fp)
+    minDCF,_,_,optimal_treshold = model_validation.compute_minimum_detection_cost(llr1, labels1, prior , cost_fn, cost_fp)
 
     predicted_labels = 1*(llr2 > optimal_treshold)
 
-    conf_matrix=model_evaluation.compute_confusion_matrix(predicted_labels, labels2, numpy.unique(labels2).size )
-    br= model_evaluation.compute_bayes_risk(conf_matrix, prior, cost_fn, cost_fp)
+    conf_matrix=model_validation.compute_confusion_matrix(predicted_labels, labels2, numpy.unique(labels2).size )
+    br= model_validation.compute_bayes_risk(conf_matrix, prior, cost_fn, cost_fp)
 
     #nbr is the DCF obtained with the estimated optimal treshold
-    nbr= model_evaluation.compute_normalized_bayes_risk(br, prior, cost_fn, cost_fp)
+    nbr= model_validation.compute_normalized_bayes_risk(br, prior, cost_fn, cost_fp)
     
     #actual DCF done with theoretical optimal treshold
-    actDCF = model_evaluation.compute_actual_DCF(llr2, labels2, prior , cost_fn, cost_fp)
+    actDCF = model_validation.compute_actual_DCF(llr2, labels2, prior , cost_fn, cost_fp)
 
     #minDCF 
-    minDCF,_,_,_ = model_evaluation.compute_minimum_detection_cost(llr2, labels2, prior , cost_fn, cost_fp)
+    minDCF,_,_,_ = model_validation.compute_minimum_detection_cost(llr2, labels2, prior , cost_fn, cost_fp)
 
 
     return (minDCF, actDCF, nbr, optimal_treshold) 
@@ -963,9 +964,9 @@ def GMM_choosing_hyperparams(DTR, LTR, k, covariance_type, prior, cost_fn, cost_
     
                 params = [constrained, psi, covariance_type, alpha, gmm_comp ,delta_l]
                 # Raw features
-                raw_minDCFs_i,_,_ = model_evaluation.k_cross_DCF(normalized_features, LTR, k, gaussian_mixture_models.GMM_computeLogLikelihoodRatios, prior , cost_fn, cost_fp, params)
+                raw_minDCFs_i,_,_ = model_validation.k_cross_DCF(normalized_features, LTR, k, gaussian_mixture_models.GMM_computeLogLikelihoodRatios, prior , cost_fn, cost_fp, params)
                 # Gaussianized features
-                gau_minDCFs_i,_,_ = model_evaluation.k_cross_DCF(gaussianizedFeatures, LTR,k, gaussian_mixture_models.GMM_computeLogLikelihoodRatios, prior , cost_fn, cost_fp, params)
+                gau_minDCFs_i,_,_ = model_validation.k_cross_DCF(gaussianizedFeatures, LTR,k, gaussian_mixture_models.GMM_computeLogLikelihoodRatios, prior , cost_fn, cost_fp, params)
                 
                 print("psi: " + str(psi) + ", alpha: " + str(alpha) + ", delta_l: " + str(delta_l) + " -----> " + "RAW: " + str(raw_minDCFs_i))
                 print("psi: " + str(psi) + ", alpha: " + str(alpha) + ", delta_l: " + str(delta_l) + " -----> " + "GAU: " + str(gau_minDCFs_i))
