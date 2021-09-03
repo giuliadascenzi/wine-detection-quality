@@ -243,6 +243,10 @@ K=1, c=1, C=0.1
 | <img src="Graph\SVM\RBF\5FoldRAW.png" style="zoom:60%;" /> | <img src="Graph\SVM\RBF\5FoldGauss.png" style="zoom:60%;" /> |
 | ---------------------------------------------------------- | ------------------------------------------------------------ |
 
+loglam = 0, C=1, 0.5
+
+
+
 ## *GMM
 
 | <img src="Graph\GMM\GMM_Full_covariance.png" style="zoom:60%;" /> | <img src="Graph\GMM\GMM_Tied_covariance.png" style="zoom:60%;" /> |

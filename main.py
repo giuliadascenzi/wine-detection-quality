@@ -738,7 +738,7 @@ def print_table_RBF_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k): #TODO
 
         #--------------- GAUSSIANIZED FEATURES-------------------------
         print("*** minDCF - GAUSSIANIZED FEATURES  ***")
-        RBF_SVM_minDCF(gaussianizedFeatures ,C=C, loglam=lgolam)
+        RBF_SVM_minDCF(gaussianizedFeatures ,C=C, loglam=loglam)
 
 
         print("************************************************")
@@ -1129,7 +1129,7 @@ if __name__ == '__main__':
     '''
 
     
-    
+    '''
     print("********************* RBF SVM TABLES ************************************")
     print("------> applicazione con prior = 0.5")
     print_table_RBF_SVM_minDCF(DTR, LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k )
@@ -1138,6 +1138,7 @@ if __name__ == '__main__':
     print("------> applicazione con prior = 0.1")
     print_table_RBF_SVM_minDCF(DTR, LTR, prior=0.1, cost_fn=1, cost_fp=1, k=k )
     print("********************************************************************")
+    '''
     '''
     ### GMM
 
