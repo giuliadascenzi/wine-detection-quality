@@ -694,50 +694,60 @@ def print_graphs_RBF_SVM_Cs(DTR, LTR, k):
 
 def print_table_RBF_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k): #TODO
 
-    def RBF_SVM_minDCF(data):
-        C = 0.1
+
+    def RBF_SVM_minDCF(data, C, loglam):
+        
         pi_T = 0.5
-        loglam= 0
         minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.RBF_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, 10**loglam])
-        print("[5-Folds]  -  C= 0.1, pi_T=0.5: ",minDCF)  
+        print("[5-Folds]  -  C= ", C, ", loglam= ", loglam, " pi_T=0.5: ",minDCF)   
 
-        C = 0.1
+        
         pi_T = 0.1
-        loglam=0
-        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
-        print("[5-Folds]  -  C= 0.1, pi_T=0.1: ",minDCF)
+        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.RBF_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, 10**loglam])
+        print("[5-Folds]  -  C= ", C, ", loglam= ", loglam, " pi_T=0.1: ",minDCF)   
 
-        C = 0.1
+        
         pi_T = 0.9
-        loglam= 0
-        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
-        print("[5-Folds]  -  C= 0.1, pi_T=0.9: ",minDCF)
+        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.RBF_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, 10**loglam])
+        print("[5-Folds]  -  C= ", C, ", loglam= ", loglam, " pi_T=0.9: ",minDCF)   
 
 
-        C = 0.1
-
+        
         N = LTR.size #tot number of samples
         n_T = (1*(LTR==1)).sum() #num of samples belonging to the true class
         n_F = (1*(LTR==0)).sum() #num of samples belonging to the false class
         pi_emp_T = n_T / N
 
         pi_T = pi_emp_T
-        loglam= 0
-        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
-        print("[5-Folds]  -  C= 0.1, pi_T=pi_emp_T: ",minDCF)
+        minDCF,_,_ = model_evaluation.k_cross_DCF(data, LTR,k, SVMClassifier.RBF_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, 10**loglam])
+        print("[5-Folds]  -  C= ", C, ", loglam= ", loglam, " pi_T=pi_emp_T: ",minDCF)   
+
 
         print()
 
+    def fun_parametri(C,loglam):
+        gaussianizedFeatures = gaussianization(DTR)
+        normalizedFeatures = Z_normalization(DTR)
+        
+        
+        print("PARAMETRI: (C = " + str(C) + " loglam= "+ str(loglam)+ ")") 
+
+        #------------------------RAW FEATURES -----------------
+        print("*** minDCF - RAW FEATURES ***")
+        RBF_SVM_minDCF(normalizedFeatures, C=C, loglam=loglam)
+
+        #--------------- GAUSSIANIZED FEATURES-------------------------
+        print("*** minDCF - GAUSSIANIZED FEATURES  ***")
+        RBF_SVM_minDCF(gaussianizedFeatures ,C=C, loglam=loglam)
+
+
+        print("************************************************")
     
-    #------------------------RAW FEATURES -----------------
-    print("*** minDCF - RAW FEATURES ***")
-    RBF_SVM_minDCF(Z_normalization(DTR))
+    fun_parametri(1,0)
+    fun_parametri(0.5,0)
 
-    #--------------- GAUSSIANIZED FEATURES-------------------------
-    gaussianizedFeatures = gaussianization(DTR)
+    
 
-    print("*** minDCF - GAUSSIANIZED FEATURES  ***")
-    RBF_SVM_minDCF(gaussianizedFeatures)
       
        
 def print_graphs_GMM_minDCF(DTR, LTR, k):
@@ -1123,8 +1133,8 @@ if __name__ == '__main__':
     print("********************************************************************")
     '''
 
+    
     '''
-    #TODO 
     print("********************* RBF SVM TABLES ************************************")
     print("------> applicazione con prior = 0.5")
     print_table_RBF_SVM_minDCF(DTR, LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k )
@@ -1134,8 +1144,8 @@ if __name__ == '__main__':
     print_table_RBF_SVM_minDCF(DTR, LTR, prior=0.1, cost_fn=1, cost_fp=1, k=k )
     print("********************************************************************")
     '''
+    
     ### GMM
-
     
     
     
@@ -1145,7 +1155,6 @@ if __name__ == '__main__':
     covariance_type = "Full"
     print( GMM_choosing_hyperparams(DTR, LTR, k, covariance_type, 0.5, 1, 1))
 
-    
     #### Diagonal Cov
     covariance_type = "Diagonal"
     print(GMM_choosing_hyperparams(DTR, LTR, k, covariance_type, 0.5, 1, 1))
@@ -1166,9 +1175,9 @@ if __name__ == '__main__':
     ## COMPARISON BETWEEN ACT DCF AND MIN DCF OF THE CHOSEN MODELS
     '''
     print_table_comparison_DCFs(DTR, LTR, k=k)
-    '''
+    
     #error bayes plot
-    '''
+    
     lam = 10**(-7)
     pi_T = 0.1
     data = [Z_normalization(DTR), gaussianization(DTR)]
@@ -1177,8 +1186,8 @@ if __name__ == '__main__':
     titles = ["Quad Log reg", "MVG Full cov"]
     colors = ["r", "b"]
     print_err_bayes_plots(data, LTR, k, llr_calculators, other_params, titles, colors)
-    '''
-    '''
+    
+    
     lam = 10**(-7)
     pi_T = 0.1
 
