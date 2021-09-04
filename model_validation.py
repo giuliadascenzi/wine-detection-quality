@@ -1,5 +1,7 @@
 import numpy
 import matplotlib.pyplot as plt
+from numpy.random import permutation
+
 
 def mcol(v):
     return v.reshape((v.size, 1))
@@ -188,3 +190,40 @@ def bayes_error_plot(D, L, k, llr_calculator, otherParams, title, color ):
     plt.xlim([-3,3])
     plt.legend()
     
+
+def compute_DCF_with_optimal_treshold(D, L, k, llr_calculator, otherParams, prior, cost_fn, cost_fp ):
+                
+    #1st: calculate the loglikelihood ratios using k-cross method
+    llr, labels = k_cross_loglikelihoods(D, L, k, llr_calculator, otherParams)
+    
+    #2nd: shuffle the loglikelihood ratios = scores
+    num_scores = llr.size
+    perm = permutation(num_scores)
+    llr = llr[perm]
+    labels = labels[perm]
+
+    llr1 = llr[:int(num_scores/2)]
+    llr2 = llr[int(num_scores/2):]
+
+    labels1 = labels[: int(num_scores/2)]
+    labels2 = labels[int(num_scores/2):]
+
+    #minDCF 
+    minDCF,_,_,optimal_treshold = compute_minimum_detection_cost(llr1, labels1, prior , cost_fn, cost_fp)
+
+    predicted_labels = 1*(llr2 > optimal_treshold)
+
+    conf_matrix=compute_confusion_matrix(predicted_labels, labels2, numpy.unique(labels2).size )
+    br= compute_bayes_risk(conf_matrix, prior, cost_fn, cost_fp)
+
+    #nbr is the DCF obtained with the estimated optimal treshold
+    nbr= compute_normalized_bayes_risk(br, prior, cost_fn, cost_fp)
+    
+    #actual DCF done with theoretical optimal treshold
+    actDCF = compute_actual_DCF(llr2, labels2, prior , cost_fn, cost_fp)
+
+    #minDCF 
+    minDCF,_,_,_ = compute_minimum_detection_cost(llr2, labels2, prior , cost_fn, cost_fp)
+
+
+    return (minDCF, actDCF, nbr, optimal_treshold)
