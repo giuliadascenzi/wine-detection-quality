@@ -1021,6 +1021,8 @@ if __name__ == '__main__':
     ## LTR: Training Labels
     ## LTE: Evaluation Labels
     
+    #CHOOSE GAUSS EVAL
+    '''
     giu=gaussianizationEval(DTR, DTE)
     pat=evaluation_gaussianization_patti(DTR, DTE)
     print("giu:")
@@ -1030,7 +1032,9 @@ if __name__ == '__main__':
 
     print("pat")
     print(pat)
-    
+    '''
+
+
     ## - compute statistics to analyse the data and the given features
     '''
     # plot histograms of the raw training dataset
@@ -1043,8 +1047,8 @@ if __name__ == '__main__':
 
     gaussianizedFeatures = gaussianization(DTR)
     stats.plot_hist(gaussianizedFeatures, LTR, "Stat/Hist/Gaussianized")
-    
     '''
+
     '''
     ## heat maps of the gaussianized features to show correlations between features
     stats.plot_heatmaps(gaussianization(DTR), LTR, "Stat/HeatMaps/Gaussianized")
@@ -1059,21 +1063,12 @@ if __name__ == '__main__':
     stats.bars_numsamples(n_high_qty, n_low_qty)
     '''
     
-    '''
-    NON SERVE
-    ## for the balanced application:
-    prior = 0.5
-    cost_fn = 1
-    cost_fp = 1
-    classes_prior_probabilties = numpy.array([prior, 1-prior])
-    '''
-    
     ##choose k for k cross validation
     k = 5
 
     ##EVAULATION OF THE CLASSIFIERS : 
     ### -- MVG CLASSIFIERS
-    '''
+    
     print("********************* MVG TABLE ************************************")
     print("------> pi = 0.5")
     print_table_MVG_classifiers_minDCF(DTR, prior=0.5, cost_fn=1, cost_fp=1, k=k, eval_data=[DTE,LTE])
@@ -1087,7 +1082,7 @@ if __name__ == '__main__':
     print_table_MVG_classifiers_minDCF(DTR, prior=0.1, cost_fn=1, cost_fp=1, k=k)
     print()
     print("********************************************************************")
-    '''
+    
     
 
 
