@@ -91,7 +91,7 @@ we analyze both options (#TODO: Riguardare )
 |                                       | **Single Fold** |             |             | **5-Fold**  |             |             |
 | :-----------------------------------: | --------------- | ----------- | ----------- | ----------- | ----------- | ----------- |
 |                                       | prior=0.5       | prior=0.1   | prior=0.9   | prior=0.5   | prior=0.1   | prior=0.9   |
-|   ------ **Raw Features – no PCA**    | --------------- | ----------- | ----------- | ----------- | ----------- | ----------- |
+|       **Raw Features – no PCA**       | --------------- | ----------- | ----------- | ----------- | ----------- | ----------- |
 |            **Full - Cov**             | *0.346*         | 0.766       | 0.824       | *0.343*     | 0.795       | 0.906       |
 |             **Diag -Cov**             | 0.527           | 0.911       | 0.937       | 0.548       | 0.962       | 0.973       |
 |           **Tied Full-Cov**           | *0.355*         | 0.818       | 0.836       | *0.359*     | 0.843       | 0.827       |
@@ -279,6 +279,19 @@ loglam = 0, C=1, 0.5
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | <img src="Graph\GMM\GMM_Diagonal_covariance.png" style="zoom:60%;" /> | <img src="Graph\GMM\GMM_Tied_Diagonal_covariance.png" style="zoom:60%;" /> |
 
+| Num components:            | 1     | 2     | 4     | 8     | 16    | 32    |
+| -------------------------- | ----- | ----- | ----- | ----- | ----- | ----- |
+| ----------**RAW**          |       |       |       |       |       |       |
+| Full                       | 0.343 | 0.321 | 0.321 | 0.296 | 0.309 | 0.314 |
+| Diag                       | 0.548 | 0.469 | 0.393 | 0.374 | 0.334 | 0.325 |
+| Tied                       | 0.343 | 0.343 | 0.315 | 0.306 | 0.299 | 0.302 |
+| Tied Diag                  | 0.548 | 0.507 | 0.424 | 0.391 | 0.374 | 0.321 |
+| **----------Gaussianized** |       |       |       |       |       |       |
+| Full                       | 0.306 | 0.317 | 0.299 | 0.305 | 0.326 | 0.337 |
+| Diag                       | 0.516 | 0.393 | 0.362 | 0.355 | 0.328 | 0.325 |
+| Tied                       | 0.306 | 0.306 | 0.309 | 0.311 | 0.305 | 0.287 |
+| Tied Diag                  | 0.516 | 0.437 | 0.370 | 0.377 | 0.334 | 0.318 |
+
 
 
 *****************************************************************************************************************
@@ -287,13 +300,19 @@ loglam = 0, C=1, 0.5
 
 ## 
 
+RBF SVM, C=0.5, lam=1, pi_T =0.5 gaussianized features
+
+Quad SVM, C=10, pi_T =0.5, c=1,K=0 raw features 
+
+
+
 ##### *** COMPARISON BETWEEN ACTUAL DCF and MIN DCF
 
-|                                            | prior=0.5 |        | prior=0.1 |        | prior=0.9 |        |
-| ------------------------------------------ | --------- | ------ | --------- | ------ | --------- | ------ |
-|                                            | minDCF    | actDCF | minDCF    | actDCF | minDCF    | actDCF |
-| QuadLog reg, lambda=10**-7, pi_T =0.1  Raw | 0.269     | 0.515  | 0.752     | 0.898  | 0.729     | 1.43   |
-| MVG full, gaussianized, noPCA              | 0.306     | 0.327  | 0.772     | 0.834  | 0.871     | 0.991  |
+|                                                        | prior=0.5 |        | prior=0.1 |        | prior=0.9 |        |
+| ------------------------------------------------------ | --------- | ------ | --------- | ------ | --------- | ------ |
+|                                                        | minDCF    | actDCF | minDCF    | actDCF | minDCF    | actDCF |
+| RBF SVM, C=0.5, lam=1, pi_T =0.5 gaussianized features | 0.234     | 0.239  | 0.566     | 1.0    | 0.623     | 1.0    |
+| Quad SVM, C=10, pi_T =0.5, c=1,K=0 raw features        | 0.278     | 0.288  | 0.782     | 0.819  | 0.753     | 0.792  |
 
 Bayes Error Plot, showing the DCFs for different applications:
 
@@ -301,21 +320,165 @@ Bayes Error Plot, showing the DCFs for different applications:
 
 After the threshold estimated protocol
 
-|                                            | min DCF | act DCF (t theoretical threshold) | actDCF t estimated |
-| ------------------------------------------ | ------- | --------------------------------- | ------------------ |
-| **prior=0.5**                              |         |                                   |                    |
-| QuadLog reg, lambda=10**-7, pi_T =0.1  Raw | 0.281   | 0.542                             | 0.297              |
-| MVG full, gaussianized, noPCA              | 0.317   | 0.341                             | 0.333              |
-| **prior=0.1**                              |         |                                   |                    |
-| QuadLog reg, lambda=10**-7, pi_T =0.1  Raw | 0.740   | 0.890                             | 0.762              |
-| MVG full, gaussianized, noPCA              | 0.804   | 0.925                             | 0.933              |
-| **prior=0.9**                              |         |                                   |                    |
-| QuadLog reg, lambda=10**-7, pi_T =0.1  Raw | 0.732   | 1.573                             | 0.736              |
-| MVG full, gaussianized, noPCA              | 0.831   | 0.993                             | 0.898              |
+|                                                        | min DCF | act DCF (t theoretical threshold) | actDCF t estimated |
+| ------------------------------------------------------ | ------- | --------------------------------- | ------------------ |
+| **prior=0.5**                                          |         |                                   |                    |
+| RBF SVM, C=0.5, lam=1, pi_T =0.5 gaussianized features | 0.244   | 0.247                             | 0.244              |
+| Quad SVM, C=10, pi_T =0.5, c=1,K=0 raw features        | 0.279   | 0.294                             | 0.295              |
+| **prior=0.1**                                          |         |                                   |                    |
+| RBF SVM, C=0.5, lam=1, pi_T =0.5 gaussianized features | 0.581   | 1.0                               | 0.613              |
+| Quad SVM, C=10, pi_T =0.5, c=1,K=0 raw features        | 0.800   | 0.854                             | 0.844              |
+| **prior=0.9**                                          |         |                                   |                    |
+| RBF SVM, C=0.5, lam=1, pi_T =0.5 gaussianized features | 0.614   | 1.0                               | 0.615              |
+| Quad SVM, C=10, pi_T =0.5, c=1,K=0 raw features        | 0.747   | 0.772                             | 0.777              |
 
 
 
-## - Experimental validation
+## - Experimental results
+
+#### MVG :
+
+|                                       | 66% Data      |             |             | 100% Data   |             |             |
+| :-----------------------------------: | ------------- | ----------- | ----------- | ----------- | ----------- | ----------- |
+|                                       | prior=0.5     | prior=0.1   | prior=0.9   | prior=0.5   | prior=0.1   | prior=0.9   |
+|       **Raw Features – no PCA**       | ------------- | ----------- | ----------- | ----------- | ----------- | ----------- |
+|            **Full - Cov**             | 0.345         |             |             | 0.355       |             |             |
+|             **Diag -Cov**             | 0.468         |             |             | 0.466       |             |             |
+|           **Tied Full-Cov**           | 0.334         |             |             | 0.333       |             |             |
+|          **Tied Diag- Cov**           | 0.468         |             |             | 0.461       |             |             |
+|  **Gaussianized Features – no PCA**   | -----------   | ----------- | ----------- | ----------- | ----------- | ----------- |
+|            **Full - Cov**             | 0.332         |             |             | 0.334       |             |             |
+|             **Diag -Cov**             | 0.432         |             |             | 0.431       |             |             |
+|           **Tied Full-Cov**           | 0.345         |             |             | 0.343       |             |             |
+|          **Tied Diag- Cov**           | 0.453         |             |             | 0.446       |             |             |
+|     **Raw Features – PCA (m=9)**      | -----------   | ----------- | ----------- | ----------- | ----------- | ----------- |
+|            **Full - Cov**             | 0.404         |             |             | 0.408       |             |             |
+|             **Diag -Cov**             | 0.476         |             |             | 0.470       |             |             |
+|           **Tied Full-Cov**           | 0.421         |             |             | 0.413       |             |             |
+|          **Tied Diag- Cov**           | 0.418         |             |             | 0.415       |             |             |
+| **Gaussianized Features – PCA (m=9)** | -----------   | ----------- | ----------- | ----------- | ----------- | ----------- |
+|            **Full - Cov**             | 0.375         |             |             | 0.377       |             |             |
+|             **Diag -Cov**             | 0.431         |             |             | 0.427       |             |             |
+|           **Tied Full-Cov**           | 0.420         |             |             | 0.416       |             |             |
+|          **Tied Diag- Cov**           | 0.423         |             |             | 0.421       |             |             |
+|     **Raw Features – PCA (m=8)**      | -----------   | ----------- | ----------- | ----------- | ----------- | ----------- |
+|            **Full - Cov**             | 0.447         |             |             | 0.435       |             |             |
+|             **Diag -Cov**             | 0.525         |             |             | 0.527       |             |             |
+|           **Tied Full-Cov**           | 0.473         |             |             | 0.476       |             |             |
+|          **Tied Diag- Cov**           | 0.475         |             |             | 0.479       |             |             |
+| **Gaussianized Features – PCA (m=8)** | -----------   | ----------- | ----------- | ----------- | ----------- | ----------- |
+|            **Full - Cov**             | 0.418         |             |             | 0.424       |             |             |
+|             **Diag -Cov**             | 0.499         |             |             | 0.498       |             |             |
+|           **Tied Full-Cov**           | 0.441         |             |             | 0.454       |             |             |
+|          **Tied Diag- Cov**           | 0.482         |             |             | 0.489       |             |             |
+
+#### LR
+
+|                                        | prior=0.5   | prior=0.1   | prior=0.9   |
+| -------------------------------------- | ----------- | ----------- | ----------- |
+| **Raw Features**                       | ----------- | ----------- | ----------- |
+| Log reg, lambda=10**-7, pi_T =0.5      | 0.348       |             |             |
+| Log reg, lambda=10**-7, pi_T =0.9      | 0.339       |             |             |
+| Log reg, lambda=10**-7, pi_T =0.1      | 0.379       |             |             |
+| Log reg, lambda=10**-7, pi_T =pi_emp_T | 0.368       |             |             |
+| **Gaussianized features**              | ----------- | ----------- | ----------- |
+| Log reg, lambda=10**-7, pi_T =0.5      | 0.365       |             |             |
+| Log reg, lambda=10**-7, pi_T =0.9      | 0.327       |             |             |
+| Log reg, lambda=10**-7, pi_T =0.1      | 0.381       |             |             |
+| Log reg, lambda=10**-7, pi_T =pi_emp_T | 0.378       |             |             |
+
+#### Quad LR
+
+|                                            | prior=0.5   | prior=0.1   | prior=0.9   |
+| ------------------------------------------ | ----------- | ----------- | ----------- |
+| **Raw Features**                           | ----------- | ----------- | ----------- |
+| Quad Log reg, lambda=10**-7, pi_T =0.5     | 0.282       |             |             |
+| Quad Log reg, lambda=10**-7, pi_T =0.9     | 0.300       |             |             |
+| QuadLog reg, lambda=10**-7, pi_T =0.1      | 0.274       |             |             |
+| QuadLog reg, lambda=10**-7, pi_T =pi_emp_T | 0.286       |             |             |
+| **Gaussianized features**                  | ----------- | ----------- | ----------- |
+| Quad Log reg, lambda=10**-7, pi_T =0.5     | 0.311       |             |             |
+| Quad Log reg, lambda=10**-7, pi_T =0.9     | 0.316       |             |             |
+| Quad Log reg, lambda=10**-7, pi_T =0.1     | 0.305       |             |             |
+| QuadLog reg, lambda=10**-7, pi_T =pi_emp_T | 0.305       |             |             |
+
+#### SVM
+
+|                           | prior=0.5   | prior=0.1   | prior=0.9   |
+| ------------------------- | ----------- | ----------- | ----------- |
+| **Raw Features**          | ----------- | ----------- | ----------- |
+| SVM, C=0.1, pi_T =0.5     | 0.349       |             |             |
+| SVM, C=0.1, pi_T =0.1     | 0.900       |             |             |
+| SVM, C=0.1, pi_T =0.9     | 0.415       |             |             |
+| SVM, C=0.1                | 0.332       |             |             |
+| **Gaussianized features** | ----------- | ----------- | ----------- |
+| SVM, C=0.1, pi_T =0.5     | 0.350       |             |             |
+| SVM, C=0.1, pi_T =0.1     | 0.853       |             |             |
+| SVM, C=0.1, pi_T =0.9     | 0.401       |             |             |
+| SVM, C=0.1                | 0.332       |             |             |
+
+#### QUAD SVM
+
+|                                         | prior=0.5   | prior=0.1   | prior=0.9   |
+| --------------------------------------- | ----------- | ----------- | ----------- |
+| **Raw Features**                        | ----------- | ----------- | ----------- |
+| Quad SVM, C=10, pi_T =0.5, c=1,K=0      |             |             |             |
+| Quad SVM, C=10, pi_T =pi_emp_t,c=1,K=0  |             |             |             |
+| Quad SVM, C=100, pi_T=0.5, c=1, K=0     |             |             |             |
+| Quad SVM, C=0.1, pi_T=0.5, c=1, K=1     |             |             |             |
+| **Gaussianized features**               | ----------- | ----------- | ----------- |
+| Quad SVM, C=10, pi_T =0.5, c=1,K=0      |             |             |             |
+| Quad SVM, C=10, pi_T =pi_emp_t, c=1,K=0 |             |             |             |
+| Quad SVM, C=100, pi_T=0.5, c=1, K=0     |             |             |             |
+| Quad SVM, C=0.1, pi_T=0.5, c=1, K=1     |             |             |             |
+
+#### RBF
+
+|                                     | prior=0.5   | prior=0.1   | prior=0.9   |
+| ----------------------------------- | ----------- | ----------- | ----------- |
+| **Raw Features**                    | ----------- | ----------- | ----------- |
+| RBF SVM, C=1, lam=1, pi_T =0.5      |             |             |             |
+| RBF SVM, C=1, lam=1, pi_T =0.1      |             |             |             |
+| RBF SVM, C=1, lam=1, pi_T =0.9      |             |             |             |
+| RBF SVM, C=1, lam=1, pi_T =pi_emp_T |             |             |             |
+| **Gaussianized features**           | ----------- | ----------- | ----------- |
+| RBF SVM, C=1, lam=1, pi_T =0.5      |             |             |             |
+| RBF SVM, C=1, lam=1, pi_T =0.1      |             |             |             |
+| RBF SVM, C=1, lam=1, pi_T =0.9      |             |             |             |
+| RBF SVM, C=1, lam=1, pi_T =pi_emp_T |             |             |             |
+
+|                                       | prior=0.5   | prior=0.1   | prior=0.9   |
+| ------------------------------------- | ----------- | ----------- | ----------- |
+| **Raw Features**                      | ----------- | ----------- | ----------- |
+| RBF SVM, C=0.5, lam=1, pi_T =0.5      |             |             |             |
+| RBF SVM, C=0.5, lam=1, pi_T =0.1      |             |             |             |
+| RBF SVM, C=0.5, lam=1, pi_T =0.9      |             |             |             |
+| RBF SVM, C=0.5, lam=1, pi_T =pi_emp_T |             |             |             |
+| **Gaussianized features**             | ----------- | ----------- | ----------- |
+| RBF SVM, C=0.5, lam=1, pi_T =0.5      |             |             |             |
+| RBF SVM, C=0.5, lam=1, pi_T =0.1      |             |             |             |
+| RBF SVM, C=0.5, lam=1, pi_T =0.9      |             |             |             |
+| RBF SVM, C=0.5, lam=1, pi_T =pi_emp_T |             |             |             |
+
+#### GMM
+
+| Num components:            | 1    | 2    | 4    | 8    | 16   | 32   |
+| -------------------------- | ---- | ---- | ---- | ---- | ---- | ---- |
+| ----------**RAW**          |      |      |      |      |      |      |
+| Full                       |      |      |      |      |      |      |
+| Diag                       |      |      |      |      |      |      |
+| Tied                       |      |      |      |      |      |      |
+| Tied Diag                  |      |      |      |      |      |      |
+| **----------Gaussianized** |      |      |      |      |      |      |
+| Full                       |      |      |      |      |      |      |
+| Diag                       |      |      |      |      |      |      |
+| Tied                       |      |      |      |      |      |      |
+| Tied Diag                  |      |      |      |      |      |      |
+
+
+
+
+
 
 
 ## - Conclusions

@@ -333,33 +333,13 @@ def print_table_RBF_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eval_data):
 
 #--------------------------
 
-def print_graphs_GMM_minDCF(DTR, LTR, k):
+def print_table_GMM_minDCF(DTR, LTR, k, eval_data):
 
-    def bar_plot_gmm(raw_minDCFs, gau_minDCFs, gmm_comp, title):
+    def GMM_compute_DCFs(DTR, LTR, k, covariance_type, prior, cost_fn, cost_fp, eval_data):
 
-        widthbar = 0.2
+        DTE = eval_data[0]
+        LTE = eval_data[1]
 
-        x_ind = numpy.arange(len(gmm_comp))
-
-        raw_ind = x_ind - widthbar/2
-        gau_ind = x_ind + widthbar/2
-
-        lb1 = "minDCF (prior=0.5) - Raw"
-        lb2 = "minDCF (prior=0.5) - Gaussianized"
-        
-        plt.figure()
-        plt.bar(raw_ind, raw_minDCFs, width = widthbar, color = 'orange', label = lb1)
-        plt.bar(gau_ind, gau_minDCFs, width = widthbar, color = 'red', label = lb2)
-        plt.title(title)
-        plt.xticks(x_ind ,gmm_comp)
-        plt.ylabel('minDCFs')
-        plt.xlabel('GMM components')
-        plt.legend(loc="lower left")
-
-        plt.savefig('Graph/GMM/'+title+'.png' )
-
-
-    def GMM_compute_DCFs(DTR, LTR, k, covariance_type, prior, cost_fn, cost_fp):
         gmm_comp = [1,2,4,8,16,32]
 
         raw_minDCFs = []
@@ -378,11 +358,11 @@ def print_graphs_GMM_minDCF(DTR, LTR, k):
             params = [constrained, psi, covariance_type, alpha, gmm_comp[i],delta_l]
             print("-------> working on raw data, comp= ", gmm_comp[i])
             # Raw features
-            raw_minDCFs_i,_,_ = model_validation.k_cross_DCF(normalized_features, LTR, k, gaussian_mixture_models.GMM_computeLogLikelihoodRatios, prior , cost_fn, cost_fp, params)
+            raw_minDCFs_i,_,_ = model_validation.k_cross_DCF(normalized_features, LTR, k, gaussian_mixture_models.GMM_computeLogLikelihoodRatios, prior , cost_fn, cost_fp, params, [preprocessing.Z_normalization(DTE), LTE])
             print("RAW DATA, num components = " + str(gmm_comp[i]) + ", minDCF = " + str(raw_minDCFs_i) )
             # Gaussianized features
             print("-------> working on gauss data, comp= ", gmm_comp[i])
-            gau_minDCFs_i,_,_ = model_validation.k_cross_DCF(gaussianizedFeatures, LTR,k, gaussian_mixture_models.GMM_computeLogLikelihoodRatios, prior , cost_fn, cost_fp, params)
+            gau_minDCFs_i,_,_ = model_validation.k_cross_DCF(gaussianizedFeatures, LTR,k, gaussian_mixture_models.GMM_computeLogLikelihoodRatios, prior , cost_fn, cost_fp, params, [preprocessing.gaussianizationEval(DTR, DTE), LTE])
             print("GAUSS DATA, num components = " + str(gmm_comp[i]) + ", minDCF = " + str(gau_minDCFs_i) )
             raw_minDCFs.append(raw_minDCFs_i)
             gau_minDCFs.append(gau_minDCFs_i)
@@ -392,88 +372,24 @@ def print_graphs_GMM_minDCF(DTR, LTR, k):
         gau_minDCFs=numpy.array(gau_minDCFs)
         return raw_minDCFs, gau_minDCFs, gmm_comp
 
-    
+
     #### Full Cov
     covariance_type = "Full"
-    raw_minDCFs, gau_minDCFs, gmm_comp = GMM_compute_DCFs(DTR, LTR, k, covariance_type, 0.5, 1, 1)
-    bar_plot_gmm(raw_minDCFs, gau_minDCFs, gmm_comp, "GMM_Full_covariance")
+    raw_minDCFs, gau_minDCFs, gmm_comp = GMM_compute_DCFs(DTR, LTR, k, covariance_type, 0.5, 1, 1, eval_data)
 
     #### Diagonal Cov
     covariance_type = "Diagonal"
-    raw_minDCFs, gau_minDCFs, gmm_comp = GMM_compute_DCFs(DTR, LTR, k, covariance_type, 0.5, 1, 1)
-    bar_plot_gmm(raw_minDCFs, gau_minDCFs, gmm_comp, "GMM_Diagonal_covariance")
+    raw_minDCFs, gau_minDCFs, gmm_comp = GMM_compute_DCFs(DTR, LTR, k, covariance_type, 0.5, 1, 1, eval_data)
 
     #### Diagonal Cov
     covariance_type = "Tied"
-    raw_minDCFs, gau_minDCFs, gmm_comp = GMM_compute_DCFs(DTR, LTR, k, covariance_type, 0.5, 1, 1)
-    bar_plot_gmm(raw_minDCFs, gau_minDCFs, gmm_comp, "GMM_Tied_covariance")
+    raw_minDCFs, gau_minDCFs, gmm_comp = GMM_compute_DCFs(DTR, LTR, k, covariance_type, 0.5, 1, 1, eval_data)
     
     #### Diagonal Cov
     covariance_type = "Tied Diagonal"
-    raw_minDCFs, gau_minDCFs, gmm_comp = GMM_compute_DCFs(DTR, LTR, k, covariance_type, 0.5, 1, 1)
-    bar_plot_gmm(raw_minDCFs, gau_minDCFs, gmm_comp, "GMM_Tied_Diagonal_covariance")
+    raw_minDCFs, gau_minDCFs, gmm_comp = GMM_compute_DCFs(DTR, LTR, k, covariance_type, 0.5, 1, 1, eval_data)
 
-#--------------------------
 
-def print_table_comparison_DCFs(DTR, LTR, k):
-
-    def actDCF_minDCF(data, llr_calculator, params):
-        prior=0.5
-        cost_fn=1
-        cost_fp=1
-        min_DCF_LR,act_DCF_LR,_ = model_validation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params)
-        print("[5-Folds]  -  prior= 0.5  minDCF: ",min_DCF_LR, " actDCF= ",act_DCF_LR)  
-
-        prior=0.1
-        cost_fn=1
-        cost_fp=1
-        min_DCF_LR,act_DCF_LR,_ = model_validation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params)
-        print("[5-Folds]  -  prior= 0.1  minDCF: ",min_DCF_LR, " actDCF= ",act_DCF_LR) 
-
-        prior=0.9
-        cost_fn=1
-        cost_fp=1
-        min_DCF_LR,act_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params)
-        print("[5-Folds]  -  prior= 0.9  minDCF: ",min_DCF_LR, " actDCF= ",act_DCF_LR) 
-
-        print()
-
-    
-    #------------------------FIRST MODEL ----------------- # TODO
-    print("*** QuadLog reg, lambda=10**-7, pi_T =0.10.269 Raw features ***")
-    lam = 10**(-7)
-    pi_T = 0.1
-    actDCF_minDCF(preprocessing.Z_normalization(DTR), logisticRegression.Quadratic_LR_logLikelihoodRatios,[lam, pi_T] )
-
-    #--------------- SECOND MODEL-------------------------
-    gaussianizedFeatures = preprocessing.gaussianization(DTR)
-    print("*** MVG full, gaussianized, noPCA ***")
-    actDCF_minDCF(gaussianizedFeatures, MVGclassifiers.MVG_logLikelihoodRatios,[])
-
-#--------------------------
-def print_err_bayes_plots(data, L, k, llr_calculators, other_params, titles, colors):
-    plt.figure()
-    plt.title("Bayes Error Plot")
-    plt.xlabel("prior log odds")
-    plt.ylabel("DCF")
-    for i in range (len(llr_calculators)):
-        print("Working on calculator "+ str(i))
-        model_validation.bayes_error_plot(data[i], L, k, llr_calculators[i], other_params[i], titles[i], colors[i] )
-        print("DONE")
-    plt.savefig('Graph/Error_Bayes_Plots/EBP1.png' )
-
-#--------------------------
-
-def print_treshold_estimated_table(data, LTR, prior, cost_fn, cost_fp, k, llr_calculator, otherParams, title):
-    
-    minDCF, actDCF_th, actDCF_opt, optimal_treshold = model_validation.compute_DCF_with_optimal_treshold(data, LTR, k, llr_calculator, otherParams, prior, cost_fn, cost_fp )
-
-    print(title + ":")
-    print("minDCF = ", minDCF)
-    print("actual theoretical DCF = ", actDCF_th)
-    print("actual optimal DCF = ", actDCF_opt)
-    
-    return optimal_treshold
 
 #--------------------------
 def print_all(DTR, LTR, DEV, LEV, k):
@@ -519,64 +435,25 @@ def print_all(DTR, LTR, DEV, LEV, k):
     '''
     
     ### -- QUADRATIC SVM
+    '''
     print("********************* quadratic SVM TABLES ************************************")
     print("------> applicazione con prior = 0.5")
     print_table_Quadratic_SVM_minDCF(DTR, LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k, eval_data=eval_data)
     print("********************************************************************")
-    
+    '''
     
     ### RBF
-    
+    '''
     print("********************* RBF SVM TABLES ************************************")
     print("------> applicazione con prior = 0.5")
     print_table_RBF_SVM_minDCF(DTR, LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k, eval_data=eval_data)    
     print("********************************************************************")
-    
     '''
+    
     ### GMM
-    print_graphs_GMM_minDCF(DTR, LTR, k)
+    print_table_GMM_minDCF(DTR, LTR, k, eval_data = eval_data)
 
 
 
-    ## COMPARISON BETWEEN ACT DCF AND MIN DCF OF THE CHOSEN MODELS
-    
-    print_table_comparison_DCFs(DTR, LTR, k=k)
-    
-    #error bayes plot
-    
-    lam = 10**(-7)
-    pi_T = 0.1
-    data = [preprocessing.Z_normalization(DTR), preprocessing.gaussianization(DTR)]
-    llr_calculators = [logisticRegression.Quadratic_LR_logLikelihoodRatios,MVGclassifiers.MVG_logLikelihoodRatios ]
-    other_params = [[lam, pi_T], []]
-    titles = ["Quad Log reg", "MVG Full cov"]
-    colors = ["r", "b"]
-    print_err_bayes_plots(data, LTR, k, llr_calculators, other_params, titles, colors)
-    
-    
-    lam = 10**(-7)
-    pi_T = 0.1
-
-    print("------>Treshold estimated table:")
-    print()
-    print("------> applicazione prior = 0.5")
-    prior = 0.5
-    print_treshold_estimated_table(preprocessing.Z_normalization(DTR), LTR, prior, 1, 1, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, [lam, pi_T], "Quad Log Reg")
-    print_treshold_estimated_table(preprocessing.gaussianization(DTR), LTR, prior, 1, 1, k, MVGclassifiers.MVG_logLikelihoodRatios, [], "MVG with full cov")
-    print()
-
-    print("------> applicazione prior = 0.1")
-    prior = 0.1
-    print_treshold_estimated_table(preprocessing.Z_normalization(DTR), LTR, prior, 1, 1, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, [lam, pi_T], "Quad Log Reg")
-    print_treshold_estimated_table(preprocessing.gaussianization(DTR), LTR, prior, 1, 1, k, MVGclassifiers.MVG_logLikelihoodRatios, [], "MVG with full cov")
-    print()
-
-
-    print("------> applicazione prior = 0.9")
-    prior = 0.5
-    print_treshold_estimated_table(preprocessing.Z_normalization(DTR), LTR, prior, 1, 1, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, [lam, pi_T], "Quad Log Reg")
-    print_treshold_estimated_table(preprocessing.gaussianization(DTR), LTR, prior, 1, 1, k, MVGclassifiers.MVG_logLikelihoodRatios, [], "MVG with full cov")
-    print()
-    '''
 
 #--------------------------

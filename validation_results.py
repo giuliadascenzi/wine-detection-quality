@@ -865,37 +865,43 @@ def print_graphs_GMM_minDCF(DTR, LTR, k):
 def print_table_comparison_DCFs(DTR, LTR, k):
 
     def actDCF_minDCF(data, llr_calculator, params):
-        prior=0.5
-        cost_fn=1
-        cost_fp=1
-        min_DCF_LR,act_DCF_LR,_ = model_validation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params)
-        print("[5-Folds]  -  prior= 0.5  minDCF: ",min_DCF_LR, " actDCF= ",act_DCF_LR)  
+            prior=0.5
+            cost_fn=1
+            cost_fp=1
+            min_DCF_LR, act_DCF_LR,_ = model_validation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params)
+            print("[5-Folds]  -  prior= 0.5  minDCF: ",min_DCF_LR, " actDCF= ",act_DCF_LR)
 
-        prior=0.1
-        cost_fn=1
-        cost_fp=1
-        min_DCF_LR,act_DCF_LR,_ = model_validation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params)
-        print("[5-Folds]  -  prior= 0.1  minDCF: ",min_DCF_LR, " actDCF= ",act_DCF_LR) 
+            prior=0.1
+            cost_fn=1
+            cost_fp=1
+            min_DCF_LR, act_DCF_LR,_ = model_validation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params)
+            print("[5-Folds]  -  prior= 0.1  minDCF: ",min_DCF_LR, " actDCF= ",act_DCF_LR) 
 
-        prior=0.9
-        cost_fn=1
-        cost_fp=1
-        min_DCF_LR,act_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params)
-        print("[5-Folds]  -  prior= 0.9  minDCF: ",min_DCF_LR, " actDCF= ",act_DCF_LR) 
+            prior=0.9
+            cost_fn=1
+            cost_fp=1
+            min_DCF_LR, act_DCF_LR,_ = model_validation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params)
+            print("[5-Folds]  -  prior= 0.9  minDCF: ",min_DCF_LR, " actDCF= ",act_DCF_LR) 
 
-        print()
+            print()
 
-    
-    #------------------------FIRST MODEL ----------------- # TODO
-    print("*** QuadLog reg, lambda=10**-7, pi_T =0.10.269 Raw features ***")
-    lam = 10**(-7)
-    pi_T = 0.1
-    actDCF_minDCF(preprocessing.Z_normalization(DTR), logisticRegression.Quadratic_LR_logLikelihoodRatios,[lam, pi_T] )
+
+    #------------------------FIRST MODEL ----------------- 
+
+    print(" RBF SVM, C=0.5, lam=1, pi_T =0.5 gaussianized features ")
+    lam = 1
+    pi_T = 0.5
+    C= 0.5
+    actDCF_minDCF(preprocessing.gaussianization(DTR), SVMClassifier.RBF_SVM_computeLogLikelihoods,[pi_T, C, lam] )
 
     #--------------- SECOND MODEL-------------------------
-    gaussianizedFeatures = preprocessing.gaussianization(DTR)
-    print("*** MVG full, gaussianized, noPCA ***")
-    actDCF_minDCF(gaussianizedFeatures, MVGclassifiers.MVG_logLikelihoodRatios,[])
+
+    print(" Quad SVM, C=10, pi_T =0.5, c=1,K=0 raw features  ")
+    C=10
+    pi_T=0.5
+    c=1
+    K=0
+    actDCF_minDCF(preprocessing.Z_normalization(DTR), SVMClassifier.Polinomial_SVM_computeLogLikelihoods,[pi_T,C,c,K])
 
 #--------------------------
 def print_err_bayes_plots(data, L, k, llr_calculators, other_params, titles, colors):
@@ -1040,44 +1046,51 @@ def print_all(DTR, LTR, k):
 
 
     ## COMPARISON BETWEEN ACT DCF AND MIN DCF OF THE CHOSEN MODELS
-    
+
     print_table_comparison_DCFs(DTR, LTR, k=k)
-    
+
     #error bayes plot
-    
-    lam = 10**(-7)
-    pi_T = 0.1
-    data = [preprocessing.Z_normalization(DTR), preprocessing.gaussianization(DTR)]
-    llr_calculators = [logisticRegression.Quadratic_LR_logLikelihoodRatios,MVGclassifiers.MVG_logLikelihoodRatios ]
-    other_params = [[lam, pi_T], []]
-    titles = ["Quad Log reg", "MVG Full cov"]
+
+
+    pi_T1 = 0.5
+    C1= 0.5
+    lam1 = 1
+
+    pi_T2=0.5
+    C2=10
+    c2=1
+    K2=0
+
+
+    data = [ preprocessing.gaussianization(DTR), preprocessing.Z_normalization(DTR),]
+    llr_calculators = [SVMClassifier.RBF_SVM_computeLogLikelihoods,SVMClassifier.Polinomial_SVM_computeLogLikelihoods ]
+    other_params = [[pi_T1,C1,lam1], [pi_T2,C2,c2,K2]]
+    titles = ["RBF SVM", "Quad SVM"]
     colors = ["r", "b"]
     print_err_bayes_plots(data, LTR, k, llr_calculators, other_params, titles, colors)
-    
-    
-    lam = 10**(-7)
-    pi_T = 0.1
+
 
     print("------>Treshold estimated table:")
     print()
     print("------> applicazione prior = 0.5")
     prior = 0.5
-    print_treshold_estimated_table(preprocessing.Z_normalization(DTR), LTR, prior, 1, 1, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, [lam, pi_T], "Quad Log Reg")
-    print_treshold_estimated_table(preprocessing.gaussianization(DTR), LTR, prior, 1, 1, k, MVGclassifiers.MVG_logLikelihoodRatios, [], "MVG with full cov")
+    print_treshold_estimated_table(preprocessing.gaussianization(DTR), LTR, prior, 1, 1, k, SVMClassifier.RBF_SVM_computeLogLikelihoods, [pi_T1,C1,lam1], "RBF SVM")
+    print_treshold_estimated_table(preprocessing.Z_normalization(DTR), LTR, prior, 1, 1, k, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, [pi_T2,C2,c2,K2], "Quad SVM")
     print()
 
     print("------> applicazione prior = 0.1")
     prior = 0.1
-    print_treshold_estimated_table(preprocessing.Z_normalization(DTR), LTR, prior, 1, 1, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, [lam, pi_T], "Quad Log Reg")
-    print_treshold_estimated_table(preprocessing.gaussianization(DTR), LTR, prior, 1, 1, k, MVGclassifiers.MVG_logLikelihoodRatios, [], "MVG with full cov")
+    print_treshold_estimated_table(preprocessing.gaussianization(DTR), LTR, prior, 1, 1, k, SVMClassifier.RBF_SVM_computeLogLikelihoods, [pi_T1,C1,lam1], "RBF SVM")
+    print_treshold_estimated_table(preprocessing.Z_normalization(DTR), LTR, prior, 1, 1, k, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, [pi_T2,C2,c2,K2], "Quad SVM")
     print()
 
 
     print("------> applicazione prior = 0.9")
-    prior = 0.5
-    print_treshold_estimated_table(preprocessing.Z_normalization(DTR), LTR, prior, 1, 1, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, [lam, pi_T], "Quad Log Reg")
-    print_treshold_estimated_table(preprocessing.gaussianization(DTR), LTR, prior, 1, 1, k, MVGclassifiers.MVG_logLikelihoodRatios, [], "MVG with full cov")
+    prior = 0.9
+    print_treshold_estimated_table(preprocessing.gaussianization(DTR), LTR, prior, 1, 1, k, SVMClassifier.RBF_SVM_computeLogLikelihoods, [pi_T1,C1,lam1], "RBF SVM")
+    print_treshold_estimated_table(preprocessing.Z_normalization(DTR), LTR, prior, 1, 1, k, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, [pi_T2,C2,c2,K2], "Quad SVM")
     print()
+
     
 
 #--------------------------
