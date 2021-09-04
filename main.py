@@ -72,6 +72,23 @@ def gaussianizationEval(D, X):
     gaussianizedFeatures = scipy.stats.norm.ppf(r)
     return gaussianizedFeatures
 
+def evaluation_gaussianization_patti(DTR, DEV):
+    D = numpy.concatenate((DTR, DEV), axis=1)
+    r = numpy.zeros(DEV.shape)
+    for k in range(DEV.shape[0]):
+        featureVector_all = D[k,:]
+        featureVector_DEV = DEV[k,:]
+
+        EV_ranks = scipy.stats.rankdata(featureVector_DEV, method="min") -1
+        ALL_ranks = scipy.stats.rankdata(featureVector_all, method='min') -1
+        ALL_ranks = ALL_ranks[DTR.shape[1]:]
+        
+        r[k,:] = ALL_ranks - EV_ranks
+
+    r = (r + 1)/(DTR.shape[1]+2)
+    gaussianizedFeatures = scipy.stats.norm.ppf(r)
+    return gaussianizedFeatures
+
 
 def print_table_MVG_classifiers_minDCF(DTR, prior, cost_fn, cost_fp, k, eval=False, eval_data=None):
 
@@ -1004,7 +1021,16 @@ if __name__ == '__main__':
     ## LTR: Training Labels
     ## LTE: Evaluation Labels
     
+    giu=gaussianizationEval(DTR, DTE)
+    pat=evaluation_gaussianization_patti(DTR, DTE)
+    print("giu:")
+    print(giu)
 
+    print()
+
+    print("pat")
+    print(pat)
+    
     ## - compute statistics to analyse the data and the given features
     '''
     # plot histograms of the raw training dataset
@@ -1047,12 +1073,12 @@ if __name__ == '__main__':
 
     ##EVAULATION OF THE CLASSIFIERS : 
     ### -- MVG CLASSIFIERS
-    
+    '''
     print("********************* MVG TABLE ************************************")
     print("------> pi = 0.5")
     print_table_MVG_classifiers_minDCF(DTR, prior=0.5, cost_fn=1, cost_fp=1, k=k, eval_data=[DTE,LTE])
     print()
-    '''
+    
     print("------> pi = 0.9")
     print_table_MVG_classifiers_minDCF(DTR, prior=0.9, cost_fn=1, cost_fp=1, k=k)
     print()
@@ -1073,12 +1099,12 @@ if __name__ == '__main__':
     
     '''
     
-    
+    '''
     print("********************* LR TABLE ************************************")
     print("------> applicazione prior = 0.5")
     print_table_LR_minDCF(DTR,LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k)
     print()
-    '''
+    
     print("------> applicazione con prior = 0.1")
     print_table_LR_minDCF(DTR,LTR, prior=0.1, cost_fn=1, cost_fp=1, k=k)
     print()
@@ -1087,8 +1113,8 @@ if __name__ == '__main__':
     print()
     print("********************************************************************")
     '''
+
     '''
-    
     print("********************* quadratic LR GRAPHS ************************************")
     print_graphs_quadratic_LR_lambdas(DTR, LTR,  k)
     print("********************************************************************")
