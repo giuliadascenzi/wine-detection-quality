@@ -393,13 +393,13 @@ After the threshold estimated protocol
 | ------------------------------------------ | ----------- | ----------- | ----------- |
 | **Raw Features**                           | ----------- | ----------- | ----------- |
 | Quad Log reg, lambda=10**-7, pi_T =0.5     | 0.282       |             |             |
-| Quad Log reg, lambda=10**-7, pi_T =0.9     | 0.300       |             |             |
-| QuadLog reg, lambda=10**-7, pi_T =0.1      | 0.274       |             |             |
+| Quad Log reg, lambda=10**-7, pi_T =0.1     | 0.300       |             |             |
+| QuadLog reg, lambda=10**-7, pi_T =0.9      | 0.274       |             |             |
 | QuadLog reg, lambda=10**-7, pi_T =pi_emp_T | 0.286       |             |             |
 | **Gaussianized features**                  | ----------- | ----------- | ----------- |
 | Quad Log reg, lambda=10**-7, pi_T =0.5     | 0.311       |             |             |
-| Quad Log reg, lambda=10**-7, pi_T =0.9     | 0.316       |             |             |
-| Quad Log reg, lambda=10**-7, pi_T =0.1     | 0.305       |             |             |
+| Quad Log reg, lambda=10**-7, pi_T =0.1     | 0.316       |             |             |
+| Quad Log reg, lambda=10**-7, pi_T =0.9     | 0.305       |             |             |
 | QuadLog reg, lambda=10**-7, pi_T =pi_emp_T | 0.305       |             |             |
 
 #### SVM
@@ -422,43 +422,43 @@ After the threshold estimated protocol
 |                                         | prior=0.5   | prior=0.1   | prior=0.9   |
 | --------------------------------------- | ----------- | ----------- | ----------- |
 | **Raw Features**                        | ----------- | ----------- | ----------- |
-| Quad SVM, C=10, pi_T =0.5, c=1,K=0      |             |             |             |
-| Quad SVM, C=10, pi_T =pi_emp_t,c=1,K=0  |             |             |             |
-| Quad SVM, C=100, pi_T=0.5, c=1, K=0     |             |             |             |
-| Quad SVM, C=0.1, pi_T=0.5, c=1, K=1     |             |             |             |
+| Quad SVM, C=10, pi_T =0.5, c=1,K=0      | 0.283       |             |             |
+| Quad SVM, C=10, pi_T =pi_emp_t,c=1,K=0  | 0.335       |             |             |
+| Quad SVM, C=100, pi_T=0.5, c=1, K=0     | 0.294       |             |             |
+| Quad SVM, C=0.1, pi_T=0.5, c=1, K=1     | 0.287       |             |             |
 | **Gaussianized features**               | ----------- | ----------- | ----------- |
-| Quad SVM, C=10, pi_T =0.5, c=1,K=0      |             |             |             |
-| Quad SVM, C=10, pi_T =pi_emp_t, c=1,K=0 |             |             |             |
-| Quad SVM, C=100, pi_T=0.5, c=1, K=0     |             |             |             |
-| Quad SVM, C=0.1, pi_T=0.5, c=1, K=1     |             |             |             |
+| Quad SVM, C=10, pi_T =0.5, c=1,K=0      | 0.311       |             |             |
+| Quad SVM, C=10, pi_T =pi_emp_t, c=1,K=0 | 0.336       |             |             |
+| Quad SVM, C=100, pi_T=0.5, c=1, K=0     | 0.311       |             |             |
+| Quad SVM, C=0.1, pi_T=0.5, c=1, K=1     | 0.332       |             |             |
 
 #### RBF
 
 |                                     | prior=0.5   | prior=0.1   | prior=0.9   |
 | ----------------------------------- | ----------- | ----------- | ----------- |
 | **Raw Features**                    | ----------- | ----------- | ----------- |
-| RBF SVM, C=1, lam=1, pi_T =0.5      |             |             |             |
-| RBF SVM, C=1, lam=1, pi_T =0.1      |             |             |             |
-| RBF SVM, C=1, lam=1, pi_T =0.9      |             |             |             |
-| RBF SVM, C=1, lam=1, pi_T =pi_emp_T |             |             |             |
+| RBF SVM, C=1, lam=1, pi_T =0.5      | 0.330       |             |             |
+| RBF SVM, C=1, lam=1, pi_T =0.1      | 0.493       |             |             |
+| RBF SVM, C=1, lam=1, pi_T =0.9      | 0.310       |             |             |
+| RBF SVM, C=1, lam=1, pi_T =pi_emp_T | 0.340       |             |             |
 | **Gaussianized features**           | ----------- | ----------- | ----------- |
-| RBF SVM, C=1, lam=1, pi_T =0.5      |             |             |             |
-| RBF SVM, C=1, lam=1, pi_T =0.1      |             |             |             |
-| RBF SVM, C=1, lam=1, pi_T =0.9      |             |             |             |
-| RBF SVM, C=1, lam=1, pi_T =pi_emp_T |             |             |             |
+| RBF SVM, C=1, lam=1, pi_T =0.5      | 0.302       |             |             |
+| RBF SVM, C=1, lam=1, pi_T =0.1      | 0.461       |             |             |
+| RBF SVM, C=1, lam=1, pi_T =0.9      | 0.316       |             |             |
+| RBF SVM, C=1, lam=1, pi_T =pi_emp_T | 0.331       |             |             |
 
 |                                       | prior=0.5   | prior=0.1   | prior=0.9   |
 | ------------------------------------- | ----------- | ----------- | ----------- |
 | **Raw Features**                      | ----------- | ----------- | ----------- |
-| RBF SVM, C=0.5, lam=1, pi_T =0.5      |             |             |             |
-| RBF SVM, C=0.5, lam=1, pi_T =0.1      |             |             |             |
-| RBF SVM, C=0.5, lam=1, pi_T =0.9      |             |             |             |
-| RBF SVM, C=0.5, lam=1, pi_T =pi_emp_T |             |             |             |
+| RBF SVM, C=0.5, lam=1, pi_T =0.5      | 0.323       |             |             |
+| RBF SVM, C=0.5, lam=1, pi_T =0.1      | 0.566       |             |             |
+| RBF SVM, C=0.5, lam=1, pi_T =0.9      | 0.335       |             |             |
+| RBF SVM, C=0.5, lam=1, pi_T =pi_emp_T | 0.348       |             |             |
 | **Gaussianized features**             | ----------- | ----------- | ----------- |
-| RBF SVM, C=0.5, lam=1, pi_T =0.5      |             |             |             |
-| RBF SVM, C=0.5, lam=1, pi_T =0.1      |             |             |             |
-| RBF SVM, C=0.5, lam=1, pi_T =0.9      |             |             |             |
-| RBF SVM, C=0.5, lam=1, pi_T =pi_emp_T |             |             |             |
+| RBF SVM, C=0.5, lam=1, pi_T =0.5      | 0.284       |             |             |
+| RBF SVM, C=0.5, lam=1, pi_T =0.1      | 0.507       |             |             |
+| RBF SVM, C=0.5, lam=1, pi_T =0.9      | 0.355       |             |             |
+| RBF SVM, C=0.5, lam=1, pi_T =pi_emp_T | 0.311       |             |             |
 
 #### GMM
 
