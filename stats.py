@@ -35,7 +35,7 @@ def plot_hist(D, L, path):
         
 
 
-def plot_scatter(D, L):
+def plot_scatter(D, L, title):
 
     D0 = D[:, L==0]
     D1 = D[:, L==1]
@@ -56,10 +56,11 @@ def plot_scatter(D, L):
 
 
     for dIdx1 in range(D.shape[0]):
-        for dIdx2 in range(D.shape[0]):
+        for dIdx2 in range(dIdx1, D.shape[0]):
             if dIdx1 == dIdx2:
                 continue
             plt.figure()
+            plt.title(title+" features")
             plt.xlabel(hFea[dIdx1])
             plt.ylabel(hFea[dIdx2])
             plt.scatter(D0[dIdx1, :], D0[dIdx2, :], label = 'low quality')
@@ -67,7 +68,7 @@ def plot_scatter(D, L):
 
         
             plt.legend()
-            plt.savefig('Stat/Scatter/scatter_%d_%d.png' % (dIdx1, dIdx2))
+            plt.savefig('Stat/Scatter/'+title+'/scatter_%d_%d.png' % (dIdx1, dIdx2))
 
         
 def plot_heatmaps (D, L, path):

@@ -108,8 +108,11 @@ if __name__ == '__main__':
     gaussianizedFeatures = preprocessing.gaussianization(DTR)
     stats.plot_hist(gaussianizedFeatures, LTR, "Stat/Hist/Gaussianized")
     
-
-    
+    '''
+    # Plot scatters
+    stats.plot_scatter(preprocessing.Z_normalization(DTR), LTR, "Raw")
+    stats.plot_scatter(preprocessing.gaussianization(DTR), LTR, "Gaussianized")
+    '''
     ## heat maps of the gaussianized features to show correlations between features
     stats.plot_heatmaps(preprocessing.gaussianization(DTR), LTR, "Stat/HeatMaps/Gaussianized")
     stats.plot_heatmaps(preprocessing.Z_normalization(DTR), LTR, "Stat/HeatMaps/Normalized")
@@ -130,8 +133,9 @@ if __name__ == '__main__':
     #validation_results.print_all(DTR, LTR, k)
 
     ##EVALUATION OF THE CLASSIFIERS :
+    '''
     evaluation_results.print_all(DTR, LTR, DTE, LTE, k)
-    
+    '''
 
 
     '''
