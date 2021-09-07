@@ -74,9 +74,6 @@ def plot_scatter(D, L, title):
 def plot_heatmaps (D, L, path):
     # show the correlation of the features in the whole dataset
     C =numpy.corrcoef(D)
-    print(C)
-    print()
-    print()
     plt.figure()
     #plt.imshow(C, cmap='Blues')
     plt.imshow(C, cmap='Greens')
@@ -102,7 +99,7 @@ def plot_heatmaps (D, L, path):
     plt.savefig(str(path)+'/high_quality')
     
 
-def bars_numsamples(n_high_qty, n_low_qty):
+def bars_numsamples(n_high_qty, n_low_qty, title):
     
     plt.figure()
     plt.ylabel("nsamples")
@@ -110,8 +107,8 @@ def bars_numsamples(n_high_qty, n_low_qty):
     plt.xticks([0,1], ['low quality', 'high quality'])
     plt.bar( 0, n_low_qty)
     plt.bar( 1,n_high_qty)
-    plt.title("Training data")
-    plt.savefig('Stat/hist_number_of_data.png')
+    plt.title( title + " data")
+    plt.savefig('Stat/hist_number_of_data_'+title+'.png')
     
 
     

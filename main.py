@@ -94,7 +94,7 @@ if __name__ == '__main__':
     ## LTR: Training Labels
     ## LTE: Evaluation Labels
     
-    '''
+    
     ## - compute statistics to analyse the data and the given features
     
     # plot histograms of the raw training dataset
@@ -108,24 +108,33 @@ if __name__ == '__main__':
     gaussianizedFeatures = preprocessing.gaussianization(DTR)
     stats.plot_hist(gaussianizedFeatures, LTR, "Stat/Hist/Gaussianized")
     
-    '''
+    
     # Plot scatters
+    '''
     stats.plot_scatter(preprocessing.Z_normalization(DTR), LTR, "Raw")
     stats.plot_scatter(preprocessing.gaussianization(DTR), LTR, "Gaussianized")
+    '''
     '''
     ## heat maps of the gaussianized features to show correlations between features
     stats.plot_heatmaps(preprocessing.gaussianization(DTR), LTR, "Stat/HeatMaps/Gaussianized")
     stats.plot_heatmaps(preprocessing.Z_normalization(DTR), LTR, "Stat/HeatMaps/Normalized")
-    
-
+    stats.plot_heatmaps(DTR, LTR, "Stat/HeatMaps/Raw")
+    '''
+    '''
     ##enstablish if data are balanced
-    
+    #Training
     n_high_qty = numpy.count_nonzero(LTR == 1)
     n_low_qty = numpy.count_nonzero(LTR == 0)
+    print("train, high:", n_high_qty, "low: ", n_low_qty)
     ##-----> number of low qty >> number of high qty
-    stats.bars_numsamples(n_high_qty, n_low_qty)
-    
+    stats.bars_numsamples(n_high_qty, n_low_qty, "Training")
+    #Test
+    n_high_qty = numpy.count_nonzero(LTE == 1)
+    n_low_qty = numpy.count_nonzero(LTE == 0)
+    stats.bars_numsamples(n_high_qty, n_low_qty, "Test")
+    print("test, high:", n_high_qty, "low: ", n_low_qty)
     '''
+    
     ##choose k for k cross validation
     k = 5
 

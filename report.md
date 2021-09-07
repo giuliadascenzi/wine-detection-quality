@@ -2,46 +2,53 @@
 
 ## - Introduction
 
-### Data Set Information:
+The dataset used for this analysis is related to red and white variants of the Portuguese "Vinho Verde" wine and is taken from the UCI repository.
 
-The two datasets are related to red and white variants of the Portuguese "Vinho Verde" wine. For more details, consult: [Web Link] or the reference [Cortez et al., 2009]. Due to privacy and logistic issues, only physicochemical (inputs) and sensory (the output) variables are available (e.g. there is no data about grape types, wine brand, wine selling price, etc.).
+The dataset was collected to predict human wine taste preferences. In fact, it associates physiochemical characteristics of the analyzed wine to sensory evaluations made by experts.
 
-These datasets can be viewed as classification or regression tasks. The classes are ordered and not balanced (e.g. there are many more normal wines than excellent or poor ones). Outlier detection algorithms could be used to detect the few excellent or poor wines. Also, we are not sure if all input variables are relevant. So it could be interesting to test feature selection methods.
+The original dataset consists of 10 classes (quality 1 to 10) , but for this project the dataset has been binarized, collecting all wines with low quality (lower than 6) into class 0 and good quality (grater than 6) into class 0. Wines with quality 6 have been discarded to simplify the task.
 
-### Attribute Information:
+The dataset contains both red and white wines that originally were separated but in this analysis have been merged.
 
-Input variables (based on physicochemical tests):
-
-1 - fixed acidity
-2 - volatile acidity
-3 - citric acid
-4 - residual sugar
-5 - chlorides
-6 - free sulfur dioxide
-7 - total sulfur dioxide
-8 - density
-9 - pH
-10 - sulphates
-11 - alcohol
-
-Output variable (based on sensory data):
-12 - quality (score between 0 and 10)
+The goal of the following analysis is exploring the characteristics of the chosen dataset to find the model that best classify the input data. To do so, several classifiers combined with different preprocessing techniques have been exploited and the main results will be shown in this report.
 
 ### Classes balance:
 
-<img src="Stat\hist_number_of_data.png" style="zoom: 67%;" />
+The dataset has been split in a training set and a test set.
 
-## - Preprocessing
+The training set contains 613 samples belonging to the "high quality" class and 1226 belonging to the "low quality" class. While, the evaluation set has 664 samples of class "high quality" and 1158 samples of class "low quality". Therefore the classes are partially balanced.
 
-Z - normalization (centering and scaling to unit variance)
+In the following graphs are shown the comparisons between the number of samples of the two classes in both training and test data set. It is visible that both the number of samples and the ratio between the two classes in the different data sets is close.
 
-gaussianization to map the features to values whose empirical comulative distrubution function is well approximated by a gaussian p.p.f
-
-## - Features analysis
-
-Plotting of the raw data features:
+<img src="Stat\hist_number_of_data_Training.png" style="zoom: 67%;" /> <img src="Stat\hist_number_of_data_Test.png" style="zoom: 67%;" />
 
 
+
+### Attribute Information:
+
+The input variables have 11 continuous features based on physiochemical tests
+
+0 - fixed acidity
+1 - volatile acidity
+2 - citric acid
+3 - residual sugar
+4 - chlorides
+5 - free sulfur dioxide
+6 - total sulfur dioxide
+7 - density
+8 - pH
+9 - sulphates
+10 - alcohol
+
+While the output variable is a discrete value representing the quality of the wine sample (0 low quality/1 high quality)
+
+## - Preprocessing and Features analysis 
+
+The features of the dataset refers to different types of variables and therefore have different measuring scales.
+
+Thus, in order to compare similarities between features, the dataset has been z- normalized, centering and scaling to unit variance the features. 
+
+The histograms below show the distributions of the training dataset features. Orange histograms  refer to high quality wines while blue histograms to low quality wines.
 
 
 
@@ -51,15 +58,17 @@ Plotting of the raw data features:
 | <img src="Stat\Hist\Normalized\hist_6.png" style="zoom:67%;" /> | <img src="Stat\Hist\Normalized\hist_7.png" style="zoom:67%;" /> | <img src="Stat\Hist\Normalized\hist_8.png" style="zoom:67%;" /> |
 | <img src="Stat\Hist\Normalized\hist_9.png" style="zoom:60%;" /> | <img src="Stat\Hist\Normalized\hist_9.png" style="zoom: 67%;" /> |                                                              |
 
+The analysis of the training data reveals that most of the features have an irregular distribution.
+
+For this reason, the classification (especially of Gaussian based methods) may produce sub-optimal results.
+
+We therefore further preprocessed our data by "gaussianizing" the features.
+
+The gaussianization process allows mapping the features values to ones whose empirical comulative distribution function is well approximated by a Gaussian c.d.f. To do so, the features have been mapped to a uniform distribution and then transformed  through the inverse of Gaussian cumulative distribution function.
 
 
 
-
-After gaussianization:
-
-
-
-
+The histograms below show the distributions of the gaussianized features.
 
 | <img src="Stat\Hist\Gaussianized\hist_0.png" style="zoom: 67%;" /> | <img src="Stat\Hist\Gaussianized\hist_1.png" style="zoom:67%;" /> | <img src="Stat\Hist\Gaussianized\hist_2.png" style="zoom:67%;" /> |
 | :----------------------------------------------------------: | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -67,25 +76,30 @@ After gaussianization:
 | <img src="Stat\Hist\Gaussianized\hist_6.png" style="zoom:67%;" /> | <img src="Stat\Hist\Gaussianized\hist_7.png" style="zoom:67%;" /> | <img src="Stat\Hist\Gaussianized\hist_8.png" style="zoom:67%;" /> |
 | <img src="Stat\Hist\Gaussianized\hist_9.png" style="zoom:60%;" /> | <img src="Stat\Hist\Gaussianized\hist_9.png" style="zoom: 67%;" /> |                                                              |
 
-Correlation between the features:
+A correlation analysis of the Gaussianized features shows that feature 5 and 6 are strongly correlated.
+
+Below can be found the heatmaps showing the Pearson correlation coefficient (****FORMULA********)
 
 | All dataset<img src="Stat\HeatMaps\Gaussianized\whole_dataset.png" style="zoom:67%;" /> | <img src="Stat\HeatMaps\Gaussianized\high_quality.png" style="zoom:67%;" /> | <img src="Stat\HeatMaps\Gaussianized\low_quality.png" style="zoom:67%;" /> |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 
-feature 5 and 6 strongly correlated -> It suggests that we may benefit from using PCA to map data to 9, 8 , 7
-
-(very similar covariance matrixes)
+This suggests the classification may benefit from using PCA to map data to 10 or 9 uncorrelated features to reduce the number of parameters to estimate. 
 
 
 
-##### Methodologies:
 
-we analyze both options (#TODO: Riguardare )
 
-- Single Fold:
-- K Fold:
+## - Classification of Wine Quality features
 
-## - Classifier for the wine
+##### Methodologies used for validation:
+
+To understand which model is most promising and to assess the effects of using PCA, both single fold-validation and K-Fold cross-validation have been adopted.
+
+At first, it has been used a single fold approach where the training dataset has been split in two subsets: one (66% of the original set) for development and the other one for validation. This because the training with this approach is faster.
+
+In a second moment, the K-Fold approach has been used to get more robust result.
+
+This because, in the K- Fold, iteratively the training set has been split into 5 folds, 4 used for training and 1 for validation, after being shuffled. At the end, the validation scores are put together and used to compute the performance metrics. In this way, there is more data available for training and validation. 
 
 ## * MVG classifiers  
 |                                       | **Single Fold** |             |             | **5-Fold**  |             |             |
