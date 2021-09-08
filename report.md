@@ -104,40 +104,56 @@ In a second moment, the K-Fold approach has been used to get more robust result.
 
 This because, in the K- Fold, iteratively the training set has been split into 5 folds, 4 used for training and 1 for validation, after being shuffled. At the end, the validation scores are put together and used to compute the performance metrics. In this way, there is more data available for training and validation. 
 
+This document focuses on the analysis of the balanced uniform prior application:
+
+​				(prior, Cfp, Cfn) = (0.5,1,1)
+
+Despite this, also two unbalanced applications have been considered.
+
+​				(prior, Cfp, Cfn) = (0.9,1,1), (prior, Cfp, Cfn) = (0.1,1,1)
+
+??Since the classes are partially unbalanced toward the low quality class, we expect to have better results in the application biased toward the low quality class (therefore with prior 0.1) rather than the other one.
+
+
+
+In the fist part, the goal of the analysis was choosing the most promising approach. Therefore the performances have been measured in terms of normalized minimum detection costs, that estimate the costs that would be paid making optimal decisions for the validation set using the recognizers scores.
+
+
+
 ## * MVG classifiers  
 |                                        | **Single Fold** |             |             | **5-Fold**  |             |             |
 | :------------------------------------: | --------------- | ----------- | ----------- | ----------- | ----------- | ----------- |
 |                                        | prior=0.5       | prior=0.9   | prior=0.1   | prior=0.5   | prior=0.9   | prior=0.1   |
 |       **Raw Features – no PCA**        | -------------   | ----------- | ----------- | ----------- | ----------- | ----------- |
-|             **Full - Cov**             | 0.304           | 0.812       | 0.777       | 0.312       | 0.842       | 0.778       |
-|             **Diag -Cov**              | 0.437           | 0.875       | 0.818       | 0.420       | 0.921       | 0.845       |
-|           **Tied Full-Cov**            | 0.334           | 0.733       | 0.779       | 0.333       | 0.748       | 0.812       |
-|           **Tied Diag- Cov**           | 0.412           | 0.901       | 0.832       | 0.402       | 0.932       | 0.866       |
+|            ***Full - Cov***            | ***0.304***     | *0.812*     | *0.777*     | ***0.312*** | *0.842*     | *0.778*     |
+|            ***Diag -Cov***             | *0.437*         | *0.875*     | *0.818*     | *0.420*     | *0.921*     | *0.845*     |
+|          ***Tied Full-Cov***           | *0.334*         | *0.733*     | *0.779*     | *0.333*     | *0.748*     | *0.812*     |
+|          ***Tied Diag- Cov***          | *0.412*         | *0.901*     | *0.832*     | *0.402*     | *0.932*     | *0.866*     |
 |   **Gaussianized Features – no PCA**   | -----------     | ----------- | ----------- | ----------- | ----------- | ----------- |
-|             **Full - Cov**             | 0.270           | 0.740       | 0.807       | 0.306       | 0.790       | 0.784       |
-|             **Diag -Cov**              | 0.456           | 0.848       | 0.860       | 0.448       | 0.914       | 0.834       |
-|           **Tied Full-Cov**            | 0.348           | 0.812       | 0.867       | 0.354       | 0.884       | 0.803       |
-|           **Tied Diag- Cov**           | 0.451           | 0.891       | 0.839       | 0.451       | 0.942       | 0.879       |
+|            ***Full - Cov***            | ***0.270***     | *0.740*     | *0.807*     | ***0.306*** | *0.790*     | *0.784*     |
+|            ***Diag -Cov***             | *0.456*         | *0.848*     | *0.860*     | *0.448*     | *0.914*     | *0.834*     |
+|          ***Tied Full-Cov***           | *0.348*         | *0.812*     | *0.867*     | *0.354*     | *0.884*     | *0.803*     |
+|          ***Tied Diag- Cov***          | *0.451*         | *0.891*     | *0.839*     | *0.451*     | *0.942*     | *0.879*     |
 |     **Raw Features – PCA (m=10)**      | -----------     | ----------- | ----------- | ----------- | ----------- | ----------- |
 |             **Full - Cov**             | 0.325           | 0.814       | 0.772       | 0.321       | 0.854       | 0.797       |
 |             **Diag -Cov**              | 0.375           | 0.899       | 0.821       | 0.397       | 0.924       | 0.812       |
 |           **Tied Full-Cov**            | 0.341           | 0.697       | 0.806       | 0.333       | 0.760       | 0.823       |
 |           **Tied Diag- Cov**           | 0.337           | 0.651       | 0.794       | 0.337       | 0.765       | 0.825       |
 | **Gaussianized Features – PCA (m=10)** | -----------     | ----------- | ----------- | ----------- | ----------- | ----------- |
-|             **Full - Cov**             | 0.312           | 0.817       | 0.779       | 0.328       | 0.862       | 0.807       |
-|             **Diag -Cov**              | 0.362           | 0.747       | 0.780       | 0.378       | 0.824       | 0.804       |
-|           **Tied Full-Cov**            | 0.324           | 0.682       | 0.791       | 0.328       | 0.753       | 0.809       |
-|           **Tied Diag- Cov**           | 0.335           | 0.656       | 0.822       | 0.334       | 0.782       | 0.822       |
+|            ***Full - Cov***            | *0.312*         | *0.817*     | *0.779*     | *0.328*     | *0.862*     | *0.807*     |
+|            ***Diag -Cov***             | *0.362*         | *0.747*     | *0.780*     | *0.378*     | *0.824*     | *0.804*     |
+|          ***Tied Full-Cov***           | *0.324*         | *0.682*     | *0.791*     | *0.328*     | *0.753*     | *0.809*     |
+|          ***Tied Diag- Cov***          | *0.335*         | *0.656*     | *0.822*     | *0.334*     | *0.782*     | *0.822*     |
 |      **Raw Features – PCA (m=9)**      | -----------     | ----------- | ----------- | ----------- | ----------- | ----------- |
 |             **Full - Cov**             | 0.322           | 0.805       | 0.787       | 0.327       | 0.811       | 0.814       |
 |             **Diag -Cov**              | 0.364           | 0.867       | 0.803       | 0.389       | 0.866       | 0.805       |
 |           **Tied Full-Cov**            | 0.341           | 0.706       | 0.806       | 0.331       | 0.760       | 0.823       |
 |           **Tied Diag- Cov**           | 0.343           | 0.658       | 0.799       | 0.338       | 0.765       | 0.830       |
 | **Gaussianized Features – PCA (m=9)**  | -----------     | ----------- | ----------- | ----------- | ----------- | ----------- |
-|             **Full - Cov**             | 0.300           | 0.817       | 0.783       | 0.319       | 0.814       | 0.800       |
-|             **Diag -Cov**              | 0.349           | 0.764       | 0.810       | 0.368       | 0.814       | 0.804       |
-|           **Tied Full-Cov**            | 0.331           | 0.677       | 0.786       | 0.327       | 0.752       | 0.816       |
-|           **Tied Diag- Cov**           | 0.337           | 0.673       | 0.822       | 0.335       | 0.783       | 0.825       |
+|            ***Full - Cov***            | *0.300*         | *0.817*     | *0.783*     | *0.319*     | *0.814*     | *0.800*     |
+|            ***Diag -Cov***             | *0.349*         | *0.764*     | *0.810*     | *0.368*     | *0.814*     | *0.804*     |
+|          ***Tied Full-Cov***           | *0.331*         | *0.677*     | *0.786*     | *0.327*     | *0.752*     | *0.816*     |
+|          ***Tied Diag- Cov***          | *0.337*         | *0.673*     | *0.822*     | *0.335*     | *0.783*     | *0.825*     |
 |      **Raw Features – PCA (m=8)**      | -----------     | ----------- | ----------- | ----------- | ----------- | ----------- |
 |             **Full - Cov**             | 0.316           | 0.858       | 0.779       | 0.349       | 0.858       | 0.824       |
 |             **Diag -Cov**              | 0.387           | 0.913       | 0.867       | 0.394       | 0.907       | 0.828       |
@@ -149,14 +165,33 @@ This because, in the K- Fold, iteratively the training set has been split into 5
 |           **Tied Full-Cov**            | 0.373           | 0.685       | 0.854       | 0.372       | 0.844       | 0.845       |
 |           **Tied Diag- Cov**           | 0.367           | 0.745       | 0.852       | 0.373       | 0.869       | 0.854       |
 
-
 notes:
 
-- gaussianization does not improve a lot
-- best one in any cases is full - cov
-- best - > full mvg, tied full cov
-- PCA peggiora!
-- gaussianized slightly improves the results
+- Differenza tra i vari modelli:
+
+  I modelli migliori sono Full cov e il tied full.
+
+The diagonal covariance models (both Full diagonal and tied diagonal) do not give good results compared to the other models with or without gaussianization and PCA. These models work under the naive-bayes-assumption that supposes the different components for each class are uncorrelated. Therefore, in this case, this assumption does not produce accurate results. Applying PCA slightly improves the performance, probabily because removing the low variances directions the whithin-class correlation decreases .
+
+The tied full covariance model performs pretty good on the validation data, confirming the similiarity between classes shown by the correlation analysis. It performs better than the diagonal models accounting the within-class correlations. PCA does not help in producing better results in this case.
+
+The model that performs the best is the full covariance model that is able to account for correlations. Also, having enough data compared to the dimensionality of the samples the results we obtain are results.
+
+Gaussianization fails in improving significantly the results, therefore it still performs slightly better compared to raw features.
+
+PCA even if does not help increasing much the performances can still be used to reduce the number of parameters and therefore to reduce the complexity of the model. Nevertheless, given the limited effectiveness It will not be considered for the future analysis.
+
+The results between single-fold and K-fold are consistent, suggesting that the amount of data is enough for validation and model training also for the single-fold set up.
+
+None of the models produce accurate results for the unbalanced applications.
+
+Overall, the best candidate is currently the MVG model with Full Covariance matrices. The chosen one is the one with gaussianized features, since has slightly better results than the one with raw features, and the K-fold version, even if it is a bit worst than the single fold result, but the approach provides more robust results.
+
+Since the model that performs the best are the Full Covariance and the Tied full models, and one has a quadratic surface rule and the other ones a linear surface rule, the decision was to procede analyzing both the quadratic and linear models.
+
+
+
+
 
 
 
@@ -171,15 +206,15 @@ notes:
 |                                        | prior=0.5   | prior=0.1   | prior=0.9   |
 | -------------------------------------- | ----------- | ----------- | ----------- |
 | **Raw Features**                       | ----------- | ----------- | ----------- |
-| Log reg, lambda=10**-7, pi_T =0.5      | *0.377*     | 0.864       | 0.795       |
-| Log reg, lambda=10**-7, pi_T =0.9      | 0.390       | 0.903       | 0.742       |
-| Log reg, lambda=10**-7, pi_T =0.1      | *0.362*     | 0.852       | 0.828       |
-| Log reg, lambda=10**-7, pi_T =pi_emp_T | 0.368       | 0.862       | 0.792       |
+| Log reg, lambda=10**-7, pi_T =0.5      | 0.356       | 0.835       | 0.686       |
+| Log reg, lambda=10-7, pi_T =0.1        | 0.335       | 0.819       | 0.724       |
+| Log reg, lambda=10-7, pi_T =0.9        | 0.370       | 0.858       | 0.646       |
+| Log reg, lambda=10-7, pi_T =pi_emp_T   | 0.343       | 0.840       | 0.676       |
 | **Gaussianized features**              | ----------- | ----------- | ----------- |
-| Log reg, lambda=10**-7, pi_T =0.5      | 0.371       | 0.854       | 0.818       |
-| Log reg, lambda=10**-7, pi_T =0.9      | 0.375       | 0.914       | 0.827       |
-| Log reg, lambda=10**-7, pi_T =0.1      | 0.372       | 0.791       | 0.986       |
-| Log reg, lambda=10**-7, pi_T =pi_emp_T | 0.378       | 0.840       | 0.882       |
+| Log reg, lambda=10**-7, pi_T =0.5      | 0.363       | 0.857       | 0.761       |
+| Log reg, lambda=10**-7, pi_T =0.1      | 0.339       | 0.780       | 0.946       |
+| Log reg, lambda=10**-7, pi_T =0.9      | 0.376       | 0.905       | 0.716       |
+| Log reg, lambda=10**-7, pi_T =pi_emp_T | 0.358       | 0.831       | 0.847       |
 
 #### ** Quadratic Logistic Regression
 
@@ -190,15 +225,15 @@ notes:
 |                                            | prior=0.5   | prior=0.1   | prior=0.9   |
 | ------------------------------------------ | ----------- | ----------- | ----------- |
 | **Raw Features**                           | ----------- | ----------- | ----------- |
-| Quad Log reg, lambda=10**-7, pi_T =0.5     | 0.274       | 0.743       | 0.752       |
-| Quad Log reg, lambda=10**-7, pi_T =0.9     | 0.301       | 0.781       | 0.753       |
-| QuadLog reg, lambda=10**-7, pi_T =0.1      | 0.269       | 0.752       | 0.729       |
-| QuadLog reg, lambda=10**-7, pi_T =pi_emp_T | 0.269       | 0.746       | 0.743       |
+| Quad Log reg, lambda=10**-7, pi_T =0.5     | 0.274       | 0.767       | 0.720       |
+| Quad Log reg, lambda=10**-7, pi_T =0.1     | 0.276       | 0.714       | 0.747       |
+| QuadLog reg, lambda=10**-7, pi_T =0.9      | 0.298       | 0.817       | 0.688       |
+| QuadLog reg, lambda=10**-7, pi_T =pi_emp_T | 0.275       | 0.755       | 0.725       |
 | **Gaussianized features**                  | ----------- | ----------- | ----------- |
-| Quad Log reg, lambda=10**-7, pi_T =0.5     | 0.300       | 0.749       | 0.692       |
-| Quad Log reg, lambda=10**-7, pi_T =0.9     | 0.302       | 0.811       | 0.632       |
-| Quad Log reg, lambda=10**-7, pi_T =0.1     | 0.313       | 0.714       | 0.731       |
-| QuadLog reg, lambda=10**-7, pi_T =pi_emp_T | 0.296       | 0.739       | 0.724       |
+| Quad Log reg, lambda=10**-7, pi_T =0.5     | 0.296       | 0.698       | 0.666       |
+| Quad Log reg, lambda=10**-7, pi_T =0.1     | 0.300       | 0.720       | 0.643       |
+| Quad Log reg, lambda=10**-7, pi_T =0.9     | 0.308       | 0.761       | 0.685       |
+| QuadLog reg, lambda=10**-7, pi_T =pi_emp_T | 0.295       | 0.691       | 0.662       |
 
 ## *SVM
 
