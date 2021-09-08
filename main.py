@@ -34,7 +34,7 @@ def load(fname):
     with open(fname) as f:
         for line in f:
             try:
-                attrs = line.split(',')[0:10]
+                attrs = line.split(',')[0:11]
                 attrs = mcol(numpy.array([float(i) for i in attrs]))
                 label = int(line.split(',')[-1].strip())
                 DList.append(attrs)
@@ -110,17 +110,17 @@ if __name__ == '__main__':
     
     
     # Plot scatters
-    '''
+    
     stats.plot_scatter(preprocessing.Z_normalization(DTR), LTR, "Raw")
     stats.plot_scatter(preprocessing.gaussianization(DTR), LTR, "Gaussianized")
-    '''
-    '''
+    
+    
     ## heat maps of the gaussianized features to show correlations between features
     stats.plot_heatmaps(preprocessing.gaussianization(DTR), LTR, "Stat/HeatMaps/Gaussianized")
     stats.plot_heatmaps(preprocessing.Z_normalization(DTR), LTR, "Stat/HeatMaps/Normalized")
     stats.plot_heatmaps(DTR, LTR, "Stat/HeatMaps/Raw")
-    '''
-    '''
+    
+    
     ##enstablish if data are balanced
     #Training
     n_high_qty = numpy.count_nonzero(LTR == 1)
@@ -133,13 +133,13 @@ if __name__ == '__main__':
     n_low_qty = numpy.count_nonzero(LTE == 0)
     stats.bars_numsamples(n_high_qty, n_low_qty, "Test")
     print("test, high:", n_high_qty, "low: ", n_low_qty)
-    '''
+    
     
     ##choose k for k cross validation
     k = 5
 
     ##VALIDATION OF THE CLASSIFIERS : 
-    #validation_results.print_all(DTR, LTR, k)
+    validation_results.print_all(DTR, LTR, k)
 
     ##EVALUATION OF THE CLASSIFIERS :
     '''

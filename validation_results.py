@@ -46,6 +46,11 @@ def print_table_MVG_classifiers_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
     print("*** minDCF - RAW (normalized) FEATURES - NO PCA ***")
     MVG_Classifiers_minDCF(normalized_data)
     
+    #------------------------RAW FEATURES (normalized) WITH PCA = 10 --------------------
+    principal_components10 = redTec.PCA(normalized_data, 10)
+    print("*** minDCF - RAW (normalized) FEATURES -  PCA (m=10) ***")
+    MVG_Classifiers_minDCF(principal_components10)       
+
 
     #------------------------RAW FEATURES (normalized) WITH PCA = 9 --------------------
     principal_components9 = redTec.PCA(normalized_data, 9)
@@ -55,7 +60,7 @@ def print_table_MVG_classifiers_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
 
     #------------------------RAW FEATURES (normalized) WITH PCA = 8 --------------------
     
-    principal_components8,_= redTec.PCA(normalized_data, 8)
+    principal_components8= redTec.PCA(normalized_data, 8)
     print("*** minDCF - RAW (normalized) FEATURES -  PCA (m=8) ***")
     MVG_Classifiers_minDCF(principal_components8)    
 
@@ -66,6 +71,11 @@ def print_table_MVG_classifiers_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
     print("*** minDCF - GAUSSIANIZED FEATURES - NO PCA ***")
     MVG_Classifiers_minDCF(gaussianizedFeatures)
 
+    #------------------------GAUSSIANIZED FEATURES WITH PCA = 10 --------------------
+    print("*** minDCF - GAUSSIANIZED FEATURES -  PCA m=10 ***")
+    principal_components10= redTec.PCA(normalized_data, 10)
+    gaussianized_principal_components_10 = preprocessing.gaussianization(principal_components10)
+    MVG_Classifiers_minDCF(gaussianized_principal_components_10)     
 
     #------------------------GAUSSIANIZED FEATURES WITH PCA = 9 --------------------
     print("*** minDCF - GAUSSIANIZED FEATURES -  PCA m=9 ***")
@@ -298,7 +308,7 @@ def print_table_Quadratic_LR_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
 
     def Quad_LR_minDCF(data):
             lam = 10**(-7)
-            '''
+            
             pi_T = 0.5
             min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
             print("[5-Folds]  -  lam = 10^-7, pi_T = 0.5: ",min_DCF_LR)  
@@ -310,7 +320,7 @@ def print_table_Quadratic_LR_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
             pi_T = 0.9
             min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
             print("[5-Folds]  -  lam = 10^-7, pi_T = 0.9: ",min_DCF_LR)
-            '''
+            
 
             N = LTR.size #tot number of samples
             n_T = (1*(LTR==1)).sum() #num of samples belonging to the true class

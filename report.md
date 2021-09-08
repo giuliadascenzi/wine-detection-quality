@@ -20,7 +20,10 @@ The training set contains 613 samples belonging to the "high quality" class and 
 
 In the following graphs are shown the comparisons between the number of samples of the two classes in both training and test data set. It is visible that both the number of samples and the ratio between the two classes in the different data sets is close.
 
-<img src="Stat\hist_number_of_data_Training.png" style="zoom: 67%;" /> <img src="Stat\hist_number_of_data_Test.png" style="zoom: 67%;" />
+| <img src="Stat\hist_number_of_data_Training.png" style="zoom: 67%;" /> | <img src="Stat\hist_number_of_data_Test.png" style="zoom: 67%;" /> |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+
+
 
 
 
@@ -56,7 +59,7 @@ The histograms below show the distributions of the training dataset features. Or
 | :----------------------------------------------------------: | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | <img src="Stat\Hist\Normalized\hist_3.png" style="zoom:67%;" /> | <img src="Stat\Hist\Normalized\hist_4.png" style="zoom:67%;" /> | <img src="Stat\Hist\Normalized\hist_5.png" style="zoom:67%;" /> |
 | <img src="Stat\Hist\Normalized\hist_6.png" style="zoom:67%;" /> | <img src="Stat\Hist\Normalized\hist_7.png" style="zoom:67%;" /> | <img src="Stat\Hist\Normalized\hist_8.png" style="zoom:67%;" /> |
-| <img src="Stat\Hist\Normalized\hist_9.png" style="zoom:60%;" /> | <img src="Stat\Hist\Normalized\hist_9.png" style="zoom: 67%;" /> |                                                              |
+| <img src="Stat\Hist\Normalized\hist_9.png" style="zoom:60%;" /> | <img src="Stat\Hist\Normalized\hist_10.png" style="zoom: 67%;" /> |                                                              |
 
 The analysis of the training data reveals that most of the features have an irregular distribution.
 
@@ -74,7 +77,7 @@ The histograms below show the distributions of the gaussianized features.
 | :----------------------------------------------------------: | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | <img src="Stat\Hist\Gaussianized\hist_3.png" style="zoom:67%;" /> | <img src="Stat\Hist\Gaussianized\hist_4.png" style="zoom:67%;" /> | <img src="Stat\Hist\Gaussianized\hist_5.png" style="zoom:67%;" /> |
 | <img src="Stat\Hist\Gaussianized\hist_6.png" style="zoom:67%;" /> | <img src="Stat\Hist\Gaussianized\hist_7.png" style="zoom:67%;" /> | <img src="Stat\Hist\Gaussianized\hist_8.png" style="zoom:67%;" /> |
-| <img src="Stat\Hist\Gaussianized\hist_9.png" style="zoom:60%;" /> | <img src="Stat\Hist\Gaussianized\hist_9.png" style="zoom: 67%;" /> |                                                              |
+| <img src="Stat\Hist\Gaussianized\hist_9.png" style="zoom:60%;" /> | <img src="Stat\Hist\Gaussianized\hist_10.png" style="zoom: 67%;" /> |                                                              |
 
 A correlation analysis of the Gaussianized features shows that feature 5 and 6 are strongly correlated.
 
@@ -102,39 +105,49 @@ In a second moment, the K-Fold approach has been used to get more robust result.
 This because, in the K- Fold, iteratively the training set has been split into 5 folds, 4 used for training and 1 for validation, after being shuffled. At the end, the validation scores are put together and used to compute the performance metrics. In this way, there is more data available for training and validation. 
 
 ## * MVG classifiers  
-|                                       | **Single Fold** |             |             | **5-Fold**  |             |             |
-| :-----------------------------------: | --------------- | ----------- | ----------- | ----------- | ----------- | ----------- |
-|                                       | prior=0.5       | prior=0.1   | prior=0.9   | prior=0.5   | prior=0.1   | prior=0.9   |
-|       **Raw Features – no PCA**       | --------------- | ----------- | ----------- | ----------- | ----------- | ----------- |
-|            **Full - Cov**             | *0.346*         | 0.766       | 0.824       | *0.343*     | 0.795       | 0.906       |
-|             **Diag -Cov**             | 0.527           | 0.911       | 0.937       | 0.548       | 0.962       | 0.973       |
-|           **Tied Full-Cov**           | *0.355*         | 0.818       | 0.836       | *0.359*     | 0.843       | 0.827       |
-|          **Tied Diag- Cov**           | 0.521           | 0.913       | 0.983       | 0.543       | 0.970       | 0.952       |
-|  **Gaussianized Features – no PCA**   | -----------     | ----------- | ----------- | ----------- | ----------- | ----------- |
-|            **Full - Cov**             | *0.277*         | 0.791       | 0.824       | *0.306*     | 0.772       | 0.871       |
-|             **Diag -Cov**             | 0.497           | 0.901       | 0.963       | 0.516       | 0.927       | 0.975       |
-|           **Tied Full-Cov**           | 0.355           | 0.889       | 0.906       | 0.379       | 0.810       | 0.928       |
-|          **Tied Diag- Cov**           | 0.529           | 0.913       | 0.992       | 0.543       | 0.958       | 0.995       |
-|     **Raw Features – PCA (m=9)**      | -----------     | ----------- | ----------- | ----------- | ----------- | ----------- |
-|            **Full - Cov**             | 0.417           | 0.858       | 0.884       | 0.425       | 0.915       | 0.959       |
-|             **Diag -Cov**             | 0.469           | 0.910       | 0.963       | 0.517       | 0.937       | 0.986       |
-|           **Tied Full-Cov**           | 0.469           | 0.934       | 0.915       | 0.489       | 0.951       | 0.816       |
-|          **Tied Diag- Cov**           | 0.467           | 0.934       | 0.915       | 0.491       | 0.960       | 0.921       |
-| **Gaussianized Features – PCA (m=9)** | -----------     | ----------- | ----------- | ----------- | ----------- | ----------- |
-|            **Full - Cov**             | 0.398           | 0.838       | 0.872       | 0.419       | 0.911       | 0.969       |
-|             **Diag -Cov**             | 0.455           | 0.904       | 0.956       | 0.489       | 0.943       | 0.974       |
-|           **Tied Full-Cov**           | 0.469           | 0.945       | 0.935       | 0.490       | 0.938       | 0.931       |
-|          **Tied Diag- Cov**           | 0.465           | 0.909       | 0.920       | 0.495       | 0.934       | 0.938       |
-|     **Raw Features – PCA (m=8)**      | -----------     | ----------- | ----------- | ----------- | ----------- | ----------- |
-|            **Full - Cov**             | 0.421           | 0.949       | 0.915       | 0.477       | 0.990       | 0.948       |
-|             **Diag -Cov**             | 0.552           | 0.979       | 0.968       | 0.598       | 0.985       | 0.986       |
-|           **Tied Full-Cov**           | 0.504           | 0.964       | 0.887       | 0.535       | 0.982       | 0.807       |
-|          **Tied Diag- Cov**           | 0.517           | 0.964       | 0.843       | 0.537       | 0.983       | 0.893       |
-| **Gaussianized Features – PCA (m=8)** | -----------     | ----------- | ----------- | ----------- | ----------- | ----------- |
-|            **Full - Cov**             | 0.426           | 0.902       | 0.891       | 0.471       | 0.988       | 0.946       |
-|             **Diag -Cov**             | 0.526           | 0.959       | 0.920       | 0.563       | 0.982       | 0.961       |
-|           **Tied Full-Cov**           | 0.497           | 0.984       | 0.911       | 0.510       | 0.973       | 0.930       |
-|          **Tied Diag- Cov**           | 0.528           | 0.974       | 0.860       | 0.535       | 0.990       | 0.919       |
+|                                        | **Single Fold** |             |             | **5-Fold**  |             |             |
+| :------------------------------------: | --------------- | ----------- | ----------- | ----------- | ----------- | ----------- |
+|                                        | prior=0.5       | prior=0.1   | prior=0.9   | prior=0.5   | prior=0.1   | prior=0.9   |
+|       **Raw Features – no PCA**        | -------------   | ----------- | ----------- | ----------- | ----------- | ----------- |
+|             **Full - Cov**             | *0.346*         | 0.766       | 0.824       | *0.343*     | 0.795       | 0.906       |
+|             **Diag -Cov**              | 0.527           | 0.911       | 0.937       | 0.548       | 0.962       | 0.973       |
+|           **Tied Full-Cov**            | *0.355*         | 0.818       | 0.836       | *0.359*     | 0.843       | 0.827       |
+|           **Tied Diag- Cov**           | 0.521           | 0.913       | 0.983       | 0.543       | 0.970       | 0.952       |
+|   **Gaussianized Features – no PCA**   | -----------     | ----------- | ----------- | ----------- | ----------- | ----------- |
+|             **Full - Cov**             | *0.277*         | 0.791       | 0.824       | *0.306*     | 0.772       | 0.871       |
+|             **Diag -Cov**              | 0.497           | 0.901       | 0.963       | 0.516       | 0.927       | 0.975       |
+|           **Tied Full-Cov**            | 0.355           | 0.889       | 0.906       | 0.379       | 0.810       | 0.928       |
+|           **Tied Diag- Cov**           | 0.529           | 0.913       | 0.992       | 0.543       | 0.958       | 0.995       |
+|     **Raw Features – PCA (m=10)**      | -----------     | ----------- | ----------- | ----------- | ----------- | ----------- |
+|             **Full - Cov**             | 0.346           | 0.766       | 0.824       | 0.343       | 0.795       | 0.906       |
+|             **Diag -Cov**              | 0.396           | 0.786       | 0.947       | 0.409       | 0.867       | 0.951       |
+|           **Tied Full-Cov**            | 0.355           | 0.818       | 0.836       | 0.359       | 0.843       | 0.827       |
+|           **Tied Diag- Cov**           | 0.358           | 0.794       | 0.850       | 0.356       | 0.830       | 0.832       |
+| **Gaussianized Features – PCA (m=10)** | -----------     | ----------- | ----------- | ----------- | ----------- | ----------- |
+|             **Full - Cov**             | 0.320           | 0.748       | 0.853       | 0.331       | 0.786       | 0.918       |
+|             **Diag -Cov**              | 0.377           | 0.845       | 0.896       | 0.377       | 0.841       | 0.898       |
+|           **Tied Full-Cov**            | 0.365           | 0.853       | 0.875       | 0.362       | 0.846       | 0.836       |
+|           **Tied Diag- Cov**           | 0.357           | 0.831       | 0.877       | 0.361       | 0.852       | 0.881       |
+|      **Raw Features – PCA (m=9)**      | -----------     | ----------- | ----------- | ----------- | ----------- | ----------- |
+|             **Full - Cov**             | 0.417           | 0.858       | 0.884       | 0.425       | 0.915       | 0.959       |
+|             **Diag -Cov**              | 0.469           | 0.910       | 0.963       | 0.517       | 0.937       | 0.986       |
+|           **Tied Full-Cov**            | 0.469           | 0.934       | 0.915       | 0.489       | 0.951       | 0.816       |
+|           **Tied Diag- Cov**           | 0.467           | 0.934       | 0.915       | 0.491       | 0.960       | 0.921       |
+| **Gaussianized Features – PCA (m=9)**  | -----------     | ----------- | ----------- | ----------- | ----------- | ----------- |
+|             **Full - Cov**             | 0.398           | 0.838       | 0.872       | 0.419       | 0.911       | 0.969       |
+|             **Diag -Cov**              | 0.455           | 0.904       | 0.956       | 0.489       | 0.943       | 0.974       |
+|           **Tied Full-Cov**            | 0.469           | 0.945       | 0.935       | 0.490       | 0.938       | 0.931       |
+|           **Tied Diag- Cov**           | 0.465           | 0.909       | 0.920       | 0.495       | 0.934       | 0.938       |
+|      **Raw Features – PCA (m=8)**      | -----------     | ----------- | ----------- | ----------- | ----------- | ----------- |
+|             **Full - Cov**             | 0.421           | 0.949       | 0.915       | 0.477       | 0.990       | 0.948       |
+|             **Diag -Cov**              | 0.552           | 0.979       | 0.968       | 0.598       | 0.985       | 0.986       |
+|           **Tied Full-Cov**            | 0.504           | 0.964       | 0.887       | 0.535       | 0.982       | 0.807       |
+|           **Tied Diag- Cov**           | 0.517           | 0.964       | 0.843       | 0.537       | 0.983       | 0.893       |
+| **Gaussianized Features – PCA (m=8)**  | -----------     | ----------- | ----------- | ----------- | ----------- | ----------- |
+|             **Full - Cov**             | 0.426           | 0.902       | 0.891       | 0.471       | 0.988       | 0.946       |
+|             **Diag -Cov**              | 0.526           | 0.959       | 0.920       | 0.563       | 0.982       | 0.961       |
+|           **Tied Full-Cov**            | 0.497           | 0.984       | 0.911       | 0.510       | 0.973       | 0.930       |
+|           **Tied Diag- Cov**           | 0.528           | 0.974       | 0.860       | 0.535       | 0.990       | 0.919       |
 
 notes:
 
