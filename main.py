@@ -97,6 +97,7 @@ if __name__ == '__main__':
     
     ## - compute statistics to analyse the data and the given features
     
+    '''
     # plot histograms of the raw training dataset
     stats.plot_hist(DTR, LTR, "Stat/Hist/Raw")
     
@@ -134,7 +135,7 @@ if __name__ == '__main__':
     stats.bars_numsamples(n_high_qty, n_low_qty, "Test")
     print("test, high:", n_high_qty, "low: ", n_low_qty)
     
-    
+    '''
     ##choose k for k cross validation
     k = 5
 
