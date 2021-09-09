@@ -307,19 +307,19 @@ def print_graphs_quadratic_LR_lambdas(DTR, LTR,  k):
 def print_table_Quadratic_LR_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
 
     def Quad_LR_minDCF(data):
-            lam = 10**(-7)
+            lam = 10**(-2)
             
             pi_T = 0.5
             min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
-            print("[5-Folds]  -  lam = 10^-7, pi_T = 0.5: ",min_DCF_LR)  
+            print("[5-Folds]  -  lam = 10^-2, pi_T = 0.5: ",min_DCF_LR)  
 
             pi_T = 0.1
             min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
-            print("[5-Folds]  -  lam = 10^-7, pi_T = 0.1: ",min_DCF_LR)
+            print("[5-Folds]  -  lam = 10^-2, pi_T = 0.1: ",min_DCF_LR)
 
             pi_T = 0.9
             min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
-            print("[5-Folds]  -  lam = 10^-7, pi_T = 0.9: ",min_DCF_LR)
+            print("[5-Folds]  -  lam = 10^-2, pi_T = 0.9: ",min_DCF_LR)
             
 
             N = LTR.size #tot number of samples
@@ -328,7 +328,7 @@ def print_table_Quadratic_LR_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
 
             pi_T = pi_emp_T
             min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
-            print("[5-Folds]  -  lam = 10^-7, pi_T = pi_emp_T: ",min_DCF_LR)
+            print("[5-Folds]  -  lam = 10^-2, pi_T = pi_emp_T: ",min_DCF_LR)
             
             print()
 
@@ -428,22 +428,23 @@ def print_table_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
 
     def linear_SVM_minDCF(data):
         C = 0.1
+        
         pi_T = 0.5
         minDCF,_,_ = model_validation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
         print("[5-Folds]  -  C= 0.1, pi_T=0.5: ",minDCF)  
 
-        C = 0.1
+        
         pi_T = 0.1
         minDCF,_,_ = model_validation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
         print("[5-Folds]  -  C= 0.1, pi_T=0.1: ",minDCF)
 
-        C = 0.1
+        
         pi_T = 0.9
         minDCF,_,_ = model_validation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
         print("[5-Folds]  -  C= 0.1, pi_T=0.9: ",minDCF)
 
         #unbalanced application
-        C = 0.1
+        
         pi_T = -1
         minDCF,_,_ = model_validation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
         print("[5-Folds]  -  C= 0.1, pi_T=pi_emp_T: ",minDCF)
@@ -684,9 +685,9 @@ def print_table_Quadratic_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
 
         print("************************************************")
     
-    fun_parametri(10,1,0)
-    fun_parametri(100,1,0)
-    fun_parametri(0.1,1,1)
+    fun_parametri(0.1,1,0)
+    #fun_parametri(100,1,0) 
+    #fun_parametri(0.1,1,1)
 
 #--------------------------
 
@@ -940,11 +941,12 @@ def print_treshold_estimated_table(data, LTR, prior, cost_fn, cost_fp, k, llr_ca
 
 #--------------------------
 def print_all(DTR, LTR, k):
+    
     '''
     ### -- MVG CLASSIFIERS
     print("********************* MVG TABLE ************************************")
     print("------> pi = 0.5")
-    print_table_MVG_classifiers_minDCF(DTR, LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k)
+    print_table_MVG_classifiers_minDCF(DTR, LTR, prior=0.3, cost_fn=1, cost_fp=1, k=k)
     print()
     
     print("------> pi = 0.9")
@@ -975,14 +977,14 @@ def print_all(DTR, LTR, k):
     print()
     print("********************************************************************")
 
-    '''
+    
     ### -- QUADRATIC LOGISTIC REGRESSION
 
     print("********************* quadratic LR GRAPHS ************************************")
     print_graphs_quadratic_LR_lambdas(DTR, LTR,  k)
     print("********************************************************************")
-
-    '''
+    
+   
     print("********************* QUADRATIC LR TABLE ************************************")
     print("------> applicazione prior = 0.5")
     print_table_Quadratic_LR_minDCF(DTR,LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k)
@@ -996,7 +998,7 @@ def print_all(DTR, LTR, k):
     print("********************************************************************")
     
     
-
+    
     ### -- LINEAR SVM
     
     print("********************* SVM GRAPHS ************************************")
@@ -1013,18 +1015,17 @@ def print_all(DTR, LTR, k):
     print("********************************************************************")
 
     
+    
     ### -- QUADRATIC SVM
 
-    print("********************* quadratic SVM GRAPHS ************************************")
-    print_graphs_Polinomial_SVM_Cs(DTR, LTR, k=k )
-    print("********************************************************************")
-    
-    
     print("********************* quadratic SVM GRAPHS changing C,k,c ************************************")
     print_graphs_Polinomial_SVM_Cs_k_c(DTR, LTR, k=k )
     print("********************************************************************")
-
-
+    '''
+    print("********************* quadratic SVM GRAPHS ************************************")
+    print_graphs_Polinomial_SVM_Cs(DTR, LTR, k=k )
+    print("********************************************************************")
+    '''
     print("********************* quadratic SVM TABLES ************************************")
     print("------> applicazione con prior = 0.5")
     print_table_Quadratic_SVM_minDCF(DTR, LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k )
@@ -1033,7 +1034,7 @@ def print_all(DTR, LTR, k):
     print("------> applicazione con prior = 0.1")
     print_table_Quadratic_SVM_minDCF(DTR, LTR, prior=0.1, cost_fn=1, cost_fp=1, k=k )
     print("********************************************************************")
-
+    
     
     ### RBF
 

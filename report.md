@@ -2,23 +2,23 @@
 
 ## - Introduction
 
-The dataset used for this analysis is related to red and white variants of the Portuguese "Vinho Verde" wine and is taken from the UCI repository.
+The dataset used for the purpose of this analysis is related to red and white variants of the Portuguese "Vinho Verde" wine and is taken from the UCI repository.
 
-The dataset was collected to predict human wine taste preferences. In fact, it associates physiochemical characteristics of the analyzed wine to sensory evaluations made by experts.
+The dataset was collected to predict human wine taste preferences. As a matter of fact, it associates the physiochemical characteristics of the analyzed wine to sensory evaluations made by experts.
 
-The original dataset consists of 10 classes (quality 1 to 10) , but for this project the dataset has been binarized, collecting all wines with low quality (lower than 6) into class 0 and good quality (grater than 6) into class 0. Wines with quality 6 have been discarded to simplify the task.
+The original dataset consists of 10 classes (quality 1 to 10), but for this project the dataset has been binarized, collecting all wines with low quality (lower than 6) into class 0 and good quality (grater than 6) into class 0. Wines with quality 6 have been discarded to simplify the task.
 
-The dataset contains both red and white wines that originally were separated but in this analysis have been merged.
+The dataset contains both red and white wines that were originally separated, whereas in this analysis they have been merged.
 
-The goal of the following analysis is exploring the characteristics of the chosen dataset to find the model that best classify the input data. To do so, several classifiers combined with different preprocessing techniques have been exploited and the main results will be shown in this report.
+The following analysis is aimed at exploring the characteristics of the chosen dataset to find the model that best classifies the input data. In order to fulfill this purpose, several classifiers combined with different preprocessing techniques have been exploited. The main results will be shown in this report.
 
 ### Classes balance:
 
-The dataset has been split in a training set and a test set.
+The dataset has been divided into a training set and a test set.
 
-The training set contains 613 samples belonging to the "high quality" class and 1226 belonging to the "low quality" class. While, the evaluation set has 664 samples of class "high quality" and 1158 samples of class "low quality". Therefore the classes are partially balanced.
+The training set contains 613 samples belonging to the "high quality" class and 1226 belonging to the "low quality" class. On the other hand, the evaluation set contains 664 samples of class "high quality" and 1158 samples of class "low quality". Therefore, the classes are partially balanced.
 
-In the following graphs are shown the comparisons between the number of samples of the two classes in both training and test data set. It is visible that both the number of samples and the ratio between the two classes in the different data sets is close.
+The following graphs show the comparison between the number of samples of the two classes in both training and test data set. It emerges that both the number of samples and the ratio between the two classes in the different datasets is similar. 
 
 | <img src="Stat\hist_number_of_data_Training.png" style="zoom: 67%;" /> | <img src="Stat\hist_number_of_data_Test.png" style="zoom: 67%;" /> |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -29,7 +29,7 @@ In the following graphs are shown the comparisons between the number of samples 
 
 ### Attribute Information:
 
-The input variables have 11 continuous features based on physiochemical tests
+The input variables have 11 continuous features based on physiochemical tests:
 
 0 - fixed acidity
 1 - volatile acidity
@@ -43,17 +43,15 @@ The input variables have 11 continuous features based on physiochemical tests
 9 - sulphates
 10 - alcohol
 
-While the output variable is a discrete value representing the quality of the wine sample (0 low quality/1 high quality)
+The output variable is a discrete value representing the quality of the wine sample (0 low quality/1 high quality)
 
 ## - Preprocessing and Features analysis 
 
-The features of the dataset refers to different types of variables and therefore have different measuring scales.
+The features of the dataset refer to different types of variables and have therefore different measuring scales.
 
-Thus, in order to compare similarities between features, the dataset has been z- normalized, centering and scaling to unit variance the features. 
+Thus, in order to compare similarities between features, the dataset has been z-normalized, through centering and scaling to unit variance the features. 
 
-The histograms below show the distributions of the training dataset features. Orange histograms  refer to high quality wines while blue histograms to low quality wines.
-
-
+The histograms below show the distributions of the training dataset features. Orange histograms  refer to high quality wines, whereas blue histograms to low quality wines.
 
 | <img src="Stat\Hist\Normalized\hist_0.png" style="zoom: 67%;" /> | <img src="Stat\Hist\Normalized\hist_1.png" style="zoom:67%;" /> | <img src="Stat\Hist\Normalized\hist_2.png" style="zoom:67%;" /> |
 | :----------------------------------------------------------: | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -63,9 +61,9 @@ The histograms below show the distributions of the training dataset features. Or
 
 The analysis of the training data reveals that most of the features have an irregular distribution.
 
-For this reason, the classification (especially of Gaussian based methods) may produce sub-optimal results.
+Consequently, the classification (especially of Gaussian based methods) may produce sub-optimal results.
 
-We therefore further preprocessed our data by "gaussianizing" the features.
+We therefore further preprocessed our data by "Gaussianizing" the features.
 
 The gaussianization process allows mapping the features values to ones whose empirical comulative distribution function is well approximated by a Gaussian c.d.f. To do so, the features have been mapped to a uniform distribution and then transformed  through the inverse of Gaussian cumulative distribution function.
 
@@ -81,12 +79,12 @@ The histograms below show the distributions of the gaussianized features.
 
 A correlation analysis of the Gaussianized features shows that feature 5 and 6 are strongly correlated.
 
-Below can be found the heatmaps showing the Pearson correlation coefficient (****FORMULA********)
+The heatmaps showing the Pearson correlation coefficient can be found below (****FORMULA********)
 
 | All dataset<img src="Stat\HeatMaps\Gaussianized\whole_dataset.png" style="zoom:67%;" /> | <img src="Stat\HeatMaps\Gaussianized\high_quality.png" style="zoom:67%;" /> | <img src="Stat\HeatMaps\Gaussianized\low_quality.png" style="zoom:67%;" /> |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 
-This suggests the classification may benefit from using PCA to map data to 10 or 9 uncorrelated features to reduce the number of parameters to estimate. 
+This suggests that the classification may benefit from using PCA to map data to 10 or 9 uncorrelated features to reduce the number of parameters to estimate. 
 
 
 
@@ -96,19 +94,17 @@ This suggests the classification may benefit from using PCA to map data to 10 or
 
 ##### Methodologies used for validation:
 
-To understand which model is most promising and to assess the effects of using PCA, both single fold-validation and K-Fold cross-validation have been adopted.
+In order to understand which model is most promising and to assess the effects of using PCA, both single fold-validation and K-Fold cross-validation have been adopted.
 
-At first, it has been used a single fold approach where the training dataset has been split in two subsets: one (66% of the original set) for development and the other one for validation. This because the training with this approach is faster.
+At first, a single fold approach has been used, since the training with this approach is faster. Indeed, single fold approach consists in splitting the training dataset into two subsets, one (66% of the original set) for development and the other one for validation. 
 
-In a second moment, the K-Fold approach has been used to get more robust result.
-
-This because, in the K- Fold, iteratively the training set has been split into 5 folds, 4 used for training and 1 for validation, after being shuffled. At the end, the validation scores are put together and used to compute the performance metrics. In this way, there is more data available for training and validation. 
+Subsequently, the K-Fold approach has been used to get more robust results. In this case, the training set are iteratively split into 5 folds, 4 used for training and 1 for validation, after being shuffled. The validation scores have been eventually put together and used to compute the performance metrics. In this way, there is more data available for training and validation. 
 
 This document focuses on the analysis of the balanced uniform prior application:
 
 ​				(prior, Cfp, Cfn) = (0.5,1,1)
 
-Despite this, also two unbalanced applications have been considered.
+However, two other unbalanced applications have been considered:
 
 ​				(prior, Cfp, Cfn) = (0.9,1,1), (prior, Cfp, Cfn) = (0.1,1,1)
 
@@ -116,9 +112,7 @@ Despite this, also two unbalanced applications have been considered.
 
 
 
-In the fist part, the goal of the analysis was choosing the most promising approach. Therefore the performances have been measured in terms of normalized minimum detection costs, that estimate the costs that would be paid making optimal decisions for the validation set using the recognizers scores.
-
-
+In the fist part, the main aim of the analysis was to choose the most promising approach. Therefore, the performances have been measured in terms of normalized minimum detection costs, namely the costs that would be paid by making optimal decisions for the validation set through the use of recognizers scores.
 
 ## * MVG classifiers  
 |                                        | **Single Fold** |             |             | **5-Fold**  |             |             |
@@ -167,23 +161,23 @@ In the fist part, the goal of the analysis was choosing the most promising appro
 
 
 
-The diagonal covariance models (both Full diagonal and tied diagonal) do not give good results compared to the other models with or without gaussianization and PCA. These models work under the naive-bayes-assumption that supposes the different components for each class are uncorrelated. Therefore, in this case, this assumption does not produce accurate results. Applying PCA slightly improves the performance, probabily because removing the low variances directions the whithin-class correlation decreases .
+The diagonal covariance models (both full diagonal and tied diagonal) do not give good results if compared to the other models with or without Gaussianization and PCA. These models work under the naive-bayes-assumption, according to which the different components for each class are uncorrelated. Therefore, in this case, this assumption does not produce accurate results. Applying PCA slightly improves the performance, probabily because by removing the low variances directions the whithin-class correlation decreases .
 
-The tied full covariance model performs pretty good on the validation data, confirming the similiarity between classes shown by the correlation analysis. It performs better than the diagonal models accounting the within-class correlations. PCA does not help in producing better results in this case.
+The tied full covariance model performs pretty good on the validation data, confirming the similiarity between classes shown by the correlation analysis. It performs better than the diagonal models accounting the within-class correlations. In this case, PCA does not help in producing better results.
 
-The model that performs the best is the full covariance model that is able to account for correlations. Also, having enough data compared to the dimensionality of the samples the results we obtain are results.
+The best-performing model is the full covariance model, which is able to account for correlations. What is more, having enough data compared to the dimensionality of the samples, the results we succeed obtaining robust results.
 
-Gaussianization fails in improving significantly the results, therefore it still performs slightly better compared to raw features.
+Gaussianization fails in improving significantly the results, although it still performs slightly better if compared to raw features.
 
-PCA even if does not help increasing much the performances can still be used to reduce the number of parameters and therefore to reduce the complexity of the model. Nevertheless, given the limited effectiveness It will not be considered for the future analysis.
+Even if it does not help increasing much the performances, PCA can still be used to reduce the number of parameters and therefore to reduce the complexity of the model. Nevertheless, given the limited effectiveness, it will not be considered for the future analysis.
 
-The results between single-fold and K-fold are consistent, suggesting that the amount of data is enough for validation and model training also for the single-fold set up.
+The results between single-fold and K-fold are consistent, suggesting that the amount of data is enough for validation and model training also when it comes to the single-fold set up.
 
 None of the models produce accurate results for the unbalanced applications.
 
-Overall, the best candidate is currently the MVG model with Full Covariance matrices. The chosen one is the one with gaussianized features, since has slightly better results than the one with raw features, and the K-fold version, even if it is a bit worst than the single fold result, but the approach provides more robust results.
+In summary, the best candidate is currently the MVG model with full covariance matrices. The chosen one is the one with Gaussianized features, since it shows slightly better results than the one with raw features, and the K-fold approach, even if it is a bit worse than the single fold result. Nonetheless, this approach provides more robust results.
 
-Since the model that performs the best are the Full Covariance and the Tied full models, and one has a quadratic surface rule and the other ones a linear surface rule, the decision was to proceed analyzing both the quadratic and linear models.
+Since the best-performing models are the full covariance and the tied full models (which respectively have a quadratic surface rule and a linear surface rule), the decision was to proceed by analyzing both the quadratic and the linear models.
 
 
 
