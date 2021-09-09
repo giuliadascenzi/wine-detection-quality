@@ -165,11 +165,7 @@ In the fist part, the goal of the analysis was choosing the most promising appro
 |           **Tied Full-Cov**            | 0.373           | 0.685       | 0.854       | 0.372       | 0.844       | 0.845       |
 |           **Tied Diag- Cov**           | 0.367           | 0.745       | 0.852       | 0.373       | 0.869       | 0.854       |
 
-notes:
 
-- Differenza tra i vari modelli:
-
-  I modelli migliori sono Full cov e il tied full.
 
 The diagonal covariance models (both Full diagonal and tied diagonal) do not give good results compared to the other models with or without gaussianization and PCA. These models work under the naive-bayes-assumption that supposes the different components for each class are uncorrelated. Therefore, in this case, this assumption does not produce accurate results. Applying PCA slightly improves the performance, probabily because removing the low variances directions the whithin-class correlation decreases .
 
@@ -187,7 +183,7 @@ None of the models produce accurate results for the unbalanced applications.
 
 Overall, the best candidate is currently the MVG model with Full Covariance matrices. The chosen one is the one with gaussianized features, since has slightly better results than the one with raw features, and the K-fold version, even if it is a bit worst than the single fold result, but the approach provides more robust results.
 
-Since the model that performs the best are the Full Covariance and the Tied full models, and one has a quadratic surface rule and the other ones a linear surface rule, the decision was to procede analyzing both the quadratic and linear models.
+Since the model that performs the best are the Full Covariance and the Tied full models, and one has a quadratic surface rule and the other ones a linear surface rule, the decision was to proceed analyzing both the quadratic and linear models.
 
 
 
@@ -268,19 +264,11 @@ About the parameters k and c:
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | <img src="Graph\SVM\Quadratic\kc\singleFoldGAU_kc.png" style="zoom:60%;" /> | <img src="Graph\SVM\Quadratic\kc\singleFoldGAU_kc.png" style="zoom:60%;" /> |
 
-Best: 
-
-RAW 
-
-K=0, c=1, C=10
-
-K=1, c=1, C=10 (prova anche 100)
-
-GAUSSIANIZED
-
-K=1, c=1, C=0.1
+Best:  arancione K=0, c=1, C=0.1
 
 
+
+#TODO
 
 |                                         | prior=0.5   | prior=0.1   | prior=0.9   |
 | --------------------------------------- | ----------- | ----------- | ----------- |
