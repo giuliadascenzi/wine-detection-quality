@@ -241,18 +241,18 @@ Since the model that performs the best are the Full Covariance and the Tied full
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | <img src="Graph\SVM\linear\singleFoldGauss.png" style="zoom:60%;" /> | <img src="Graph\SVM\linear\5FoldGauss.png" style="zoom:60%;" /> |
 
-|                           | prior=0.5   | prior=0.1   | prior=0.9   |
+| C=0.1                     | prior=0.5   | prior=0.1   | prior=0.9   |
 | ------------------------- | ----------- | ----------- | ----------- |
 | **Raw Features**          | ----------- | ----------- | ----------- |
-| SVM, C=0.1, pi_T =0.5     | 0.367       | 0.874       | 0.802       |
-| SVM, C=0.1, pi_T =0.1     | 0.734       | 1.0         | 1.014       |
-| SVM, C=0.1, pi_T =0.9     | 0.412       | 0.951       | 0.793       |
-| SVM, C=0.1                | 0.367       | 0.834       | 0.849       |
+| SVM, C=0.1, pi_T =0.5     | 0.339       | 0.849       | 0.668       |
+| SVM, C=0.1, pi_T =0.1     | 0.902       | 0.995       | 0.995       |
+| SVM, C=0.1, pi_T =0.9     | 0.386       | 0.876       | 0.693       |
+| SVM, C=0.1                | 0.338       | 0.817       | 0.761       |
 | **Gaussianized features** | ----------- | ----------- | ----------- |
-| SVM, C=0.1, pi_T =0.5     | 0.368       | 0.853       | 0.911       |
-| SVM, C=0.1, pi_T =0.1     | 0.694       | 0.949       | 0.997       |
-| SVM, C=0.1, pi_T =0.9     | 0.598       | 0.976       | 0.934       |
-| SVM, C=0.1                | 0.367       | 0.806       | 0.984       |
+| SVM, C=0.1, pi_T =0.5     | 0.351       | 0.833       | 0.856       |
+| SVM, C=0.1, pi_T =0.1     | 0.579       | 0.952       | 0.995       |
+| SVM, C=0.1, pi_T =0.9     | 0.397       | 0.953       | 0.670       |
+| SVM, C=0.1                | 0.345       | 0.783       | 0.951       |
 
 (Done with k fold)
 
@@ -266,28 +266,28 @@ About the parameters k and c:
 
 Best:  arancione K=0, c=1, C=0.1
 
-
-
-#TODO
-
-|                                         | prior=0.5   | prior=0.1   | prior=0.9   |
-| --------------------------------------- | ----------- | ----------- | ----------- |
-| **Raw Features**                        | ----------- | ----------- | ----------- |
-| Quad SVM, C=10, pi_T =0.5, c=1,K=0      | 0.241       | 0.762       | 0.760       |
-| Quad SVM, C=10, pi_T =pi_emp_t,c=1,K=0  | 0.362       | 0.843       | 0.841       |
-| Quad SVM, C=100, pi_T=0.5, c=1, K=0     | 0.248       | 0.764       | 0.734       |
-| Quad SVM, C=0.1, pi_T=0.5, c=1, K=1     | 0.263       | 0.771       | 0.702       |
-| **Gaussianized features**               | ----------- | ----------- | ----------- |
-| Quad SVM, C=10, pi_T =0.5, c=1,K=0      | 0.261       | 0.714       | 0.723       |
-| Quad SVM, C=10, pi_T =pi_emp_t, c=1,K=0 | 0.370       | 0.972       | 0.803       |
-| Quad SVM, C=100, pi_T=0.5, c=1, K=0     | 0.270       | 0.721       | 0.740       |
-| Quad SVM, C=0.1, pi_T=0.5, c=1, K=1     | 0.251       | 0.709       | 0.709       |
-
 | <img src="Graph\SVM\quadratic\singleFoldRAW.png" style="zoom:60%;" /> | <img src="Graph\SVM\quadratic\5FoldRAW.png" style="zoom:60%;" /> |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| <img src="Graph\SVM\quadratic\singleFoldGauss.png" style="zoom:60%;" /> | <img src="Graph\SVM\quadratic\5FoldGauss.png" style="zoom:60%;" /> |
+| <img src="Graph\SVM\quadratic\singleFoldGAU.png" style="zoom:60%;" /> | <img src="Graph\SVM\quadratic\5FoldGAU.png" style="zoom:60%;" /> |
 
-#### ** RBF SVM
+
+
+|                                | prior=0.5   | prior=0.1   | prior=0.9   |
+| ------------------------------ | ----------- | ----------- | ----------- |
+| **Raw Features**               | ----------- | ----------- | ----------- |
+| Quad SVM, C=10, pi_T =0.5      | 0.246       | 0.735       | 0.732       |
+| Quad SVM, C=10, pi_T =0.1      | 0.902       | 0.995       | 0.995       |
+| Quad SVM, C=10, pi_T =0.9      | 0.386       | 0.693       | 0.876       |
+| Quad SVM, C=10, pi_T =pi_emp_T | 0.338       | 0.756       | 0.814       |
+| **Gaussianized features**      | ----------- | ----------- | ----------- |
+| Quad SVM, C=10, pi_T =0.5      | 0.246       | 0.632       | 0.709       |
+| Quad SVM, C=10, pi_T =0.1      | 0.579       | 0.995       | 0.952       |
+| Quad SVM, C=10, pi_T =0.9      | 0.397       | 0.670       | 0.953       |
+| Quad SVM, C=10, pi_T =pi_emp_T | 0.345       | 0.942       | 0.772       |
+
+
+
+#### ** RBF SVM #todo
 
 
 
@@ -324,7 +324,7 @@ loglam = 0, C=1, 0.5
 | RBF SVM, C=0.5, lam=1, pi_T =0.9      | 0.334       | 0.546       | 0.588       |
 | RBF SVM, C=0.5, lam=1, pi_T =pi_emp_T | 0.265       | 0.659       | 0.575       |
 
-## *GMM
+## *GMM #todo
 
 | <img src="Graph\GMM\GMM_Full_covariance.png" style="zoom:60%;" /> | <img src="Graph\GMM\GMM_Tied_covariance.png" style="zoom:60%;" /> |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
