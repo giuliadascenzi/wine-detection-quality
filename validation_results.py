@@ -899,16 +899,16 @@ def print_table_comparison_DCFs(DTR, LTR, k):
 
     #------------------------FIRST MODEL ----------------- 
 
-    print(" RBF SVM, C=0.5, lam=1, pi_T =0.5 gaussianized features ")
+    print(" RBF SVM, C=1, lam=1, pi_T =0.5 raw features ")
     lam = 1
     pi_T = 0.5
-    C= 0.5
-    actDCF_minDCF(preprocessing.gaussianization(DTR), SVMClassifier.RBF_SVM_computeLogLikelihoods,[pi_T, C, lam] )
+    C= 1
+    actDCF_minDCF(preprocessing.Z_normalization(DTR), SVMClassifier.RBF_SVM_computeLogLikelihoods,[pi_T, C, lam] )
 
     #--------------- SECOND MODEL-------------------------
 
-    print(" Quad SVM, C=10, pi_T =0.5, c=1,K=0 raw features  ")
-    C=10
+    print(" Quad SVM, C=0.1, pi_T =0.5, c=1,K=0 raw features  ")
+    C=0.1
     pi_T=0.5
     c=1
     K=0
@@ -1057,53 +1057,55 @@ def print_all(DTR, LTR, k):
     print_graphs_GMM_minDCF(DTR, LTR, k)
 
 
-
+    '''
     ## COMPARISON BETWEEN ACT DCF AND MIN DCF OF THE CHOSEN MODELS
 
     print_table_comparison_DCFs(DTR, LTR, k=k)
 
     #error bayes plot
 
-
     pi_T1 = 0.5
-    C1= 0.5
+    C1= 1
     lam1 = 1
 
     pi_T2=0.5
-    C2=10
+    C2=0.1
     c2=1
     K2=0
 
 
-    data = [ preprocessing.gaussianization(DTR), preprocessing.Z_normalization(DTR),]
+    data = [ preprocessing.Z_normalization(DTR), preprocessing.Z_normalization(DTR)]
     llr_calculators = [SVMClassifier.RBF_SVM_computeLogLikelihoods,SVMClassifier.Polinomial_SVM_computeLogLikelihoods ]
     other_params = [[pi_T1,C1,lam1], [pi_T2,C2,c2,K2]]
-    titles = ["RBF SVM", "Quad SVM"]
+    titles = ["RBF SVM RAW", "Quad SVM RAW"]
     colors = ["r", "b"]
+    
+    print("************ PRINT BAYES ERROR PLOT******************")
     print_err_bayes_plots(data, LTR, k, llr_calculators, other_params, titles, colors)
+    print("*****************************************************")
 
 
     print("------>Treshold estimated table:")
     print()
     print("------> applicazione prior = 0.5")
     prior = 0.5
-    print_treshold_estimated_table(preprocessing.gaussianization(DTR), LTR, prior, 1, 1, k, SVMClassifier.RBF_SVM_computeLogLikelihoods, [pi_T1,C1,lam1], "RBF SVM")
-    print_treshold_estimated_table(preprocessing.Z_normalization(DTR), LTR, prior, 1, 1, k, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, [pi_T2,C2,c2,K2], "Quad SVM")
+    print_treshold_estimated_table(data[0], LTR, prior, 1, 1, k, llr_calculators[0], other_params[0], titles[0])
+    print_treshold_estimated_table(data[1], LTR, prior, 1, 1, k, llr_calculators[1], other_params[1], titles[1])
     print()
 
     print("------> applicazione prior = 0.1")
     prior = 0.1
-    print_treshold_estimated_table(preprocessing.gaussianization(DTR), LTR, prior, 1, 1, k, SVMClassifier.RBF_SVM_computeLogLikelihoods, [pi_T1,C1,lam1], "RBF SVM")
-    print_treshold_estimated_table(preprocessing.Z_normalization(DTR), LTR, prior, 1, 1, k, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, [pi_T2,C2,c2,K2], "Quad SVM")
+    print_treshold_estimated_table(data[0], LTR, prior, 1, 1, k, llr_calculators[0], other_params[0], titles[0])
+    print_treshold_estimated_table(data[1], LTR, prior, 1, 1, k, llr_calculators[1], other_params[1], titles[1])
     print()
 
 
     print("------> applicazione prior = 0.9")
     prior = 0.9
-    print_treshold_estimated_table(preprocessing.gaussianization(DTR), LTR, prior, 1, 1, k, SVMClassifier.RBF_SVM_computeLogLikelihoods, [pi_T1,C1,lam1], "RBF SVM")
-    print_treshold_estimated_table(preprocessing.Z_normalization(DTR), LTR, prior, 1, 1, k, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, [pi_T2,C2,c2,K2], "Quad SVM")
+    print_treshold_estimated_table(data[0], LTR, prior, 1, 1, k, llr_calculators[0], other_params[0], titles[0])
+    print_treshold_estimated_table(data[1], LTR, prior, 1, 1, k, llr_calculators[1], other_params[1], titles[1])
     print()
 
-    '''
+    
 
 #--------------------------
