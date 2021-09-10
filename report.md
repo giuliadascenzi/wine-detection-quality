@@ -266,18 +266,18 @@ Best:  arancione K=0, c=1, C=0.1
 
 COLONNE 0.9 e 0.1 scambiate (ma giuste)
 
-|                                | prior=0.5   | prior=0.9   | prior=0.1   |
-| ------------------------------ | ----------- | ----------- | ----------- |
-| **Raw Features**               | ----------- | ----------- | ----------- |
-| Quad SVM, C=10, pi_T =0.5      | 0.246       | 0.735       | 0.732       |
-| Quad SVM, C=10, pi_T =0.1      | 0.902       | 0.995       | 0.995       |
-| Quad SVM, C=10, pi_T =0.9      | 0.386       | 0.693       | 0.876       |
-| Quad SVM, C=10, pi_T =pi_emp_T | 0.338       | 0.756       | 0.814       |
-| **Gaussianized features**      | ----------- | ----------- | ----------- |
-| Quad SVM, C=10, pi_T =0.5      | 0.246       | 0.632       | 0.709       |
-| Quad SVM, C=10, pi_T =0.1      | 0.579       | 0.995       | 0.952       |
-| Quad SVM, C=10, pi_T =0.9      | 0.397       | 0.670       | 0.953       |
-| Quad SVM, C=10, pi_T =pi_emp_T | 0.345       | 0.942       | 0.772       |
+| K=0, c=1, C=0.1                 | prior=0.5   | prior=0.9   | prior=0.1   |
+| ------------------------------- | ----------- | ----------- | ----------- |
+| **Raw Features**                | ----------- | ----------- | ----------- |
+| Quad SVM, C=0.1, pi_T =0.5      | 0.246       | 0.735       | 0.732       |
+| Quad SVM, C=0.1, pi_T =0.1      | 0.902       | 0.995       | 0.995       |
+| Quad SVM, C=0.1, pi_T =0.9      | 0.386       | 0.693       | 0.876       |
+| Quad SVM, C=0.1, pi_T =pi_emp_T | 0.338       | 0.756       | 0.814       |
+| **Gaussianized features**       | ----------- | ----------- | ----------- |
+| Quad SVM, C=0.1, pi_T =0.5      | 0.246       | 0.632       | 0.709       |
+| Quad SVM, C=0.1, pi_T =0.1      | 0.579       | 0.995       | 0.952       |
+| Quad SVM, C=0.1, pi_T =0.9      | 0.397       | 0.670       | 0.953       |
+| Quad SVM, C=0.1, pi_T =pi_emp_T | 0.345       | 0.942       | 0.772       |
 
 
 
@@ -345,19 +345,23 @@ loglam = 0, C=1, 0.5
 
 ## 
 
-RBF SVM, C=0.5, lam=1, pi_T =0.5 gaussianized features
+RBF SVM, C=0.5, lam=1, pi_T =0.5 gaussianized features 
 
 Quad SVM, C=10, pi_T =0.5, c=1,K=0 raw features 
 
+## nuove
 
+RBF SVM, C=1, lam=1, pi_T =0.5  0.218 raw
+
+Quad SVM, C=0.1 pi_T =0.5 0.246 raw
 
 ##### *** COMPARISON BETWEEN ACTUAL DCF and MIN DCF
 
-|                                                        | prior=0.5 |        | prior=0.1 |        | prior=0.9 |        |
-| ------------------------------------------------------ | --------- | ------ | --------- | ------ | --------- | ------ |
-|                                                        | minDCF    | actDCF | minDCF    | actDCF | minDCF    | actDCF |
-| RBF SVM, C=0.5, lam=1, pi_T =0.5 gaussianized features | 0.234     | 0.239  | 0.566     | 1.0    | 0.623     | 1.0    |
-| Quad SVM, C=10, pi_T =0.5, c=1,K=0 raw features        | 0.278     | 0.288  | 0.782     | 0.819  | 0.753     | 0.792  |
+|                                                  | prior=0.5 |        | prior=0.1 |        | prior=0.9 |        |
+| ------------------------------------------------ | --------- | ------ | --------- | ------ | --------- | ------ |
+|                                                  | minDCF    | actDCF | minDCF    | actDCF | minDCF    | actDCF |
+| RBF SVM, C=1, lam=1, pi_T =0.5 raw features      | 0.218     | 0.218  | 0.536     | 1.0    | 0.567     | 1.0    |
+| Quad SVM, C=0.1, pi_T =0.5, c=1,K=0 raw features | 0.273     | 0.296  | 0.798     | 0.852  | 0.691     | 0.749  |
 
 Bayes Error Plot, showing the DCFs for different applications:
 
@@ -365,17 +369,17 @@ Bayes Error Plot, showing the DCFs for different applications:
 
 After the threshold estimated protocol
 
-|                                                        | min DCF | act DCF (t theoretical threshold) | actDCF t estimated |
-| ------------------------------------------------------ | ------- | --------------------------------- | ------------------ |
-| **prior=0.5**                                          |         |                                   |                    |
-| RBF SVM, C=0.5, lam=1, pi_T =0.5 gaussianized features | 0.244   | 0.247                             | 0.244              |
-| Quad SVM, C=10, pi_T =0.5, c=1,K=0 raw features        | 0.279   | 0.294                             | 0.295              |
-| **prior=0.1**                                          |         |                                   |                    |
-| RBF SVM, C=0.5, lam=1, pi_T =0.5 gaussianized features | 0.581   | 1.0                               | 0.613              |
-| Quad SVM, C=10, pi_T =0.5, c=1,K=0 raw features        | 0.800   | 0.854                             | 0.844              |
-| **prior=0.9**                                          |         |                                   |                    |
-| RBF SVM, C=0.5, lam=1, pi_T =0.5 gaussianized features | 0.614   | 1.0                               | 0.615              |
-| Quad SVM, C=10, pi_T =0.5, c=1,K=0 raw features        | 0.747   | 0.772                             | 0.777              |
+|                                                  | min DCF | act DCF (t theoretical threshold) | actDCF t estimated |
+| ------------------------------------------------ | ------- | --------------------------------- | ------------------ |
+| **prior=0.5**                                    |         |                                   |                    |
+| RBF SVM, C=1, lam=1, pi_T =0.5 raw features      | 0.223   | 0.226                             | 0.229              |
+| Quad SVM, C=0.1, pi_T =0.5, c=1,K=0 raw features | 0.289   | 0.315                             | 0.314              |
+| **prior=0.1**                                    |         |                                   |                    |
+| RBF SVM, C=1, lam=1, pi_T =0.5 raw features      | 0.551   | 1.0                               | 0.601              |
+| Quad SVM, C=0.1, pi_T =0.5, c=1,K=0 raw features | 0.788   | 0.859                             | 0.898              |
+| **prior=0.9**                                    |         |                                   |                    |
+| RBF SVM, C=1, lam=1, pi_T =0.5 raw features      | 0.635   | 1.0                               | 0.662              |
+| Quad SVM, C=0.1, pi_T =0.5, c=1,K=0 raw features | 0.697   | 0.752                             | 0.731              |
 
 
 
