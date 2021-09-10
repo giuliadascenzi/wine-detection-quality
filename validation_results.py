@@ -96,18 +96,18 @@ def print_table_LR_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
 
     def LR_minDCF(data):
             
-        lam = 10**(-7)
+        lam = 10**(-3)
         pi_T = 0.5
         min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
-        print("[5-Folds]  -  lam = 10^-7, pi_T = 0.5: ",min_DCF_LR)  
+        print("[5-Folds]  -  lam = 10^-3, pi_T = 0.5: ",min_DCF_LR)  
 
         pi_T = 0.1
         min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
-        print("[5-Folds]  -  lam = 10^-7, pi_T = 0.1: ",min_DCF_LR)
+        print("[5-Folds]  -  lam = 10^-3, pi_T = 0.1: ",min_DCF_LR)
 
         pi_T = 0.9
         min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
-        print("[5-Folds]  -  lam = 10^-7, pi_T = 0.9: ",min_DCF_LR)
+        print("[5-Folds]  -  lam = 10^-3, pi_T = 0.9: ",min_DCF_LR)
         
 
         N = LTR.size #tot number of samples
@@ -117,7 +117,7 @@ def print_table_LR_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
         pi_T = pi_emp_T
         
         min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
-        print("[5-Folds]  -  lam = 10^-7, pi_T = pi_emp_T: ",min_DCF_LR)
+        print("[5-Folds]  -  lam = 10^-3, pi_T = pi_emp_T: ",min_DCF_LR)
 
         print()
 
@@ -307,6 +307,21 @@ def print_graphs_quadratic_LR_lambdas(DTR, LTR,  k):
 def print_table_Quadratic_LR_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
 
     def Quad_LR_minDCF(data):
+<<<<<<< HEAD
+            lam = 10**(-3)
+            
+            pi_T = 0.5
+            min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
+            print("[5-Folds]  -  lam = 10^-3, pi_T = 0.5: ",min_DCF_LR)  
+
+            pi_T = 0.1
+            min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
+            print("[5-Folds]  -  lam = 10^-3, pi_T = 0.1: ",min_DCF_LR)
+
+            pi_T = 0.9
+            min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
+            print("[5-Folds]  -  lam = 10^-3, pi_T = 0.9: ",min_DCF_LR)
+=======
             lam = 10**(-2)
             
             pi_T = 0.5
@@ -320,6 +335,7 @@ def print_table_Quadratic_LR_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
             pi_T = 0.9
             min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
             print("[5-Folds]  -  lam = 10^-2, pi_T = 0.9: ",min_DCF_LR)
+>>>>>>> ba0e01b474bf0f9e14823e6eed27ddd8b8538a44
             
 
             N = LTR.size #tot number of samples
@@ -328,7 +344,11 @@ def print_table_Quadratic_LR_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
 
             pi_T = pi_emp_T
             min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
+<<<<<<< HEAD
+            print("[5-Folds]  -  lam = 10^-3, pi_T = pi_emp_T: ",min_DCF_LR)
+=======
             print("[5-Folds]  -  lam = 10^-2, pi_T = pi_emp_T: ",min_DCF_LR)
+>>>>>>> ba0e01b474bf0f9e14823e6eed27ddd8b8538a44
             
             print()
 
@@ -958,12 +978,13 @@ def print_all(DTR, LTR, k):
     print()
     print("********************************************************************")
     
+    
     ### -- LINEAR LOGISTIC REGRESSION
     print("********************* LR GRAPHS MIN DCF ************************************")
     print_graphs_LR_lambdas(DTR,LTR, k=k)
     print("********************************************************************")
-
-    
+    '''
+    '''
     print("********************* LR TABLE ************************************")
     print("------> applicazione prior = 0.5")
     print_table_LR_minDCF(DTR,LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k)
@@ -976,15 +997,25 @@ def print_all(DTR, LTR, k):
     print_table_LR_minDCF(DTR, LTR, prior=0.9, cost_fn=1, cost_fp=1, k=k)
     print()
     print("********************************************************************")
+<<<<<<< HEAD
+    
+    '''
+=======
 
     
+>>>>>>> ba0e01b474bf0f9e14823e6eed27ddd8b8538a44
     ### -- QUADRATIC LOGISTIC REGRESSION
-
+    '''
     print("********************* quadratic LR GRAPHS ************************************")
     print_graphs_quadratic_LR_lambdas(DTR, LTR,  k)
     print("********************************************************************")
+<<<<<<< HEAD
+    '''
+    
+=======
     
    
+>>>>>>> ba0e01b474bf0f9e14823e6eed27ddd8b8538a44
     print("********************* QUADRATIC LR TABLE ************************************")
     print("------> applicazione prior = 0.5")
     print_table_Quadratic_LR_minDCF(DTR,LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k)
@@ -998,7 +1029,11 @@ def print_all(DTR, LTR, k):
     print("********************************************************************")
     
     
+<<<<<<< HEAD
+    '''
+=======
     
+>>>>>>> ba0e01b474bf0f9e14823e6eed27ddd8b8538a44
     ### -- LINEAR SVM
     
     print("********************* SVM GRAPHS ************************************")
