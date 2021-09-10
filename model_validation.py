@@ -170,7 +170,7 @@ def bayes_error_plot(D, L, k, llr_calculator, otherParams, title, color ):
 
     llr, labels = k_cross_loglikelihoods(D,L, k, llr_calculator, otherParams)
 
-    effPriorLogOdds = numpy.linspace(-3,3,21)
+    effPriorLogOdds = numpy.linspace(-2,2,20)
     effPriors = 1 / (1+ numpy.exp(-effPriorLogOdds))
     dcf = []
     mindcf = []

@@ -1059,8 +1059,9 @@ def print_all(DTR, LTR, k):
 
     '''
     ## COMPARISON BETWEEN ACT DCF AND MIN DCF OF THE CHOSEN MODELS
-
+    print("************ Table comparison act dcf and min dcf******************")
     print_table_comparison_DCFs(DTR, LTR, k=k)
+    print("******************************************************************")
 
     #error bayes plot
 
