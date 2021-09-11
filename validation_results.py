@@ -307,7 +307,6 @@ def print_graphs_quadratic_LR_lambdas(DTR, LTR,  k):
 def print_table_Quadratic_LR_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
 
     def Quad_LR_minDCF(data):
-<<<<<<< HEAD
             lam = 10**(-3)
             
             pi_T = 0.5
@@ -321,21 +320,6 @@ def print_table_Quadratic_LR_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
             pi_T = 0.9
             min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
             print("[5-Folds]  -  lam = 10^-3, pi_T = 0.9: ",min_DCF_LR)
-=======
-            lam = 10**(-2)
-            
-            pi_T = 0.5
-            min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
-            print("[5-Folds]  -  lam = 10^-2, pi_T = 0.5: ",min_DCF_LR)  
-
-            pi_T = 0.1
-            min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
-            print("[5-Folds]  -  lam = 10^-2, pi_T = 0.1: ",min_DCF_LR)
-
-            pi_T = 0.9
-            min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
-            print("[5-Folds]  -  lam = 10^-2, pi_T = 0.9: ",min_DCF_LR)
->>>>>>> ba0e01b474bf0f9e14823e6eed27ddd8b8538a44
             
 
             N = LTR.size #tot number of samples
@@ -344,11 +328,7 @@ def print_table_Quadratic_LR_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
 
             pi_T = pi_emp_T
             min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
-<<<<<<< HEAD
             print("[5-Folds]  -  lam = 10^-3, pi_T = pi_emp_T: ",min_DCF_LR)
-=======
-            print("[5-Folds]  -  lam = 10^-2, pi_T = pi_emp_T: ",min_DCF_LR)
->>>>>>> ba0e01b474bf0f9e14823e6eed27ddd8b8538a44
             
             print()
 
@@ -398,49 +378,53 @@ def print_graphs_SVM_Cs(DTR, LTR, k ):
     normalizedFeatures = preprocessing.Z_normalization(DTR)
     gaussianizedFeatures = preprocessing.gaussianization(DTR)
 
+    N = LTR.size #tot number of samples
+    n_T = (1*(LTR==1)).sum() #num of samples belonging to the true class
+    pi_emp_T = n_T / N
+
     plt.figure()
     print("1 grafico")
-    plt.title("Raw features, single fold")
+    plt.title("Raw features, single fold, without class balancing")
     plt.xscale('log')
     plt.xlabel("C")
     plt.ylabel("minDCFs")
-    oneGraphSingleFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
-    oneGraphSingleFold(normalizedFeatures, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
-    oneGraphSingleFold(normalizedFeatures, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
-    plt.savefig('Graph/SVM/linear/singleFoldRAW.png' )
+    oneGraphSingleFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T = pi_emp_T)
+    oneGraphSingleFold(normalizedFeatures, prior=0.1, cost_fn=1, cost_fp=1, pi_T = pi_emp_T)
+    oneGraphSingleFold(normalizedFeatures, prior=0.9, cost_fn=1, cost_fp=1, pi_T = pi_emp_T)
+    plt.savefig('Graph/SVM/linear/singleFoldNOCB.png' )
     
     print("2 grafico")
     plt.figure()
-    plt.title("Gaussianized features, single fold")
+    plt.title("Raw features, single fold, with class balancing")
     plt.xscale('log')
     plt.xlabel("C")
     plt.ylabel("minDCFs")
     oneGraphSingleFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
     oneGraphSingleFold(gaussianizedFeatures, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
     oneGraphSingleFold(gaussianizedFeatures, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
-    plt.savefig('Graph/SVM/linear/singleFoldGauss.png' )
+    plt.savefig('Graph/SVM/linear/singleFoldCB.png' )
    
     print("3 grafico")
     plt.figure()
-    plt.title("Raw features, 5 fold")
+    plt.title("Raw features, 5 fold, without class balancing")
     plt.xscale('log')
     plt.xlabel("C")
     plt.ylabel("minDCFs")
-    oneGraphKFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
-    oneGraphKFold(normalizedFeatures, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
-    oneGraphKFold(normalizedFeatures, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
-    plt.savefig('Graph/SVM/linear/5FoldRAW.png' )
+    oneGraphKFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T = pi_emp_T)
+    oneGraphKFold(normalizedFeatures, prior=0.1, cost_fn=1, cost_fp=1, pi_T = pi_emp_T)
+    oneGraphKFold(normalizedFeatures, prior=0.9, cost_fn=1, cost_fp=1, pi_T = pi_emp_T)
+    plt.savefig('Graph/SVM/linear/5FoldNOCB.png' )
 
     print("4 grafico")
     plt.figure()
-    plt.title("Gaussianized features, 5 fold")
+    plt.title("Raw features, 5 fold, with class balancing")
     plt.xscale('log')
     plt.xlabel("C")
     plt.ylabel("minDCFs")
     oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5)
     oneGraphKFold(gaussianizedFeatures, prior=0.1, cost_fn=1, cost_fp=1, pi_T=0.5)
     oneGraphKFold(gaussianizedFeatures, prior=0.9, cost_fn=1, cost_fp=1, pi_T=0.5)
-    plt.savefig('Graph/SVM/linear/5FoldGauss.png' )
+    plt.savefig('Graph/SVM/linear/5FoldCB.png' )
 
 #--------------------------
 
@@ -465,7 +449,12 @@ def print_table_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
 
         #unbalanced application
         
-        pi_T = -1
+        N = LTR.size #tot number of samples
+        n_T = (1*(LTR==1)).sum() #num of samples belonging to the true class
+        pi_emp_T = n_T / N
+
+        pi_T = pi_emp_T
+        
         minDCF,_,_ = model_validation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C])
         print("[5-Folds]  -  C= 0.1, pi_T=pi_emp_T: ",minDCF)
 
@@ -660,7 +649,7 @@ def print_table_Quadratic_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
     def quadratic_SVM_minDCF(data, C, c, K):
         
         pi_T = 0.5
-        minDCF,_,_ = model_validation.singleFold_DCF(data, LTR, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, c, K])
+        minDCF,_,_ = model_validation.k_cross_Fold_DCF(data, LTR, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, c, K])
         print("[5-Folds]  -  C= ", C, ", pi_T=0.5, c= ", c, " k = ",K ,"  : ",minDCF)  
 
         
@@ -997,25 +986,15 @@ def print_all(DTR, LTR, k):
     print_table_LR_minDCF(DTR, LTR, prior=0.9, cost_fn=1, cost_fp=1, k=k)
     print()
     print("********************************************************************")
-<<<<<<< HEAD
     
     '''
-=======
-
-    
->>>>>>> ba0e01b474bf0f9e14823e6eed27ddd8b8538a44
     ### -- QUADRATIC LOGISTIC REGRESSION
     '''
     print("********************* quadratic LR GRAPHS ************************************")
     print_graphs_quadratic_LR_lambdas(DTR, LTR,  k)
     print("********************************************************************")
-<<<<<<< HEAD
-    '''
     
-=======
     
-   
->>>>>>> ba0e01b474bf0f9e14823e6eed27ddd8b8538a44
     print("********************* QUADRATIC LR TABLE ************************************")
     print("------> applicazione prior = 0.5")
     print_table_Quadratic_LR_minDCF(DTR,LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k)
@@ -1029,17 +1008,13 @@ def print_all(DTR, LTR, k):
     print("********************************************************************")
     
     
-<<<<<<< HEAD
-    '''
-=======
     
->>>>>>> ba0e01b474bf0f9e14823e6eed27ddd8b8538a44
     ### -- LINEAR SVM
-    
+    '''
     print("********************* SVM GRAPHS ************************************")
     print_graphs_SVM_Cs(DTR, LTR, k=k )
     print("********************************************************************")
-    
+    '''
     print("********************* SVM TABLES ************************************")
     print("------> applicazione con prior = 0.5")
     print_table_SVM_minDCF(DTR, LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k )
@@ -1092,7 +1067,7 @@ def print_all(DTR, LTR, k):
     print_graphs_GMM_minDCF(DTR, LTR, k)
 
 
-    '''
+    
     ## COMPARISON BETWEEN ACT DCF AND MIN DCF OF THE CHOSEN MODELS
     print("************ Table comparison act dcf and min dcf******************")
     print_table_comparison_DCFs(DTR, LTR, k=k)
@@ -1141,7 +1116,7 @@ def print_all(DTR, LTR, k):
     print_treshold_estimated_table(data[0], LTR, prior, 1, 1, k, llr_calculators[0], other_params[0], titles[0])
     print_treshold_estimated_table(data[1], LTR, prior, 1, 1, k, llr_calculators[1], other_params[1], titles[1])
     print()
-
+    '''
     
 
 #--------------------------

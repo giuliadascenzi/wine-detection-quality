@@ -187,80 +187,183 @@ Since the best-performing models are the full covariance and the tied full model
 
 ## * LOGISTIC REGRESSION
 
+Up to now, the focus of the analysis was only on generative models, but now turns on the discriminative model. The first one is the linear logistic regression.
+
 #### ** Linear Logistic Regression
+
+Linear logistic regression is a discriminative model and therefore it models the class posterior distribution, rather than the distribution of the observed samples X|C
+
+To do so,  logistic regression looks for the linear hyperplanes that maximizes the likelihood of the training labels.  This also corresponds both on the minimization of the average cross entropy between the empirical distribution of the data and the predicted labels distribution and the minimization of the empirical risk of mis-classify the data.
+
+Since the classes of this dataset are not perfectly balanced and since the logistic regression model automatically embeds the prior empirical probability, the original model has been modified to take in account the different weights of the loss' costs due to the samples of each class in order to reflect the prior of our applications. 
+
+(****FORMULAAAAAAA*******)
+
+The first step was the tuning of the hyperparameter LAMBDAAA. The following graphs show the how the minDCF for the three chosen application varies to respect to LAMBDA. (Left: single fold. Right: K-fold. Top: raw features. Bottom: gaussianized features) 
 
 | <img src="Graph\LR\linear\singleFoldRAW.png" style="zoom:60%;" /> | <img src="Graph\LR\linear\5FoldRAW.png" style="zoom:60%;" /> |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | <img src="Graph\LR\linear\singleFoldGauss.png" style="zoom:60%;" /> | <img src="Graph\LR\linear\5FoldGauss.png" style="zoom:60%;" /> |
 
-|                                        | prior=0.5   | prior=0.1   | prior=0.9   |
-| -------------------------------------- | ----------- | ----------- | ----------- |
-| **Raw Features**                       | ----------- | ----------- | ----------- |
-| Log reg, lambda=10**-7, pi_T =0.5      | 0.356       | 0.835       | 0.686       |
-| Log reg, lambda=10-7, pi_T =0.1        | 0.335       | 0.819       | 0.724       |
-| Log reg, lambda=10-7, pi_T =0.9        | 0.370       | 0.858       | 0.646       |
-| Log reg, lambda=10-7, pi_T =pi_emp_T   | 0.343       | 0.840       | 0.676       |
-| **Gaussianized features**              | ----------- | ----------- | ----------- |
-| Log reg, lambda=10**-7, pi_T =0.5      | 0.363       | 0.857       | 0.761       |
-| Log reg, lambda=10**-7, pi_T =0.1      | 0.339       | 0.780       | 0.946       |
-| Log reg, lambda=10**-7, pi_T =0.9      | 0.376       | 0.905       | 0.716       |
-| Log reg, lambda=10**-7, pi_T =pi_emp_T | 0.358       | 0.831       | 0.847       |
+Results with K-fold and single fold are similar. For this reason the following analysis have been done using the K fold approach, since the validation results are more reliable.
+
+Regularization did not provide much benefit. Best results are obtained with values of LAMBDA less than 10^-3. In order to avoid over confident models, that could be obtain with a LAMBDA value too low, but at the same time to get an optimal minDCF, the value chosen for LAMBDA was 10^-3.
+
+Also in this case the gaussianization does not improve much the performance of the model. Indeed, logistic regression does not require assumptions on the data distribution.
+
+In the following table are also reported the result got using different prior P_T to see the effects on the other applications.
+
+
+
+|                                          | prior=0.5   | prior=0.1   | prior=0.9   |
+| ---------------------------------------- | ----------- | ----------- | ----------- |
+| **Raw Features**                         | ----------- | ----------- | ----------- |
+| Log reg, lambda=10**-3, pi_T =0.5        | 0.352       | 0.833       | 0.680       |
+| Log reg, lambda=10-3, pi_T =0.1          | 0.336       | **0.818**   | 0.733       |
+| Log reg, lambda=10-3, pi_T =0.9          | 0.368       | 0.852       | **0.653**   |
+| ->Log reg, lambda=10-3, pi_T =pi_emp_T   | 0.340       | 0.839       | 0.673       |
+| **Gaussianized features**                | ----------- | ----------- | ----------- |
+| Log reg, lambda=10**-3, pi_T =0.5        | 0.360       | 0.858       | 0.764       |
+| Log reg, lambda=10**-3, pi_T =0.1        | 0.340       | **0.780**   | 0.933       |
+| Log reg, lambda=10**-3, pi_T =0.9        | 0.376       | 0.898       | **0.698**   |
+| ->Log reg, lambda=10**-3, pi_T =pi_emp_T | 0.359       | 0.829       | 0.836       |
+
+Overall, the MVG model with full covariances perform better. 
+
+Furthermore, comparing this results with the best linear MVG classifier (Tied covariance model) the logistic regression performed slightly worse. 
+
+Since the full covariances MVG corresponds to quadratic separation rules, the analysis has been repeated with a quadratic logistic regression model.
+
+Class re-balancing helps for the unbalanced applications, whereas for the main application the best results are got with unbalanced classes meaning that the class re-balancing was not necessary in this case.
 
 #### ** Quadratic Logistic Regression
+
+The following graphs show the minDCF for different values of LAMBDA.
+
+(Top: raw features. Bottom: gaussianized features. Left: single fold. Right: K-fold)
 
 | <img src="Graph\LR\quadratic\singleFoldRAW.png" style="zoom:60%;" /> | <img src="Graph\LR\quadratic\5FoldRAW.png" style="zoom:60%;" /> |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | <img src="Graph\LR\quadratic\singleFoldGauss.png" style="zoom:60%;" /> | <img src="Graph\LR\quadratic\5FoldGauss.png" style="zoom:60%;" /> |
 
+Also in this case, varying lambda does not produce improvement for lambda low than 10^-3. Therefore the regularized terms has been set to 10^-3 for the same reason of before.
+
+In the following table are also reported the result got using different prior P_T to see the effects on the other applications.
+
 |                                            | prior=0.5   | prior=0.1   | prior=0.9   |
 | ------------------------------------------ | ----------- | ----------- | ----------- |
 | **Raw Features**                           | ----------- | ----------- | ----------- |
-| Quad Log reg, lambda=10**-7, pi_T =0.5     | 0.274       | 0.767       | 0.720       |
-| Quad Log reg, lambda=10**-7, pi_T =0.1     | 0.276       | 0.714       | 0.747       |
-| QuadLog reg, lambda=10**-7, pi_T =0.9      | 0.298       | 0.817       | 0.688       |
-| QuadLog reg, lambda=10**-7, pi_T =pi_emp_T | 0.275       | 0.755       | 0.725       |
+| Quad Log reg, lambda=10**-3, pi_T =0.5     | 0.273       | 0.771       | 0.692       |
+| Quad Log reg, lambda=10**-3, pi_T =0.1     | 0.273       | **0.752**   | 0.703       |
+| QuadLog reg, lambda=10**-3, pi_T =0.9      | 0.287       | 0.807       | **0.642**   |
+| QuadLog reg, lambda=10**-3, pi_T =pi_emp_T | 0.272       | 0.769       | 0.686       |
 | **Gaussianized features**                  | ----------- | ----------- | ----------- |
-| Quad Log reg, lambda=10**-7, pi_T =0.5     | 0.296       | 0.698       | 0.666       |
-| Quad Log reg, lambda=10**-7, pi_T =0.1     | 0.300       | 0.720       | 0.643       |
-| Quad Log reg, lambda=10**-7, pi_T =0.9     | 0.308       | 0.761       | 0.685       |
-| QuadLog reg, lambda=10**-7, pi_T =pi_emp_T | 0.295       | 0.691       | 0.662       |
+| Quad Log reg, lambda=10**-3, pi_T =0.5     | 0.291       | 0.676       | 0.653       |
+| Quad Log reg, lambda=10**-3, pi_T =0.1     | 0.292       | 0.700       | 0.644       |
+| Quad Log reg, lambda=10**-3, pi_T =0.9     | 0.307       | 0.747       | **0.625**   |
+| QuadLog reg, lambda=10**-3, pi_T =pi_emp_T | 0.288       | 0.676       | 0.637       |
+
+The results of the quadratic logistic regression outperforms the MVG classifier results. 
+
+Also in this case the gaussianization does not improve the results with respect to the raw features results. Although, even if the results of the unbalanced applications are still pretty poor, the quadratic logistic regression with gaussianized feature is so far the model that gives the best results for those two applications.
+
+For all the applications the re-balancing does not improve the performances.
+
+
 
 ## *SVM
 
+The analysis continues with the Support Vector Machine model.
 
+The SVM classifier is a discriminative classifier that aims to find a separation hyperplane between two classes that have the maximum margin, so the maximum distance between the hyperplane and the closest points. In case the classes are not linearly separable, the approach followed is the "soft margin" approach, that looks for the highest margin hyperplane trying to minimize the points that lie inside the margin or that are on the wrong side of the classification rule (therefore misclassified points).
+
+Again, It has been considered a re-balanced version of the model to reflect the effective priors of the chosen applications.
+
+FORMULAA (pag 33)
 
 #### ** Linear SVM
 
-| <img src="Graph\SVM\linear\singleFoldRAW.png" style="zoom:60%;" /> | <img src="Graph\SVM\linear\5FoldRAW.png" style="zoom:60%;" /> |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| <img src="Graph\SVM\linear\singleFoldGauss.png" style="zoom:60%;" /> | <img src="Graph\SVM\linear\5FoldGauss.png" style="zoom:60%;" /> |
+The linear svm model has as hyperparameter C that is used to define a trade off between having a solution with a wide margin and a solution with a low number of points laying inside the margin.
 
-| C=0.1 COLONNE 0.9 e 0.1 (giuste ma ordine invertire l'ordine) | prior=0.5   | prior=0.9   | prior=0.1   |
+Higher values for C corresponds to solutions with less permitted points inside the margin and a thin margin. These solutions have an higher risk of being overconfident and to not perform well on unseen data. On the other hand, a lower value of C means allowing to have more points inside the margin, a wider margin that provides a solution less confident, that generalizes better.
+
+The following graphs show how minDCF varies for different values of the hyperparameter C.
+
+Right: single fold. Left: 5 fold.
+
+First row: gaussianized features, class balancing (pi_T= 0.5)
+
+Second row: raw features, class balancing
+
+Third row: raw features, class without balancing
+
+| <img src="Graph\SVM\linear\SingleFoldGauss.png" style="zoom:60%;" /> | <img src="Graph\SVM\linear\5FoldGauss.png" style="zoom:60%;" /> |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| <img src="Graph\SVM\linear\singleFoldCB.png" style="zoom:60%;" /> | <img src="Graph\SVM\linear\5FoldCB.png" style="zoom:60%;" /> |
+| <img src="Graph\SVM\linear\singleFoldNOCB.png" style="zoom:60%;" /> | <img src="Graph\SVM\linear\5FoldNOCB.png" style="zoom:60%;" /> |
+
+For the hyperparameter C the choice followed the same strategy used before: it has been set to 10^-1 since it is the biggest value that assure good performances.
+
+The graphs already show  re-balancing the model does not result in much higher performances for the target application of this analysis.
+
+Also the gaussianized preprocessing do not improve the performance, so it has not been considered for the following analysis.
+
+| C=0.1 COLONNE 0.9 e 0.1 (giuste ma ordine invertire l'ordine) | prior=0.5   | prior=0.1   | prior=0.9   |
 | ------------------------------------------------------------ | ----------- | ----------- | ----------- |
 | **Raw Features**                                             | ----------- | ----------- | ----------- |
 | SVM, C=0.1, pi_T =0.5                                        | 0.339       | 0.849       | 0.668       |
-| SVM, C=0.1, pi_T =0.1                                        | 0.902       | 0.995       | 0.995       |
+| SVM, C=0.1, pi_T =0.1                                        | 0.892       | 0.995       | 0.996       |
 | SVM, C=0.1, pi_T =0.9                                        | 0.386       | 0.876       | 0.693       |
 | SVM, C=0.1                                                   | 0.338       | 0.817       | 0.761       |
-| **Gaussianized features**                                    | ----------- | ----------- | ----------- |
+| **Gaussianized features** NON CONSIDERATO                    | ----------- | ----------- | ----------- |
 | SVM, C=0.1, pi_T =0.5                                        | 0.351       | 0.833       | 0.856       |
 | SVM, C=0.1, pi_T =0.1                                        | 0.579       | 0.952       | 0.995       |
 | SVM, C=0.1, pi_T =0.9                                        | 0.397       | 0.953       | 0.670       |
 | SVM, C=0.1                                                   | 0.345       | 0.783       | 0.951       |
 
-(Done with k fold)
+Since the linear SVM is the last linear classifier analysed, these results prove once again that the linear classifiers perform worst than quadratic classifiers in this dataset.
+
+| Comparison of the best linear models | minDCF  |
+| ------------------------------------ | ------- |
+| MVG Tied Full-Cov                    | *0.334* |
+| SVM, C=0.1                           | 0.338   |
+| Log reg, lambda=10-3                 | 0.340   |
+
+All these three classifiers have similar results. Also, it can be noticed that the assumption of gaussian distribution made by the tied full model does not worsen the performance compared to models as SVM and LR that do not make any assumption on the data distributions.
+
+Also, noticing that the preprocessing step of gaussianizing the features is most of the time useless, the conclusion can be that the distribution of this dataset can be sufficiently approximated to a Gaussian distribution even if the best results so far are still gotten with quadratic logistic regression that does not need assumptions of this type. 
+
+
+
+Therefore the analysis proceeds with the quadratic version of the SVM.
 
 #### ** Quadratic SVM
 
-About the parameters k and c:
+The first non linear SVM model used is the polynomial quadratic kernel, that is similar to the quadratic Logistic Regression model and therefore we expect similar results.
+
+FORMULA pag 45 svm slide.
+
+The chose model has degree d = 2 (quadratic), whereas c is an hyper-parameter selected through cross-validation.
+
+To add a regularized bias to the non- linear SVM version, has been added a constant value k to the kernel function. 
+
+FORMULA PAG 4 LAB 9
+
+In order to estimate the values of c and k that achieve the best results, different models have been trained varying those parameters. In the following graphs are shown the minDCF got from the four best models found through this analysis, varying the value of the hyper-parameter C.
+
+Up: Raw features. Bottom: gaussianized features. Left: single fold. Right: 5 fold.
 
 | <img src="Graph\SVM\Quadratic\kc\singleFoldRAW_kc.png" style="zoom:60%;" /> | <img src="Graph\SVM\Quadratic\kc\5FoldRAW_kc.png" style="zoom:60%;" /> |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| <img src="Graph\SVM\Quadratic\kc\singleFoldGAU_kc.png" style="zoom:60%;" /> | <img src="Graph\SVM\Quadratic\kc\singleFoldGAU_kc.png" style="zoom:60%;" /> |
+| <img src="Graph\SVM\Quadratic\kc\singleFoldGAU_kc.png" style="zoom:60%;" /> | <img src="Graph\SVM\Quadratic\kc\5FoldGAU_kc.png" style="zoom:60%;" /> |
 
-Best:  arancione K=0, c=1, C=0.1
+The best results are got with hyper-parameter k=0, c=1 and C=0.1.
 
-| <img src="Graph\SVM\quadratic\singleFoldRAW.png" style="zoom:60%;" /> | <img src="Graph\SVM\quadratic\5FoldRAW.png" style="zoom:60%;" /> |
+Again, the K-fold results are consistent with the single fold results.
+
+NOOOO---|
+
+| no<img src="Graph\SVM\quadratic\singleFoldRAW.png" style="zoom:60%;" /> | <img src="Graph\SVM\quadratic\5FoldRAW.png" style="zoom:60%;" /> |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | <img src="Graph\SVM\quadratic\singleFoldGAU.png" style="zoom:60%;" /> | <img src="Graph\SVM\quadratic\5FoldGAU.png" style="zoom:60%;" /> |
 
@@ -269,9 +372,9 @@ COLONNE 0.9 e 0.1 scambiate (ma giuste)
 | K=0, c=1, C=0.1                 | prior=0.5   | prior=0.9   | prior=0.1   |
 | ------------------------------- | ----------- | ----------- | ----------- |
 | **Raw Features**                | ----------- | ----------- | ----------- |
-| Quad SVM, C=0.1, pi_T =0.5      | 0.246       | 0.735       | 0.732       |
-| Quad SVM, C=0.1, pi_T =0.1      | 0.902       | 0.995       | 0.995       |
-| Quad SVM, C=0.1, pi_T =0.9      | 0.386       | 0.693       | 0.876       |
+| Quad SVM, C=0.1, pi_T =0.5      | **0.246**   | 0.735       | 0.732       |
+| Quad SVM, C=0.1, pi_T =0.1      | 0.902       | 0.995       | **0.995**   |
+| Quad SVM, C=0.1, pi_T =0.9      | 0.386       | **0.693**   | 0.876       |
 | Quad SVM, C=0.1, pi_T =pi_emp_T | 0.338       | 0.756       | 0.814       |
 | **Gaussianized features**       | ----------- | ----------- | ----------- |
 | Quad SVM, C=0.1, pi_T =0.5      | 0.246       | 0.632       | 0.709       |
@@ -279,25 +382,47 @@ COLONNE 0.9 e 0.1 scambiate (ma giuste)
 | Quad SVM, C=0.1, pi_T =0.9      | 0.397       | 0.670       | 0.953       |
 | Quad SVM, C=0.1, pi_T =pi_emp_T | 0.345       | 0.942       | 0.772       |
 
+The best results for the target application are got with the balanced version of the model.
 
+Comparing the quadratic models in term of minDCF:
 
-#### ** RBF SVM #todo
+| Quadratic models                           | minDCF |
+| ------------------------------------------ | ------ |
+| Quad SVM, C=0.1, pi_T =0.5                 | 0.246  |
+| QuadLog reg, lambda=10**-3, pi_T =pi_emp_T | 0.272  |
+| Full - Cov                                 | 0.304  |
 
+The quadratic SVM outperforms all the other quadratic models so far.
 
+Now the attenction is turned to RBF kernel.
+
+#### ** RBF SVM 
+
+The Gaussian Radial Basis Function in another kernel function that can be used for non- linear SVM models. 
+
+The kernel function is FORMULAAAA 49 slide
+
+Where GAMMA is the width of the kernel: small GAMMA correspond to a wide kernel, while large GAMMA to a narrow kernel.
+
+The estimation of the kernel width GAMMA has been done through a grid search in order to optimize C and GAMMA. 
+
+In the graphs below are plot the minDCFs of models trained with different GAMMA and different C.
+
+Left: raw features. Right: gaussianized features.
 
 | <img src="Graph\SVM\RBF\5FoldRAW.png" style="zoom:60%;" /> | <img src="Graph\SVM\RBF\5FoldGauss.png" style="zoom:60%;" /> |
 | ---------------------------------------------------------- | ------------------------------------------------------------ |
 
-loglam = 0, C=1, 0.5
+The plot shows that both GAMMA and C influence the results. To optimize jointly both hyperpararmeters, the values chosen are GAMMA = 1 and C=1.
 
-
+In the table are shown the results got from the model trained with those hyper-parameters with and without re-balancing of the classes costs.
 
 |                                     | prior=0.5   | prior=0.9   | prior=0.1   |
 | ----------------------------------- | ----------- | ----------- | ----------- |
 | **Raw Features**                    | ----------- | ----------- | ----------- |
-| RBF SVM, C=1, lam=1, pi_T =0.5      | 0.218       | 0.567       | 0.536       |
-| RBF SVM, C=1, lam=1, pi_T =0.1      | 0.348       | 0.690       | 0.534       |
-| RBF SVM, C=1, lam=1, pi_T =0.9      | 0.285       | 0.567       | 0.595       |
+| RBF SVM, C=1, lam=1, pi_T =0.5      | **0.218**   | 0.567       | 0.536       |
+| RBF SVM, C=1, lam=1, pi_T =0.1      | 0.348       | 0.690       | **0.534**   |
+| RBF SVM, C=1, lam=1, pi_T =0.9      | 0.285       | **0.567**   | 0.595       |
 | RBF SVM, C=1, lam=1, pi_T =pi_emp_T | 0.225       | 0.606       | 0.548       |
 | **Gaussianized features**           | ----------- | ----------- | ----------- |
 | RBF SVM, C=1, lam=1, pi_T =0.5      | 0.233       | 0.573       | 0.511       |
@@ -305,20 +430,19 @@ loglam = 0, C=1, 0.5
 | RBF SVM, C=1, lam=1, pi_T =0.9      | 0.269       | 0.578       | 0.566       |
 | RBF SVM, C=1, lam=1, pi_T =pi_emp_T | 0.230       | 0.570       | 0.498       |
 
-|                                       | prior=0.5   | prior=0.9   | prior=0.1   |
-| ------------------------------------- | ----------- | ----------- | ----------- |
-| **Raw Features**                      | ----------- | ----------- | ----------- |
-| RBF SVM, C=0.5, lam=1, pi_T =0.5      | 0.232       | 0.638       | 0.579       |
-| RBF SVM, C=0.5, lam=1, pi_T =0.1      | 0.402       | 0.789       | 0.571       |
-| RBF SVM, C=0.5, lam=1, pi_T =0.9      | 0.328       | 0.592       | 0.621       |
-| RBF SVM, C=0.5, lam=1, pi_T =pi_emp_T | 0.231       | 0.680       | 0.574       |
-| **Gaussianized features**             | ----------- | ----------- | ----------- |
-| RBF SVM, C=0.5, lam=1, pi_T =0.5      | 0.219       | 0.580       | 0.542       |
-| RBF SVM, C=0.5, lam=1, pi_T =0.1      | 0.385       | 0.648       | 0.576       |
-| RBF SVM, C=0.5, lam=1, pi_T =0.9      | 0.327       | 0.539       | 0.572       |
-| RBF SVM, C=0.5, lam=1, pi_T =pi_emp_T | 0.239       | 0.606       | 0.513       |
+The RBF results significantly outperforms our previous models for both the target application and the unbalanced ones.
 
-## *GMM #todo
+Class re-balancing helps increasing the performances.
+
+Therefore, for the target application the best model found so far is the class-balanced RBF SVM trained with raw features.
+
+
+
+The last model considered is the GMM.
+
+## *GMM 
+
+
 
 | <img src="Graph\GMM\GMM_Full_covariance.png" style="zoom:60%;" /> | <img src="Graph\GMM\GMM_Tied_covariance.png" style="zoom:60%;" /> |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
