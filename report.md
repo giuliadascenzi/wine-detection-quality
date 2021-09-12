@@ -367,20 +367,20 @@ NOOOO---|
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | <img src="Graph\SVM\quadratic\singleFoldGAU.png" style="zoom:60%;" /> | <img src="Graph\SVM\quadratic\5FoldGAU.png" style="zoom:60%;" /> |
 
-COLONNE 0.9 e 0.1 scambiate (ma giuste) da ricontrollare integralmente!!!!
+
 
 | K=0, c=1, C=0.1                 | prior=0.5   | prior=0.9   | prior=0.1   |
 | ------------------------------- | ----------- | ----------- | ----------- |
 | **Raw Features**                | ----------- | ----------- | ----------- |
-| Quad SVM, C=0.1, pi_T =0.5      | **0.246**   | 0.735       | 0.732       |
-| Quad SVM, C=0.1, pi_T =0.1      | 0.892       | 0.996       | **0.995**   |
-| Quad SVM, C=0.1, pi_T =0.9      | 0.386       | **0.693**   | 0.876       |
-| Quad SVM, C=0.1, pi_T =pi_emp_T | 0.338       | 0.756       | 0.814       |
+| Quad SVM, C=0.1, pi_T =0.5      | **0.273**   | 0.691       | 0.798       |
+| Quad SVM, C=0.1, pi_T =0.1      | 0.311       | 0.866       | 0.760       |
+| Quad SVM, C=0.1, pi_T =0.9      | 0.325       | 0.663       | 0.959       |
+| Quad SVM, C=0.1, pi_T =pi_emp_T | 0.277       | 0.723       | 0.774       |
 | **Gaussianized features**       | ----------- | ----------- | ----------- |
-| Quad SVM, C=0.1, pi_T =0.5      | 0.246       | 0.632       | 0.709       |
-| Quad SVM, C=0.1, pi_T =0.1      | 0.578       | 0.995       | 0.952       |
-| Quad SVM, C=0.1, pi_T =0.9      | 0.397       | 0.670       | 0.953       |
-| Quad SVM, C=0.1, pi_T =pi_emp_T | 0.345       | 0.942       | 0.772       |
+| Quad SVM, C=0.1, pi_T =0.5      | 0.282       | 0.627       | 0.730       |
+| Quad SVM, C=0.1, pi_T =0.1      | 0.322       | 0.942       | 0.706       |
+| Quad SVM, C=0.1, pi_T =0.9      | 0.308       | 0.613       | 0.853       |
+| Quad SVM, C=0.1, pi_T =pi_emp_T | 0.296       | 0.718       | 0.674       |
 
 The best results for the target application are got with the balanced version of the model.
 
