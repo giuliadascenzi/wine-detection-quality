@@ -253,10 +253,10 @@ In the following table are also reported the result got using different prior P_
 |                                            | prior=0.5   | prior=0.1   | prior=0.9   |
 | ------------------------------------------ | ----------- | ----------- | ----------- |
 | **Raw Features**                           | ----------- | ----------- | ----------- |
-| Quad Log reg, lambda=10**-3, pi_T =0.5     | 0.273       | 0.771       | 0.692       |
-| Quad Log reg, lambda=10**-3, pi_T =0.1     | 0.273       | **0.752**   | 0.703       |
+| Quad Log reg, lambda=10**-3, pi_T =0.5     | 0.275       | 0.771       | 0.692       |
+| Quad Log reg, lambda=10**-3, pi_T =0.1     | 0.275       | **0.752**   | 0.703       |
 | QuadLog reg, lambda=10**-3, pi_T =0.9      | 0.287       | 0.807       | **0.642**   |
-| QuadLog reg, lambda=10**-3, pi_T =pi_emp_T | 0.272       | 0.769       | 0.686       |
+| QuadLog reg, lambda=10**-3, pi_T =pi_emp_T | **0.274**   | 0.769       | 0.686       |
 | **Gaussianized features**                  | ----------- | ----------- | ----------- |
 | Quad Log reg, lambda=10**-3, pi_T =0.5     | 0.291       | 0.676       | 0.653       |
 | Quad Log reg, lambda=10**-3, pi_T =0.1     | 0.292       | 0.700       | 0.644       |
@@ -373,26 +373,18 @@ NOOOO---|
 | ------------------------------- | ----------- | ----------- | ----------- |
 | **Raw Features**                | ----------- | ----------- | ----------- |
 | Quad SVM, C=0.1, pi_T =0.5      | **0.273**   | 0.691       | 0.798       |
-| Quad SVM, C=0.1, pi_T =0.1      | 0.311       | 0.866       | 0.760       |
-| Quad SVM, C=0.1, pi_T =0.9      | 0.325       | 0.663       | 0.959       |
+| Quad SVM, C=0.1, pi_T =0.1      | 0.311       | 0.866       | **0.760**   |
+| Quad SVM, C=0.1, pi_T =0.9      | 0.325       | **0.663**   | 0.959       |
 | Quad SVM, C=0.1, pi_T =pi_emp_T | 0.277       | 0.723       | 0.774       |
 | **Gaussianized features**       | ----------- | ----------- | ----------- |
-| Quad SVM, C=0.1, pi_T =0.5      | 0.282       | 0.627       | 0.730       |
+| Quad SVM, C=0.1, pi_T =0.5      | **0.282**   | 0.627       | 0.730       |
 | Quad SVM, C=0.1, pi_T =0.1      | 0.322       | 0.942       | 0.706       |
 | Quad SVM, C=0.1, pi_T =0.9      | 0.308       | 0.613       | 0.853       |
 | Quad SVM, C=0.1, pi_T =pi_emp_T | 0.296       | 0.718       | 0.674       |
 
-The best results for the target application are got with the balanced version of the model.
+This results confirms that quadratic surfaces are better to discriminate the classes of our dataset.
 
-Comparing the quadratic models in term of minDCF:
-
-| Quadratic models                           | minDCF |
-| ------------------------------------------ | ------ |
-| Quad SVM, C=0.1, pi_T =0.5                 | 0.246  |
-| QuadLog reg, lambda=10**-3, pi_T =pi_emp_T | 0.272  |
-| Full - Cov                                 | 0.304  |
-
-The quadratic SVM outperforms all the other quadratic models so far.
+The best results  are got with the balanced version of the model. Gaussianizing the features does not help improving the performances.
 
 Now the attenction is turned to RBF kernel.
 
@@ -436,50 +428,85 @@ Class re-balancing helps increasing the performances.
 
 Therefore, for the target application the best model found so far is the class-balanced RBF SVM trained with raw features.
 
+Comparing the quadratic models in term of minDCF on the target application:
 
+| Quadratic models                           | minDCF |
+| ------------------------------------------ | ------ |
+| Quad SVM, C=0.1, pi_T =0.5                 | 0.273  |
+| QuadLog reg, lambda=10**-3, pi_T =pi_emp_T | 0.274  |
+| Full - Cov                                 | 0.304  |
+| RBF SVM, C=1, lam=1, pi_T =0.5             | 0.218  |
+
+The RBF is clearly the one that best performs on the target application.
 
 The last model considered is the GMM.
 
-## *GMM 
+## *Gaussian Mixture Model (GMM)
 
+The Gaussian mixture model is a probabilistic model that assumes all the data points are generated from a mixture of a finite number of Gaussian distributions with unknown parameters.
 
+It allows to approximate any sufficiently regular distribution.
 
-| <img src="Graph\GMM\GMM_Full_covariance.png" style="zoom:60%;" /> | <img src="Graph\GMM\GMM_Tied_covariance.png" style="zoom:60%;" /> |
+It can be used as a classification model assuming that each class can be approximated by a GMM with a given number of sub-components.
+
+Since this model benefits on having a large amount of training data, the approach used for the following analysis was the K-fold approach.
+
+Also, different type of GMM have been tried (GMM with full covariances, GMM with diagonal covariances, GMM with tied covariances and GMM with tied diagonal covariances)
+
+The graphs below show the performances in terms of minDCF obtained with raw features and gaussianized features varying the number of components of each GMM.
+
+| <img src="Graph\GMM\GMM_Full_covariance.png" style="zoom:60%;" /> | <img src="Graph\GMM\GMM_Diagonal_covariance.png" style="zoom:60%;" /> |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| <img src="Graph\GMM\GMM_Diagonal_covariance.png" style="zoom:60%;" /> | <img src="Graph\GMM\GMM_Tied_Diagonal_covariance.png" style="zoom:60%;" /> |
+| <img src="Graph\GMM\GMM_Tied_covariance.png" style="zoom:60%;" /> | <img src="Graph\GMM\GMM_Tied_Diagonal_covariance.png" style="zoom:60%;" /> |
 
-| Num components:            | 1     | 2     | 4     | 8     | 16    | 32    |
-| -------------------------- | ----- | ----- | ----- | ----- | ----- | ----- |
-| ----------**RAW**          |       |       |       |       |       |       |
-| Full                       | 0.312 | 0.300 | 0.305 | 0.286 | 0.292 | 0.302 |
-| Diag                       | 0.420 | 0.384 | 0.344 | 0.337 | 0.335 | 0.319 |
-| Tied                       | 0.312 | 0.312 | 0.305 | 0.310 | 0.309 | 0.295 |
-| Tied Diag                  | 0.420 | 0.404 | 0.362 | 0.328 | 0.314 | 0.324 |
-| **----------Gaussianized** |       |       |       |       |       |       |
-| Full                       | 0.306 | 0.327 | 0.303 | 0.309 | 0.292 | 0.336 |
-| Diag                       | 0.448 | 0.358 | 0.327 | 0.318 | 0.305 | 0.309 |
-| Tied                       | 0.306 | 0.306 | 0.309 | 0.307 | 0.296 | 0.296 |
-| Tied Diag                  | 0.448 | 0.407 | 0.327 | 0.327 | 0.323 | 0.307 |
+It can be seen that the model trained with gaussianized features have overall similar performances of the one trained with raw features.
 
+Also, the best results are got with GMM with full covariances and GMM with tied covariances.
 
+In the table below are reported all the minDCF got in the analysis.
+
+| Num components:            | 1     | 2     | 4     | 8         | 16    | 32        |
+| -------------------------- | ----- | ----- | ----- | --------- | ----- | --------- |
+| ----------**RAW**          |       |       |       |           |       |           |
+| Full Cov                   | 0.312 | 0.300 | 0.305 | **0.286** | 0.292 | 0.302     |
+| Diag Full                  | 0.420 | 0.384 | 0.344 | 0.337     | 0.335 | 0.319     |
+| Tied Full                  | 0.312 | 0.312 | 0.305 | 0.310     | 0.309 | **0.295** |
+| Tied Diag                  | 0.420 | 0.404 | 0.362 | 0.328     | 0.314 | 0.324     |
+| **----------Gaussianized** |       |       |       |           |       |           |
+| Full Cov                   | 0.306 | 0.327 | 0.303 | 0.309     | 0.292 | 0.336     |
+| Diag Full                  | 0.448 | 0.358 | 0.327 | 0.318     | 0.305 | 0.309     |
+| Tied Full                  | 0.306 | 0.306 | 0.309 | 0.307     | 0.296 | **0.296** |
+| Tied Diag                  | 0.448 | 0.407 | 0.327 | 0.327     | 0.323 | 0.307     |
 
 *****************************************************************************************************************
 
+The results got for the one-component model are consistent with the ones of MVG models.
+
+The best non-tied model is Full Covariance with 8 components trained with raw features. Instead, some degrees of overfitting can be seen in this model increasing more the number of components.
+
+Also, in this model, the gaussianization shows slightly worst performances. This can be explained since gaussianization reduce the dynamic range of samples far from the data mean and thus reduces the separability of some clusters.
+
+The best tied model is the Tied full model trained with raw features but also the one trained with gaussianized features that has a similar performance.
+
+
+
+From this first analysis of the studied classifiers, the two selected models are SVM with RBF kernel (parameters C=1, GAMMA =1, pi_T=0.5) trained with raw features and the SVM with quadratic kernel (parameters C=0.1, pi_T=0.5) trained with raw features.
+
 *******************************
 
-## 
+### Analysis in terms of actual DCFs
 
-RBF SVM, C=0.5, lam=1, pi_T =0.5 gaussianized features 
+Up to now the analysis focused only on minimum DCF metrics.
 
-Quad SVM, C=10, pi_T =0.5, c=1,K=0 raw features 
+Min DCF measures the cost that would be paid making optimal decisions for the validation set using the recognizer scores.
 
-## nuove
+The actually paid cost, however, depends on the goodness of the decisions made using those scores that in the binary case corresponds on the goodness of the threshold used in practice to perform class assignment.
 
-RBF SVM, C=1, lam=1, pi_T =0.5  0.218 raw
+Therefore, now the analysis turns the attention to actual DCFs 
 
-Quad SVM, C=0.1 pi_T =0.5 0.246 raw
+If the scores are well calibrated, the optimal threshold that optimizes the Bayes risk is FORMULA (AVILLA 55).
 
-##### *** COMPARISON BETWEEN ACTUAL DCF and MIN DCF
+The following table compares the values got as minDCF and actDCF for the three different applications using the two selected models.
 
 |                                                  | prior=0.5 |        | prior=0.1 |        | prior=0.9 |        |
 | ------------------------------------------------ | --------- | ------ | --------- | ------ | --------- | ------ |
@@ -487,11 +514,19 @@ Quad SVM, C=0.1 pi_T =0.5 0.246 raw
 | RBF SVM, C=1, lam=1, pi_T =0.5 raw features      | 0.218     | 0.218  | 0.536     | 1.0    | 0.567     | 1.0    |
 | Quad SVM, C=0.1, pi_T =0.5, c=1,K=0 raw features | 0.273     | 0.296  | 0.798     | 0.852  | 0.691     | 0.749  |
 
-Bayes Error Plot, showing the DCFs for different applications:
+These results show that both models are quite calibrated for the target application of this report. In particular, with the RBF model the minDCF corresponds exactly to the actual DCF, despite both models lack a probabilistic interpretation.
+
+On the other hand, for the unbalanced applications the scores are overall not well calibrated especially using the RBF classifier.
+
+For a better visualization, these results have been plotted in a Bayes Error Plot, which shows the DCFs for different applications.
 
 <img src="Graph\Error_Bayes_Plots\EBP1.png" style="zoom:80%;" />
 
-After the threshold estimated protocol
+It is clearly visible that the RBF outputs (quite-) calibrated scores only for the target application (prior=0.5), wheras changing prior log odds (and therefore the application) the curve of the minDCFs and the actualDCF  depart from each other.
+
+Instead the quadratic SVM is well calibrated in a wider range of applications.
+
+Therefore for the target application for both classifiers, using the theoretical optimal threshold would give good results. But, since this would not apply for the unbalanced applications, the solution followed was estimating a close-to-optimal threshold. The results are shown in the table below.
 
 |                                                  | min DCF | act DCF (t theoretical threshold) | actDCF t estimated |
 | ------------------------------------------------ | ------- | --------------------------------- | ------------------ |
@@ -499,15 +534,29 @@ After the threshold estimated protocol
 | RBF SVM, C=1, lam=1, pi_T =0.5 raw features      | 0.223   | 0.226                             | 0.229              |
 | Quad SVM, C=0.1, pi_T =0.5, c=1,K=0 raw features | 0.289   | 0.315                             | 0.314              |
 | **prior=0.1**                                    |         |                                   |                    |
-| RBF SVM, C=1, lam=1, pi_T =0.5 raw features      | 0.551   | 1.0                               | 0.601              |
-| Quad SVM, C=0.1, pi_T =0.5, c=1,K=0 raw features | 0.788   | 0.859                             | 0.898              |
+| RBF SVM, C=1, lam=1, pi_T =0.5 raw features      | 0.551   | **1.0**                           | **0.601**          |
+| Quad SVM, C=0.1, pi_T =0.5, c=1,K=0 raw features | 0.788   | **0.859**                         | **0.898**          |
 | **prior=0.9**                                    |         |                                   |                    |
-| RBF SVM, C=1, lam=1, pi_T =0.5 raw features      | 0.635   | 1.0                               | 0.662              |
-| Quad SVM, C=0.1, pi_T =0.5, c=1,K=0 raw features | 0.697   | 0.752                             | 0.731              |
+| RBF SVM, C=1, lam=1, pi_T =0.5 raw features      | 0.635   | **1.0**                           | **0.662**          |
+| Quad SVM, C=0.1, pi_T =0.5, c=1,K=0 raw features | 0.697   | **0.752**                         | **0.731**          |
+
+These procedure looks quite accurate for the two unbalanced application since the results got with the estimated threshold are surely closer to the minDCF compared to the DCF computed with the theoretical threshold.
+
+Instead, the target application, being already quite calibrated does not get a great improvement from this procedure.
 
 
+
+Since this analysis focuses only on the target application, the chosen model is the SVM with RBF kernel since it gives the best validation results and it also produces well calibrated scores.
 
 ## - Experimental results
+
+The last step of this report assesses the quality of the chosen model on held-out data (the evaluation set).
+
+Also, the performances got are verified for unseen data.
+
+For the experimental results the choice was to verify only the ones on the target application.
+
+Again, first the performances have been evaluate using the minimum DCF and then using the actual DCF.
 
 #### MVG :
 
