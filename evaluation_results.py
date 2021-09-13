@@ -424,25 +424,25 @@ def print_table_GMM_minDCF(DTR, LTR, k, eval_data):
 
 
 
-def print_table_comparison_DCFs(DTR, LTR, k, data_eval):
+def print_table_comparison_DCFs(DTR, LTR, k, eval_data):
 
-    def actDCF_minDCF(data, llr_calculator, params, data_eval):
+    def actDCF_minDCF(data, llr_calculator, params, eval_data):
             prior=0.5
             cost_fn=1
             cost_fp=1
-            min_DCF_LR, act_DCF_LR,_ = model_validation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params, data_eval)
+            min_DCF_LR, act_DCF_LR,_ = model_validation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params, eval_data)
             print("[5-Folds]  -  prior= 0.5  minDCF: ",min_DCF_LR, " actDCF= ",act_DCF_LR)
 
             prior=0.1
             cost_fn=1
             cost_fp=1
-            min_DCF_LR, act_DCF_LR,_ = model_validation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params, data_eval)
+            min_DCF_LR, act_DCF_LR,_ = model_validation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params, eval_data)
             print("[5-Folds]  -  prior= 0.1  minDCF: ",min_DCF_LR, " actDCF= ",act_DCF_LR) 
 
             prior=0.9
             cost_fn=1
             cost_fp=1
-            min_DCF_LR, act_DCF_LR,_ = model_validation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params, data_eval)
+            min_DCF_LR, act_DCF_LR,_ = model_validation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params, eval_data)
             print("[5-Folds]  -  prior= 0.9  minDCF: ",min_DCF_LR, " actDCF= ",act_DCF_LR) 
 
             print()
@@ -454,7 +454,7 @@ def print_table_comparison_DCFs(DTR, LTR, k, data_eval):
     lam = 1
     pi_T = 0.5
     C= 1
-    actDCF_minDCF(preprocessing.Z_normalization(DTR), SVMClassifier.RBF_SVM_computeLogLikelihoods,[pi_T, C, lam], data_eval )
+    actDCF_minDCF(preprocessing.Z_normalization(DTR), SVMClassifier.RBF_SVM_computeLogLikelihoods,[pi_T, C, lam], eval_data )
 
     #--------------- SECOND MODEL-------------------------
 
@@ -463,7 +463,7 @@ def print_table_comparison_DCFs(DTR, LTR, k, data_eval):
     pi_T=0.5
     c=1
     K=0
-    actDCF_minDCF(preprocessing.Z_normalization(DTR), SVMClassifier.Polinomial_SVM_computeLogLikelihoods,[pi_T,C,c,K, data_eval])
+    actDCF_minDCF(preprocessing.Z_normalization(DTR), SVMClassifier.Polinomial_SVM_computeLogLikelihoods,[pi_T,C,c,K, eval_data])
 
 #--------------------------
 def print_err_bayes_plots(data, L, k, llr_calculators, other_params, titles, colors):
