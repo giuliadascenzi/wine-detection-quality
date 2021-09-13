@@ -333,7 +333,7 @@ def print_table_RBF_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eval_data):
 
         print("************************************************")
     
-    fun_parametri(C=1, loglam=0, eval_data=eval_data)
+    fun_parametri(C=0.99, loglam=0.00001, eval_data=eval_data)
     #fun_parametri(0.5, 0, eval_data)
 
 
@@ -587,13 +587,13 @@ def print_all(DTR, LTR, DEV, LEV, k):
     '''
     
     ### RBF
-    print_graphs_RBF_SVM_Cs(DTR, LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k, eval_data=eval_data)  
-    '''
+    #print_graphs_RBF_SVM_Cs(DTR, LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k, eval_data=eval_data)  
+    
     print("********************* RBF SVM TABLES ************************************")
     print("------> applicazione con prior = 0.5")
     print_table_RBF_SVM_minDCF(DTR, LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k, eval_data=eval_data)    
     print("********************************************************************")
-    '''
+    
     
     ### GMM
     '''

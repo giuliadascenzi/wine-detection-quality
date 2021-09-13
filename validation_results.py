@@ -1010,7 +1010,7 @@ def print_all(DTR, LTR, k):
     
     
     ### -- LINEAR SVM
-    
+    '''
     print("********************* SVM GRAPHS ************************************")
     print_graphs_SVM_Cs(DTR, LTR, k=k )
     print("********************************************************************")
@@ -1051,11 +1051,12 @@ def print_all(DTR, LTR, k):
     print("********************* RBF SVM GRAPHS ************************************")
     print_graphs_RBF_SVM_Cs(DTR, LTR, k=k )
     print("********************************************************************")
-    
+    '''
 
     print("********************* RBF SVM TABLES ************************************")
     print("------> applicazione con prior = 0.5")
     print_table_RBF_SVM_minDCF(DTR, LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k )
+    '''
     print("------> applicazione con prior = 0.9")
     print_table_RBF_SVM_minDCF(DTR, LTR, prior=0.9, cost_fn=1, cost_fp=1, k=k )
     print("------> applicazione con prior = 0.1")
@@ -1067,7 +1068,7 @@ def print_all(DTR, LTR, k):
     print_graphs_GMM_minDCF(DTR, LTR, k)
 
 
-    '''
+    
     ## COMPARISON BETWEEN ACT DCF AND MIN DCF OF THE CHOSEN MODELS
     print("************ Table comparison act dcf and min dcf******************")
     print_table_comparison_DCFs(DTR, LTR, k=k)
