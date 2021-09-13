@@ -569,7 +569,7 @@ def print_all(DTR, LTR, DEV, LEV, k):
     
     
     print("************ PRINT BAYES ERROR PLOT******************")
-    print_err_bayes_plots(data, LTR, k, llr_calculators, other_params, titles, colors, eval_data)
+    print_err_bayes_plots(data, LTR, k, llr_calculators, other_params, titles, colors, eval_data=[preprocessing.Z_normalization(DEV), LEV])
     print("*****************************************************")
     
     
