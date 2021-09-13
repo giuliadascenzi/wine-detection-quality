@@ -47,23 +47,23 @@ def print_table_MVG_classifiers_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eva
     normalized_data_eval = preprocessing.Z_normalization(DTE)
     gaussianizedFeatures = preprocessing.gaussianization(DTR)
     gaussianizedFeatures_eval = preprocessing.gaussianizationEval(DTR, DTE)
+    principal_components10, principal_components10_eval = redTec.PCA_evaluation(normalized_data, 10, normalized_data_eval)
     principal_components9, principal_components9_eval = redTec.PCA_evaluation(normalized_data, 9, normalized_data_eval)
-    principal_components8, principal_components8_eval = redTec.PCA_evaluation(normalized_data, 8, normalized_data_eval)
     
     #------------------------RAW FEATURES (normalized) -----------------
     print("*** minDCF - RAW (normalized) FEATURES - NO PCA ***")
     MVG_Classifiers_minDCF(normalized_data, [normalized_data_eval, LTE])
     
 
+    #------------------------RAW FEATURES (normalized) WITH PCA = 10 --------------------
+    print("*** minDCF - RAW (normalized) FEATURES -  PCA (m=10) ***")
+    MVG_Classifiers_minDCF(principal_components10, [principal_components10_eval, LTE])       
+
+
     #------------------------RAW FEATURES (normalized) WITH PCA = 9 --------------------
-    print("*** minDCF - RAW (normalized) FEATURES -  PCA (m=9) ***")
-    MVG_Classifiers_minDCF(principal_components9, [principal_components9_eval, LTE])       
-
-
-    #------------------------RAW FEATURES (normalized) WITH PCA = 8 --------------------
     
-    print("*** minDCF - RAW (normalized) FEATURES -  PCA (m=8) ***")
-    MVG_Classifiers_minDCF(principal_components8, [principal_components8_eval, LTE])    
+    print("*** minDCF - RAW (normalized) FEATURES -  PCA (m=9) ***")
+    MVG_Classifiers_minDCF(principal_components9, [principal_components9_eval, LTE])    
 
 
     ## Z --> PCA --> GAUSS
@@ -72,19 +72,19 @@ def print_table_MVG_classifiers_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eva
     MVG_Classifiers_minDCF(gaussianizedFeatures, [gaussianizedFeatures_eval, LTE])
 
 
+    #------------------------GAUSSIANIZED FEATURES WITH PCA = 10 --------------------
+    print("*** minDCF - GAUSSIANIZED FEATURES -  PCA m=10 ***")
+    gaussianized_principal_components_10 = preprocessing.gaussianization(principal_components10)
+    gaussianized_principal_components_10_eval = preprocessing.gaussianizationEval(principal_components10, principal_components10_eval)
+
+    MVG_Classifiers_minDCF(gaussianized_principal_components_10, [gaussianized_principal_components_10_eval, LTE])     
+
+
     #------------------------GAUSSIANIZED FEATURES WITH PCA = 9 --------------------
     print("*** minDCF - GAUSSIANIZED FEATURES -  PCA m=9 ***")
     gaussianized_principal_components_9 = preprocessing.gaussianization(principal_components9)
     gaussianized_principal_components_9_eval = preprocessing.gaussianizationEval(principal_components9, principal_components9_eval)
-
-    MVG_Classifiers_minDCF(gaussianized_principal_components_9, [gaussianized_principal_components_9_eval, LTE])     
-
-
-    #------------------------GAUSSIANIZED FEATURES WITH PCA = 8 --------------------
-    print("*** minDCF - GAUSSIANIZED FEATURES -  PCA m=8 ***")
-    gaussianized_principal_components_8 = preprocessing.gaussianization(principal_components8)
-    gaussianized_principal_components_8_eval = preprocessing.gaussianizationEval(principal_components8, principal_components8_eval)
-    MVG_Classifiers_minDCF(gaussianized_principal_components_8, [gaussianized_principal_components_8_eval, LTE])
+    MVG_Classifiers_minDCF(gaussianized_principal_components_9, [gaussianized_principal_components_9_eval, LTE])
 
 #--------------------------
 
@@ -92,18 +92,18 @@ def print_table_LR_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eval_data):
 
     def LR_minDCF(data, eval_data):
             
-        lam = 10**(-7)
+        lam = 10**(-3)
         pi_T = 0.5
         min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T], eval_data=eval_data)
-        print("[5-Folds]  -  lam = 10^-7, pi_T = 0.5: ",min_DCF_LR)  
+        print("[5-Folds]  -  lam = 10^-3, pi_T = 0.5: ",min_DCF_LR)  
 
         pi_T = 0.1
         min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T], eval_data=eval_data)
-        print("[5-Folds]  -  lam = 10^-7, pi_T = 0.1: ",min_DCF_LR)
+        print("[5-Folds]  -  lam = 10^-3, pi_T = 0.1: ",min_DCF_LR)
 
         pi_T = 0.9
         min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T], eval_data=eval_data)
-        print("[5-Folds]  -  lam = 10^-7, pi_T = 0.9: ",min_DCF_LR)
+        print("[5-Folds]  -  lam = 10^-3, pi_T = 0.9: ",min_DCF_LR)
         
 
         N = LTR.size #tot number of samples
@@ -113,7 +113,7 @@ def print_table_LR_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eval_data):
         pi_T = pi_emp_T
         
         min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
-        print("[5-Folds]  -  lam = 10^-7, pi_T = pi_emp_T: ",min_DCF_LR)
+        print("[5-Folds]  -  lam = 10^-3, pi_T = pi_emp_T: ",min_DCF_LR)
 
         print()
 
@@ -135,19 +135,19 @@ def print_table_LR_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eval_data):
 def print_table_Quadratic_LR_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eval_data):
 
     def Quad_LR_minDCF(data, eval_data):
-        lam = 10**(-7)
+        lam = 10**(-3)
         
         pi_T = 0.5
         min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T], eval_data=eval_data)
-        print("[5-Folds]  -  lam = 10^-7, pi_T = 0.5: ",min_DCF_LR)  
+        print("[5-Folds]  -  lam = 10^-3, pi_T = 0.5: ",min_DCF_LR)  
 
         pi_T = 0.1
         min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T], eval_data=eval_data)
-        print("[5-Folds]  -  lam = 10^-7, pi_T = 0.1: ",min_DCF_LR)
+        print("[5-Folds]  -  lam = 10^-3, pi_T = 0.1: ",min_DCF_LR)
 
         pi_T = 0.9
         min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T], eval_data=eval_data)
-        print("[5-Folds]  -  lam = 10^-7, pi_T = 0.9: ",min_DCF_LR)
+        print("[5-Folds]  -  lam = 10^-3, pi_T = 0.9: ",min_DCF_LR)
         
 
         N = LTR.size #tot number of samples
@@ -156,7 +156,7 @@ def print_table_Quadratic_LR_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eval_d
 
         pi_T = pi_emp_T
         min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T], eval_data=eval_data)
-        print("[5-Folds]  -  lam = 10^-7, pi_T = pi_emp_T: ",min_DCF_LR)
+        print("[5-Folds]  -  lam = 10^-3, pi_T = pi_emp_T: ",min_DCF_LR)
         
         print()
 
@@ -178,6 +178,7 @@ def print_table_Quadratic_LR_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eval_d
 def print_table_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eval_data):
 
     def linear_SVM_minDCF(data, eval_data):
+        
         C = 0.1
         pi_T = 0.5
         minDCF,_,_ = model_validation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C], eval_data=eval_data)
@@ -192,13 +193,18 @@ def print_table_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eval_data):
         pi_T = 0.9
         minDCF,_,_ = model_validation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C], eval_data=eval_data)
         print("[5-Folds]  -  C= 0.1, pi_T=0.9: ",minDCF)
-
+        
         #unbalanced application
         C = 0.1
-        pi_T = -1
+
+        N = LTR.size #tot number of samples
+        n_T = (1*(LTR==1)).sum() #num of samples belonging to the true class
+        pi_emp_T = n_T / N
+        pi_T = pi_emp_T
+
         minDCF,_,_ = model_validation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C], eval_data=eval_data)
         print("[5-Folds]  -  C= 0.1, pi_T=pi_emp_T: ",minDCF)
-
+        
         print()
 
     DTE = eval_data[0]
@@ -242,7 +248,7 @@ def print_table_Quadratic_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eval_
         pi_emp_T = n_T / N
 
         pi_T = pi_emp_T
-        minDCF,_,_ = model_validation.k_cross_DCF(data, LTR,k, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp,[pi_T, C, c, K], eval_data=eval_data)
+        minDCF,_,_ = model_validation.k_cross_DCF(data, LTR, k, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp,[pi_T, C, c, K], eval_data=eval_data)
         print("[5-Folds]  - C= ", C, ", pi_T=pi_emp_T, c= ", c, " k = ",K , "  : ",minDCF)
 
 
@@ -270,6 +276,8 @@ def print_table_Quadratic_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eval_
         print("************************************************")
     
     fun_parametri(0.1,1,0, eval_data)
+    
+
 #--------------------------
 
 def print_table_RBF_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eval_data): #TODO
@@ -326,11 +334,33 @@ def print_table_RBF_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eval_data):
         print("************************************************")
     
     fun_parametri(1, 0, eval_data)
-    fun_parametri(0.5, 0, eval_data)
+    #fun_parametri(0.5, 0, eval_data)
 
 #--------------------------
 
 def print_table_GMM_minDCF(DTR, LTR, k, eval_data):
+    def bar_plot_gmm(raw_minDCFs, gau_minDCFs, gmm_comp, title):
+
+        widthbar = 0.2
+
+        x_ind = numpy.arange(len(gmm_comp))
+
+        raw_ind = x_ind - widthbar/2
+        gau_ind = x_ind + widthbar/2
+
+        lb1 = "minDCF (prior=0.5) - Raw"
+        lb2 = "minDCF (prior=0.5) - Gaussianized"
+        
+        plt.figure()
+        plt.bar(raw_ind, raw_minDCFs, width = widthbar, color = 'orange', label = lb1)
+        plt.bar(gau_ind, gau_minDCFs, width = widthbar, color = 'red', label = lb2)
+        plt.title(title)
+        plt.xticks(x_ind ,gmm_comp)
+        plt.ylabel('minDCFs')
+        plt.xlabel('GMM components')
+        plt.legend(loc="lower left")
+
+        plt.savefig('Graph/GMM_EVAL/'+title+'.png' )
 
     def GMM_compute_DCFs(DTR, LTR, k, covariance_type, prior, cost_fn, cost_fp, eval_data):
 
@@ -373,19 +403,81 @@ def print_table_GMM_minDCF(DTR, LTR, k, eval_data):
     #### Full Cov
     covariance_type = "Full"
     raw_minDCFs, gau_minDCFs, gmm_comp = GMM_compute_DCFs(DTR, LTR, k, covariance_type, 0.5, 1, 1, eval_data)
+    bar_plot_gmm(raw_minDCFs, gau_minDCFs, gmm_comp, "GMM_Full_covariance")
 
     #### Diagonal Cov
     covariance_type = "Diagonal"
     raw_minDCFs, gau_minDCFs, gmm_comp = GMM_compute_DCFs(DTR, LTR, k, covariance_type, 0.5, 1, 1, eval_data)
+    bar_plot_gmm(raw_minDCFs, gau_minDCFs, gmm_comp, "GMM_Diagonal_covariance")
+
 
     #### Diagonal Cov
     covariance_type = "Tied"
     raw_minDCFs, gau_minDCFs, gmm_comp = GMM_compute_DCFs(DTR, LTR, k, covariance_type, 0.5, 1, 1, eval_data)
+    bar_plot_gmm(raw_minDCFs, gau_minDCFs, gmm_comp, "GMM_Tied_covariance")
+
     
     #### Diagonal Cov
     covariance_type = "Tied Diagonal"
     raw_minDCFs, gau_minDCFs, gmm_comp = GMM_compute_DCFs(DTR, LTR, k, covariance_type, 0.5, 1, 1, eval_data)
+    bar_plot_gmm(raw_minDCFs, gau_minDCFs, gmm_comp, "GMM_Tied_Diagonal_covariance")
 
+
+
+def print_table_comparison_DCFs(DTR, LTR, k, eval_data):
+
+    def actDCF_minDCF(data, llr_calculator, params, eval_data):
+            prior=0.5
+            cost_fn=1
+            cost_fp=1
+            min_DCF_LR, act_DCF_LR,_ = model_validation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params, eval_data)
+            print("[5-Folds]  -  prior= 0.5  minDCF: ",min_DCF_LR, " actDCF= ",act_DCF_LR)
+            
+            '''
+            prior=0.1
+            cost_fn=1
+            cost_fp=1
+            min_DCF_LR, act_DCF_LR,_ = model_validation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params, eval_data)
+            print("[5-Folds]  -  prior= 0.1  minDCF: ",min_DCF_LR, " actDCF= ",act_DCF_LR) 
+
+            prior=0.9
+            cost_fn=1
+            cost_fp=1
+            min_DCF_LR, act_DCF_LR,_ = model_validation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params, eval_data)
+            print("[5-Folds]  -  prior= 0.9  minDCF: ",min_DCF_LR, " actDCF= ",act_DCF_LR) 
+            '''
+            print()
+
+
+    #------------------------FIRST MODEL ----------------- 
+
+    print(" RBF SVM, C=1, lam=1, pi_T =0.5 raw features ")
+    lam = 1
+    pi_T = 0.5
+    C= 1
+    actDCF_minDCF(preprocessing.Z_normalization(DTR), SVMClassifier.RBF_SVM_computeLogLikelihoods,[pi_T, C, lam], eval_data )
+
+    #--------------- SECOND MODEL-------------------------
+
+    print(" Quad SVM, C=0.1, pi_T =0.5, c=1,K=0 raw features  ")
+    C=0.1
+    pi_T=0.5
+    c=1
+    K=0
+    actDCF_minDCF(preprocessing.Z_normalization(DTR), SVMClassifier.Polinomial_SVM_computeLogLikelihoods,[pi_T,C,c,K], eval_data)
+
+#---------------------------
+
+def print_err_bayes_plots(data, L, k, llr_calculators, other_params, titles, colors, eval_data):
+    plt.figure()
+    plt.title("Bayes Error Plot")
+    plt.xlabel("prior log odds")
+    plt.ylabel("DCF")
+    for i in range (len(llr_calculators)):
+        print("Working on calculator "+ str(i))
+        model_validation.bayes_error_plot(data[i], L, k, llr_calculators[i], other_params[i], titles[i], colors[i], eval_data)
+        print("DONE")
+    plt.savefig('Graph/Error_Bayes_Plots/EBP1_EVAL.png' )
 
 
 #--------------------------
@@ -393,20 +485,20 @@ def print_all(DTR, LTR, DEV, LEV, k):
     
     eval_data = [DEV, LEV]
 
-    '''
+    print("************************EVALUATION RESULT***********************")
     ### -- MVG CLASSIFIERS
-    
+    '''
     print("********************* MVG TABLE ************************************")
     print("------> pi = 0.5")
     print_table_MVG_classifiers_minDCF(DTR, LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k, eval_data=eval_data)
     print()
     print("********************************************************************")
-
     '''
-
-    '''
-    ### -- LINEAR LOGISTIC REGRESSION
     
+
+    
+    ### -- LINEAR LOGISTIC REGRESSION
+    '''
     print("********************* LR TABLE ************************************")
     print("------> applicazione prior = 0.5")
     print_table_LR_minDCF(DTR,LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k, eval_data=eval_data)
@@ -423,6 +515,7 @@ def print_all(DTR, LTR, DEV, LEV, k):
     print()
     print("********************************************************************")
     '''
+
     ### -- LINEAR SVM
     '''
     print("********************* SVM TABLES ************************************")
@@ -448,8 +541,39 @@ def print_all(DTR, LTR, DEV, LEV, k):
     '''
     
     ### GMM
+    '''
     print_table_GMM_minDCF(DTR, LTR, k, eval_data = eval_data)
+    '''
+    
+    ## COMPARISON BETWEEN ACT DCF AND MIN DCF OF THE CHOSEN MODELS
+    print("************ Table comparison act dcf and min dcf******************")
+    print_table_comparison_DCFs(DTR, LTR, k=k, eval_data=[preprocessing.Z_normalization(DEV), LEV])
+    print("******************************************************************")
 
+    #error bayes plot
+    
+    pi_T1 = 0.5
+    C1= 1
+    lam1 = 1
+
+    pi_T2=0.5
+    C2=0.1
+    c2=1
+    K2=0
+
+
+    data = [ preprocessing.Z_normalization(DTR), preprocessing.Z_normalization(DTR)]
+    llr_calculators = [SVMClassifier.RBF_SVM_computeLogLikelihoods,SVMClassifier.Polinomial_SVM_computeLogLikelihoods ]
+    other_params = [[pi_T1,C1,lam1], [pi_T2,C2,c2,K2]]
+    titles = ["RBF SVM RAW", "Quad SVM RAW"]
+    colors = ["r", "b"]
+    
+    
+    print("************ PRINT BAYES ERROR PLOT******************")
+    print_err_bayes_plots(data, LTR, k, llr_calculators, other_params, titles, colors, eval_data=[preprocessing.Z_normalization(DEV), LEV])
+    print("*****************************************************")
+    
+    
 
 
 

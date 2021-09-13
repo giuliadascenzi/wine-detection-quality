@@ -796,7 +796,7 @@ def print_table_RBF_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k): #TODO
         print("************************************************")
     
     fun_parametri(1,0)
-    fun_parametri(0.5,0)
+    #fun_parametri(0.5,0)
 
 #--------------------------
 
@@ -885,25 +885,25 @@ def print_graphs_GMM_minDCF(DTR, LTR, k):
 def print_table_comparison_DCFs(DTR, LTR, k):
 
     def actDCF_minDCF(data, llr_calculator, params):
-            prior=0.5
-            cost_fn=1
-            cost_fp=1
-            min_DCF_LR, act_DCF_LR,_ = model_validation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params)
-            print("[5-Folds]  -  prior= 0.5  minDCF: ",min_DCF_LR, " actDCF= ",act_DCF_LR)
+        prior=0.5
+        cost_fn=1
+        cost_fp=1
+        min_DCF_LR, act_DCF_LR,_ = model_validation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params)
+        print("[5-Folds]  -  prior= 0.5  minDCF: ",min_DCF_LR, " actDCF= ",act_DCF_LR)
 
-            prior=0.1
-            cost_fn=1
-            cost_fp=1
-            min_DCF_LR, act_DCF_LR,_ = model_validation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params)
-            print("[5-Folds]  -  prior= 0.1  minDCF: ",min_DCF_LR, " actDCF= ",act_DCF_LR) 
+        prior=0.1
+        cost_fn=1
+        cost_fp=1
+        min_DCF_LR, act_DCF_LR,_ = model_validation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params)
+        print("[5-Folds]  -  prior= 0.1  minDCF: ",min_DCF_LR, " actDCF= ",act_DCF_LR) 
 
-            prior=0.9
-            cost_fn=1
-            cost_fp=1
-            min_DCF_LR, act_DCF_LR,_ = model_validation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params)
-            print("[5-Folds]  -  prior= 0.9  minDCF: ",min_DCF_LR, " actDCF= ",act_DCF_LR) 
+        prior=0.9
+        cost_fn=1
+        cost_fp=1
+        min_DCF_LR, act_DCF_LR,_ = model_validation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params)
+        print("[5-Folds]  -  prior= 0.9  minDCF: ",min_DCF_LR, " actDCF= ",act_DCF_LR) 
 
-            print()
+        print()
 
 
     #------------------------FIRST MODEL ----------------- 
@@ -1006,7 +1006,7 @@ def print_all(DTR, LTR, k):
     print_table_Quadratic_LR_minDCF(DTR, LTR, prior=0.9, cost_fn=1, cost_fp=1, k=k)
     print()
     print("********************************************************************")
-    
+    '''
     
     
     ### -- LINEAR SVM
@@ -1014,7 +1014,7 @@ def print_all(DTR, LTR, k):
     print("********************* SVM GRAPHS ************************************")
     print_graphs_SVM_Cs(DTR, LTR, k=k )
     print("********************************************************************")
-    '''
+    
     print("********************* SVM TABLES ************************************")
     print("------> applicazione con prior = 0.5")
     print_table_SVM_minDCF(DTR, LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k )
@@ -1023,11 +1023,11 @@ def print_all(DTR, LTR, k):
     print("------> applicazione con prior = 0.1")
     print_table_SVM_minDCF(DTR, LTR, prior=0.1, cost_fn=1, cost_fp=1, k=k )
     print("********************************************************************")
-
     '''
     
+    
     ### -- QUADRATIC SVM
-
+    '''
     print("********************* quadratic SVM GRAPHS changing C,k,c ************************************")
     print_graphs_Polinomial_SVM_Cs_k_c(DTR, LTR, k=k )
     print("********************************************************************")
@@ -1067,7 +1067,7 @@ def print_all(DTR, LTR, k):
     print_graphs_GMM_minDCF(DTR, LTR, k)
 
 
-    
+    '''
     ## COMPARISON BETWEEN ACT DCF AND MIN DCF OF THE CHOSEN MODELS
     print("************ Table comparison act dcf and min dcf******************")
     print_table_comparison_DCFs(DTR, LTR, k=k)
@@ -1116,7 +1116,7 @@ def print_all(DTR, LTR, k):
     print_treshold_estimated_table(data[0], LTR, prior, 1, 1, k, llr_calculators[0], other_params[0], titles[0])
     print_treshold_estimated_table(data[1], LTR, prior, 1, 1, k, llr_calculators[1], other_params[1], titles[1])
     print()
-    '''
+    
     
 
 #--------------------------
