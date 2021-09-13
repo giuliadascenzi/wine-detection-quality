@@ -745,7 +745,7 @@ def print_graphs_RBF_SVM_Cs(DTR, LTR, k):
 
 #--------------------------
 
-def print_table_RBF_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k): #TODO
+def print_table_RBF_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k): 
 
     def RBF_SVM_minDCF(data, C, loglam):
         
@@ -1117,6 +1117,6 @@ def print_all(DTR, LTR, k):
     print_treshold_estimated_table(data[1], LTR, prior, 1, 1, k, llr_calculators[1], other_params[1], titles[1])
     print()
     
-    
+    '''
 
 #--------------------------

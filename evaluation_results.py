@@ -525,33 +525,33 @@ def print_all(DTR, LTR, DEV, LEV, k):
     '''
     
     ### -- QUADRATIC SVM
-    
+    '''
     print("********************* quadratic SVM TABLES ************************************")
     print("------> applicazione con prior = 0.5")
     print_table_Quadratic_SVM_minDCF(DTR, LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k, eval_data=eval_data)
     print("********************************************************************")
-    
+    '''
     
     ### RBF
-    '''
+    
     print("********************* RBF SVM TABLES ************************************")
     print("------> applicazione con prior = 0.5")
     print_table_RBF_SVM_minDCF(DTR, LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k, eval_data=eval_data)    
     print("********************************************************************")
-    '''
+    
     
     ### GMM
     '''
     print_table_GMM_minDCF(DTR, LTR, k, eval_data = eval_data)
     '''
-    
+    '''
     ## COMPARISON BETWEEN ACT DCF AND MIN DCF OF THE CHOSEN MODELS
     print("************ Table comparison act dcf and min dcf******************")
     print_table_comparison_DCFs(DTR, LTR, k=k, eval_data=[preprocessing.Z_normalization(DEV), LEV])
     print("******************************************************************")
-
+    '''
     #error bayes plot
-    
+    '''
     pi_T1 = 0.5
     C1= 1
     lam1 = 1
@@ -572,7 +572,7 @@ def print_all(DTR, LTR, DEV, LEV, k):
     print("************ PRINT BAYES ERROR PLOT******************")
     print_err_bayes_plots(data, LTR, k, llr_calculators, other_params, titles, colors, eval_data=[preprocessing.Z_normalization(DEV), LEV])
     print("*****************************************************")
-    
+    '''
     
 
 
