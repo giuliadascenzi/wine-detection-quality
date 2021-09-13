@@ -1,5 +1,3 @@
-
-
 # Wine quality detection
 
 ## - Introduction
@@ -703,8 +701,12 @@ Again, first the performances have been evaluate using the minimum DCF and then 
 
 
 
+|                                                  | min DCF    | act DCF (t theoretical threshold)                 |
+| ------------------------------------------------ | ---------- | ------------------------------------------------- |
+| **prior=0.5**                                    | ---------- | ------------------------------------------------- |
+| RBF SVM, C=1, lam=1, pi_T =0.5 raw features      | 0.309      | 0.311                                             |
+| Quad SVM, C=0.1, pi_T =0.5, c=1,K=0 raw features | 0.270      | 0.300                                             |
 
+<img src="Graph/Error_Bayes_Plots/EBP1_EVAL.png" style="zoom:80%;" />
 
 ## - Conclusions
-
- 
