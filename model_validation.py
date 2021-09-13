@@ -142,7 +142,7 @@ def k_cross_loglikelihoods(D,L, k, llr_calculator, otherParams):
     labels = numpy.concatenate(labels)
     return (llr, labels)
 
-def k_cross_DCF(D, L, k, llr_calculator, prior, cost_fn, cost_fp, otherParams=None, eval_data=None):
+def k_cross_DCF(D, L, k, llr_calculator, prior, cost_fn, cost_fp, otherParams=None, eval_data=None): #eval_data=[DTE,LTE]
     if (eval_data!=None): 
         DEV = eval_data[0]
         labels= eval_data[1]

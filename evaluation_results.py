@@ -302,7 +302,7 @@ def print_table_RBF_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eval_data):
         
         N = LTR.size #tot number of samples
         n_T = (1*(LTR==1)).sum() #num of samples belonging to the true class
-        n_F = (1*(LTR==0)).sum() #num of samples belonging to the false class
+    
         pi_emp_T = n_T / N
 
         pi_T = pi_emp_T
@@ -333,9 +333,63 @@ def print_table_RBF_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eval_data):
 
         print("************************************************")
     
-    fun_parametri(1, 0, eval_data)
+    fun_parametri(C=1, loglam=0, eval_data=eval_data)
     #fun_parametri(0.5, 0, eval_data)
 
+
+#--------------------------
+
+def print_graphs_RBF_SVM_Cs(DTR, LTR, prior, cost_fn, cost_fp, k, eval_data):
+
+    def oneGraphKFold(data, prior, cost_fn, cost_fp, pi_T, loglam, eval_data):
+        print("working on k fold loglam = ", loglam)
+        
+        exps = numpy.linspace(-1,2, 4)
+        Cs = 10** exps
+        minDCFs = 0 * exps
+        for i in range (Cs.size):
+            C= Cs[i]
+            minDCFs[i],_,_ = model_validation.k_cross_DCF(data, LTR,k, SVMClassifier.RBF_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, 10**loglam], eval_data)
+        
+        lb = " (log(lam)="+ str(loglam) +")"
+        plt.plot(Cs, minDCFs, label=lb)
+        plt.legend()
+        print("DONE")
+
+    DTE = eval_data[0]
+    LTE = eval_data[1]  
+    normalizedDTE= preprocessing.Z_normalization(DTE)
+    gaussianizedDTE=preprocessing.gaussianizationEval(DTR, DTE)
+    normalized_eval=[normalizedDTE, LTE]
+    gaussianized_eval=[gaussianizedDTE, LTE]
+
+    normalizedFeatures = preprocessing.Z_normalization(DTR)
+    gaussianizedFeatures = preprocessing.gaussianization(DTR)
+
+    print("1 grafico")
+    plt.figure()
+    plt.title("Raw features, 5 fold")
+    plt.xscale('log')
+    plt.xlabel("C")
+    plt.ylabel("minDCFs")
+    oneGraphKFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = 0,eval_data=normalized_eval )
+    oneGraphKFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = 0.5,eval_data=normalized_eval)
+    oneGraphKFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = 0.8,eval_data=normalized_eval)
+    oneGraphKFold(normalizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = 1,eval_data=normalized_eval)
+    plt.savefig('Graph/SVM/RBF/5FoldRAW_EVAL.png' )
+    '''
+    print("2 grafico")
+    plt.figure()
+    plt.title("Gaussianized features, 5 fold")
+    plt.xscale('log')
+    plt.xlabel("C")
+    plt.ylabel("minDCFs")
+    oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = 0,gaussianized_eval)
+    oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = 0.5,gaussianized_eval)
+    oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = 0.8,gaussianized_eval)
+    oneGraphKFold(gaussianizedFeatures, prior=0.5, cost_fn=1, cost_fp=1, pi_T=0.5, loglam = 1,gaussianized_eval)
+    plt.savefig('Graph/SVM/RBF/5FoldGauss_EVAL.png' )
+    '''
 #--------------------------
 
 def print_table_GMM_minDCF(DTR, LTR, k, eval_data):
@@ -533,12 +587,13 @@ def print_all(DTR, LTR, DEV, LEV, k):
     '''
     
     ### RBF
-    
+    print_graphs_RBF_SVM_Cs(DTR, LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k, eval_data=eval_data)  
+    '''
     print("********************* RBF SVM TABLES ************************************")
     print("------> applicazione con prior = 0.5")
     print_table_RBF_SVM_minDCF(DTR, LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k, eval_data=eval_data)    
     print("********************************************************************")
-    
+    '''
     
     ### GMM
     '''
