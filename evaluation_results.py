@@ -227,7 +227,7 @@ def print_table_Quadratic_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eval_
     def quadratic_SVM_minDCF(data, C, c, K, eval_data):
         
         pi_T = 0.5
-        minDCF,_,_ = model_validation.k_cross_DCF(data, LTR, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, c, K], eval_data=eval_data)
+        minDCF,_,_ = model_validation.k_cross_DCF(data, LTR, k, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, c, K], eval_data=eval_data)
         print("[5-Folds]  -  C= ", C, ", pi_T=0.5, c= ", c, " k = ",K ,"  : ",minDCF)  
 
         
@@ -248,7 +248,7 @@ def print_table_Quadratic_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eval_
         pi_emp_T = n_T / N
 
         pi_T = pi_emp_T
-        minDCF,_,_ = model_validation.k_cross_DCF(data, LTR,k, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp,[pi_T, C, c, K], eval_data=eval_data)
+        minDCF,_,_ = model_validation.k_cross_DCF(data, LTR, k, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp,[pi_T, C, c, K], eval_data=eval_data)
         print("[5-Folds]  - C= ", C, ", pi_T=pi_emp_T, c= ", c, " k = ",K , "  : ",minDCF)
 
 
@@ -339,6 +339,28 @@ def print_table_RBF_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eval_data):
 #--------------------------
 
 def print_table_GMM_minDCF(DTR, LTR, k, eval_data):
+    def bar_plot_gmm(raw_minDCFs, gau_minDCFs, gmm_comp, title):
+
+        widthbar = 0.2
+
+        x_ind = numpy.arange(len(gmm_comp))
+
+        raw_ind = x_ind - widthbar/2
+        gau_ind = x_ind + widthbar/2
+
+        lb1 = "minDCF (prior=0.5) - Raw"
+        lb2 = "minDCF (prior=0.5) - Gaussianized"
+        
+        plt.figure()
+        plt.bar(raw_ind, raw_minDCFs, width = widthbar, color = 'orange', label = lb1)
+        plt.bar(gau_ind, gau_minDCFs, width = widthbar, color = 'red', label = lb2)
+        plt.title(title)
+        plt.xticks(x_ind ,gmm_comp)
+        plt.ylabel('minDCFs')
+        plt.xlabel('GMM components')
+        plt.legend(loc="lower left")
+
+        plt.savefig('Graph/GMM_EVAL/'+title+'.png' )
 
     def GMM_compute_DCFs(DTR, LTR, k, covariance_type, prior, cost_fn, cost_fp, eval_data):
 
@@ -381,18 +403,25 @@ def print_table_GMM_minDCF(DTR, LTR, k, eval_data):
     #### Full Cov
     covariance_type = "Full"
     raw_minDCFs, gau_minDCFs, gmm_comp = GMM_compute_DCFs(DTR, LTR, k, covariance_type, 0.5, 1, 1, eval_data)
+    bar_plot_gmm(raw_minDCFs, gau_minDCFs, gmm_comp, "GMM_Full_covariance")
 
     #### Diagonal Cov
     covariance_type = "Diagonal"
     raw_minDCFs, gau_minDCFs, gmm_comp = GMM_compute_DCFs(DTR, LTR, k, covariance_type, 0.5, 1, 1, eval_data)
+    bar_plot_gmm(raw_minDCFs, gau_minDCFs, gmm_comp, "GMM_Diagonal_covariance")
+
 
     #### Diagonal Cov
     covariance_type = "Tied"
     raw_minDCFs, gau_minDCFs, gmm_comp = GMM_compute_DCFs(DTR, LTR, k, covariance_type, 0.5, 1, 1, eval_data)
+    bar_plot_gmm(raw_minDCFs, gau_minDCFs, gmm_comp, "GMM_Tied_covariance")
+
     
     #### Diagonal Cov
     covariance_type = "Tied Diagonal"
     raw_minDCFs, gau_minDCFs, gmm_comp = GMM_compute_DCFs(DTR, LTR, k, covariance_type, 0.5, 1, 1, eval_data)
+    bar_plot_gmm(raw_minDCFs, gau_minDCFs, gmm_comp, "GMM_Tied_Diagonal_covariance")
+
 
 
 
@@ -441,25 +470,25 @@ def print_all(DTR, LTR, DEV, LEV, k):
     '''
     
     ### -- QUADRATIC SVM
-    '''ATTENZIONE
+    
     print("********************* quadratic SVM TABLES ************************************")
     print("------> applicazione con prior = 0.5")
     print_table_Quadratic_SVM_minDCF(DTR, LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k, eval_data=eval_data)
     print("********************************************************************")
-    '''
+    
     
     ### RBF
-    
+    '''
     print("********************* RBF SVM TABLES ************************************")
     print("------> applicazione con prior = 0.5")
     print_table_RBF_SVM_minDCF(DTR, LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k, eval_data=eval_data)    
     print("********************************************************************")
-    
+    '''
     
     ### GMM
-    '''
+    
     print_table_GMM_minDCF(DTR, LTR, k, eval_data = eval_data)
-    '''
+    
 
 
 
