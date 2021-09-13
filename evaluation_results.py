@@ -418,20 +418,21 @@ def print_all(DTR, LTR, DEV, LEV, k):
     
     ### -- QUADRATIC LOGISTIC REGRESSION
     
-    
+    '''
     print("********************* QUADRATIC LR TABLE ************************************")
     print("------> applicazione prior = 0.5")
     print_table_Quadratic_LR_minDCF(DTR,LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k, eval_data=eval_data)
     print()
     print("********************************************************************")
-    
-    ### -- LINEAR SVM
     '''
+
+    ### -- LINEAR SVM
+    
     print("********************* SVM TABLES ************************************")
     print("------> applicazione con prior = 0.5")
     print_table_SVM_minDCF(DTR, LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k, eval_data=eval_data)
     print("********************************************************************")
-    '''
+    
     
     ### -- QUADRATIC SVM
     '''

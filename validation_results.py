@@ -796,7 +796,7 @@ def print_table_RBF_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k): #TODO
         print("************************************************")
     
     fun_parametri(1,0)
-    fun_parametri(0.5,0)
+    #fun_parametri(0.5,0)
 
 #--------------------------
 
