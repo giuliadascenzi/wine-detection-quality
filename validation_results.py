@@ -885,25 +885,25 @@ def print_graphs_GMM_minDCF(DTR, LTR, k):
 def print_table_comparison_DCFs(DTR, LTR, k):
 
     def actDCF_minDCF(data, llr_calculator, params):
-            prior=0.5
-            cost_fn=1
-            cost_fp=1
-            min_DCF_LR, act_DCF_LR,_ = model_validation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params)
-            print("[5-Folds]  -  prior= 0.5  minDCF: ",min_DCF_LR, " actDCF= ",act_DCF_LR)
+        prior=0.5
+        cost_fn=1
+        cost_fp=1
+        min_DCF_LR, act_DCF_LR,_ = model_validation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params)
+        print("[5-Folds]  -  prior= 0.5  minDCF: ",min_DCF_LR, " actDCF= ",act_DCF_LR)
 
-            prior=0.1
-            cost_fn=1
-            cost_fp=1
-            min_DCF_LR, act_DCF_LR,_ = model_validation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params)
-            print("[5-Folds]  -  prior= 0.1  minDCF: ",min_DCF_LR, " actDCF= ",act_DCF_LR) 
+        prior=0.1
+        cost_fn=1
+        cost_fp=1
+        min_DCF_LR, act_DCF_LR,_ = model_validation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params)
+        print("[5-Folds]  -  prior= 0.1  minDCF: ",min_DCF_LR, " actDCF= ",act_DCF_LR) 
 
-            prior=0.9
-            cost_fn=1
-            cost_fp=1
-            min_DCF_LR, act_DCF_LR,_ = model_validation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params)
-            print("[5-Folds]  -  prior= 0.9  minDCF: ",min_DCF_LR, " actDCF= ",act_DCF_LR) 
+        prior=0.9
+        cost_fn=1
+        cost_fp=1
+        min_DCF_LR, act_DCF_LR,_ = model_validation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params)
+        print("[5-Folds]  -  prior= 0.9  minDCF: ",min_DCF_LR, " actDCF= ",act_DCF_LR) 
 
-            print()
+        print()
 
 
     #------------------------FIRST MODEL ----------------- 
