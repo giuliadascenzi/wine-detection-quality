@@ -1010,7 +1010,7 @@ def print_all(DTR, LTR, k):
     
     
     ### -- LINEAR SVM
-    '''
+    
     print("********************* SVM GRAPHS ************************************")
     print_graphs_SVM_Cs(DTR, LTR, k=k )
     print("********************************************************************")
@@ -1024,7 +1024,7 @@ def print_all(DTR, LTR, k):
     print_table_SVM_minDCF(DTR, LTR, prior=0.1, cost_fn=1, cost_fp=1, k=k )
     print("********************************************************************")
 
-    
+    '''
     
     ### -- QUADRATIC SVM
 
