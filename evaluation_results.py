@@ -47,23 +47,23 @@ def print_table_MVG_classifiers_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eva
     normalized_data_eval = preprocessing.Z_normalization(DTE)
     gaussianizedFeatures = preprocessing.gaussianization(DTR)
     gaussianizedFeatures_eval = preprocessing.gaussianizationEval(DTR, DTE)
+    principal_components10, principal_components10_eval = redTec.PCA_evaluation(normalized_data, 10, normalized_data_eval)
     principal_components9, principal_components9_eval = redTec.PCA_evaluation(normalized_data, 9, normalized_data_eval)
-    principal_components8, principal_components8_eval = redTec.PCA_evaluation(normalized_data, 8, normalized_data_eval)
     
     #------------------------RAW FEATURES (normalized) -----------------
     print("*** minDCF - RAW (normalized) FEATURES - NO PCA ***")
     MVG_Classifiers_minDCF(normalized_data, [normalized_data_eval, LTE])
     
 
+    #------------------------RAW FEATURES (normalized) WITH PCA = 10 --------------------
+    print("*** minDCF - RAW (normalized) FEATURES -  PCA (m=10) ***")
+    MVG_Classifiers_minDCF(principal_components10, [principal_components10_eval, LTE])       
+
+
     #------------------------RAW FEATURES (normalized) WITH PCA = 9 --------------------
-    print("*** minDCF - RAW (normalized) FEATURES -  PCA (m=9) ***")
-    MVG_Classifiers_minDCF(principal_components9, [principal_components9_eval, LTE])       
-
-
-    #------------------------RAW FEATURES (normalized) WITH PCA = 8 --------------------
     
-    print("*** minDCF - RAW (normalized) FEATURES -  PCA (m=8) ***")
-    MVG_Classifiers_minDCF(principal_components8, [principal_components8_eval, LTE])    
+    print("*** minDCF - RAW (normalized) FEATURES -  PCA (m=9) ***")
+    MVG_Classifiers_minDCF(principal_components9, [principal_components9_eval, LTE])    
 
 
     ## Z --> PCA --> GAUSS
@@ -72,19 +72,19 @@ def print_table_MVG_classifiers_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eva
     MVG_Classifiers_minDCF(gaussianizedFeatures, [gaussianizedFeatures_eval, LTE])
 
 
+    #------------------------GAUSSIANIZED FEATURES WITH PCA = 10 --------------------
+    print("*** minDCF - GAUSSIANIZED FEATURES -  PCA m=10 ***")
+    gaussianized_principal_components_10 = preprocessing.gaussianization(principal_components10)
+    gaussianized_principal_components_10_eval = preprocessing.gaussianizationEval(principal_components10, principal_components10_eval)
+
+    MVG_Classifiers_minDCF(gaussianized_principal_components_10, [gaussianized_principal_components_10_eval, LTE])     
+
+
     #------------------------GAUSSIANIZED FEATURES WITH PCA = 9 --------------------
     print("*** minDCF - GAUSSIANIZED FEATURES -  PCA m=9 ***")
     gaussianized_principal_components_9 = preprocessing.gaussianization(principal_components9)
     gaussianized_principal_components_9_eval = preprocessing.gaussianizationEval(principal_components9, principal_components9_eval)
-
-    MVG_Classifiers_minDCF(gaussianized_principal_components_9, [gaussianized_principal_components_9_eval, LTE])     
-
-
-    #------------------------GAUSSIANIZED FEATURES WITH PCA = 8 --------------------
-    print("*** minDCF - GAUSSIANIZED FEATURES -  PCA m=8 ***")
-    gaussianized_principal_components_8 = preprocessing.gaussianization(principal_components8)
-    gaussianized_principal_components_8_eval = preprocessing.gaussianizationEval(principal_components8, principal_components8_eval)
-    MVG_Classifiers_minDCF(gaussianized_principal_components_8, [gaussianized_principal_components_8_eval, LTE])
+    MVG_Classifiers_minDCF(gaussianized_principal_components_9, [gaussianized_principal_components_9_eval, LTE])
 
 #--------------------------
 
@@ -92,18 +92,18 @@ def print_table_LR_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eval_data):
 
     def LR_minDCF(data, eval_data):
             
-        lam = 10**(-7)
+        lam = 10**(-3)
         pi_T = 0.5
         min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T], eval_data=eval_data)
-        print("[5-Folds]  -  lam = 10^-7, pi_T = 0.5: ",min_DCF_LR)  
+        print("[5-Folds]  -  lam = 10^-3, pi_T = 0.5: ",min_DCF_LR)  
 
         pi_T = 0.1
         min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T], eval_data=eval_data)
-        print("[5-Folds]  -  lam = 10^-7, pi_T = 0.1: ",min_DCF_LR)
+        print("[5-Folds]  -  lam = 10^-3, pi_T = 0.1: ",min_DCF_LR)
 
         pi_T = 0.9
         min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T], eval_data=eval_data)
-        print("[5-Folds]  -  lam = 10^-7, pi_T = 0.9: ",min_DCF_LR)
+        print("[5-Folds]  -  lam = 10^-3, pi_T = 0.9: ",min_DCF_LR)
         
 
         N = LTR.size #tot number of samples
@@ -113,7 +113,7 @@ def print_table_LR_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eval_data):
         pi_T = pi_emp_T
         
         min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T])
-        print("[5-Folds]  -  lam = 10^-7, pi_T = pi_emp_T: ",min_DCF_LR)
+        print("[5-Folds]  -  lam = 10^-3, pi_T = pi_emp_T: ",min_DCF_LR)
 
         print()
 
@@ -135,19 +135,19 @@ def print_table_LR_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eval_data):
 def print_table_Quadratic_LR_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eval_data):
 
     def Quad_LR_minDCF(data, eval_data):
-        lam = 10**(-7)
+        lam = 10**(-3)
         
         pi_T = 0.5
         min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T], eval_data=eval_data)
-        print("[5-Folds]  -  lam = 10^-7, pi_T = 0.5: ",min_DCF_LR)  
+        print("[5-Folds]  -  lam = 10^-3, pi_T = 0.5: ",min_DCF_LR)  
 
         pi_T = 0.1
         min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T], eval_data=eval_data)
-        print("[5-Folds]  -  lam = 10^-7, pi_T = 0.1: ",min_DCF_LR)
+        print("[5-Folds]  -  lam = 10^-3, pi_T = 0.1: ",min_DCF_LR)
 
         pi_T = 0.9
         min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T], eval_data=eval_data)
-        print("[5-Folds]  -  lam = 10^-7, pi_T = 0.9: ",min_DCF_LR)
+        print("[5-Folds]  -  lam = 10^-3, pi_T = 0.9: ",min_DCF_LR)
         
 
         N = LTR.size #tot number of samples
@@ -156,7 +156,7 @@ def print_table_Quadratic_LR_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eval_d
 
         pi_T = pi_emp_T
         min_DCF_LR,_,_ = model_validation.k_cross_DCF(data, LTR, k, logisticRegression.Quadratic_LR_logLikelihoodRatios, prior , cost_fn, cost_fp, [lam, pi_T], eval_data=eval_data)
-        print("[5-Folds]  -  lam = 10^-7, pi_T = pi_emp_T: ",min_DCF_LR)
+        print("[5-Folds]  -  lam = 10^-3, pi_T = pi_emp_T: ",min_DCF_LR)
         
         print()
 
@@ -396,20 +396,20 @@ def print_all(DTR, LTR, DEV, LEV, k):
     
     eval_data = [DEV, LEV]
 
-    '''
+    print("************************EVALUATION RESULT***********************")
     ### -- MVG CLASSIFIERS
-    
+    '''
     print("********************* MVG TABLE ************************************")
     print("------> pi = 0.5")
     print_table_MVG_classifiers_minDCF(DTR, LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k, eval_data=eval_data)
     print()
     print("********************************************************************")
-
     '''
-
-    '''
-    ### -- LINEAR LOGISTIC REGRESSION
     
+
+    
+    ### -- LINEAR LOGISTIC REGRESSION
+    '''
     print("********************* LR TABLE ************************************")
     print("------> applicazione prior = 0.5")
     print_table_LR_minDCF(DTR,LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k, eval_data=eval_data)
@@ -419,13 +419,13 @@ def print_all(DTR, LTR, DEV, LEV, k):
     
     ### -- QUADRATIC LOGISTIC REGRESSION
     
-    '''
+    
     print("********************* QUADRATIC LR TABLE ************************************")
     print("------> applicazione prior = 0.5")
     print_table_Quadratic_LR_minDCF(DTR,LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k, eval_data=eval_data)
     print()
     print("********************************************************************")
-    '''
+    
     ### -- LINEAR SVM
     '''
     print("********************* SVM TABLES ************************************")
@@ -451,8 +451,9 @@ def print_all(DTR, LTR, DEV, LEV, k):
     '''
     
     ### GMM
+    '''
     print_table_GMM_minDCF(DTR, LTR, k, eval_data = eval_data)
-
+    '''
 
 
 

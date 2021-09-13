@@ -140,12 +140,12 @@ if __name__ == '__main__':
     k = 5
 
     ##VALIDATION OF THE CLASSIFIERS : 
-    validation_results.print_all(DTR, LTR, k)
+    #validation_results.print_all(DTR, LTR, k)
 
     ##EVALUATION OF THE CLASSIFIERS :
-    '''
+    
     evaluation_results.print_all(DTR, LTR, DTE, LTE, k)
-    '''
+    
 
 
     '''
