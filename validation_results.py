@@ -1014,7 +1014,7 @@ def print_all(DTR, LTR, k):
     print("********************* SVM GRAPHS ************************************")
     print_graphs_SVM_Cs(DTR, LTR, k=k )
     print("********************************************************************")
-    '''
+    
     print("********************* SVM TABLES ************************************")
     print("------> applicazione con prior = 0.5")
     print_table_SVM_minDCF(DTR, LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k )
@@ -1023,7 +1023,7 @@ def print_all(DTR, LTR, k):
     print("------> applicazione con prior = 0.1")
     print_table_SVM_minDCF(DTR, LTR, prior=0.1, cost_fn=1, cost_fp=1, k=k )
     print("********************************************************************")
-
+    '''
     
     
     ### -- QUADRATIC SVM

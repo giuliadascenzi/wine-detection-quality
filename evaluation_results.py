@@ -178,6 +178,7 @@ def print_table_Quadratic_LR_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eval_d
 def print_table_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eval_data):
 
     def linear_SVM_minDCF(data, eval_data):
+        
         C = 0.1
         pi_T = 0.5
         minDCF,_,_ = model_validation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C], eval_data=eval_data)
@@ -192,13 +193,18 @@ def print_table_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eval_data):
         pi_T = 0.9
         minDCF,_,_ = model_validation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C], eval_data=eval_data)
         print("[5-Folds]  -  C= 0.1, pi_T=0.9: ",minDCF)
-
+        
         #unbalanced application
         C = 0.1
-        pi_T = -1
+
+        N = LTR.size #tot number of samples
+        n_T = (1*(LTR==1)).sum() #num of samples belonging to the true class
+        pi_emp_T = n_T / N
+        pi_T = pi_emp_T
+
         minDCF,_,_ = model_validation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C], eval_data=eval_data)
         print("[5-Folds]  -  C= 0.1, pi_T=pi_emp_T: ",minDCF)
-
+        
         print()
 
     DTE = eval_data[0]
@@ -328,7 +334,7 @@ def print_table_RBF_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eval_data):
         print("************************************************")
     
     fun_parametri(1, 0, eval_data)
-    fun_parametri(0.5, 0, eval_data)
+    #fun_parametri(0.5, 0, eval_data)
 
 #--------------------------
 
@@ -427,15 +433,15 @@ def print_all(DTR, LTR, DEV, LEV, k):
     '''
 
     ### -- LINEAR SVM
-    
+    '''
     print("********************* SVM TABLES ************************************")
     print("------> applicazione con prior = 0.5")
     print_table_SVM_minDCF(DTR, LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k, eval_data=eval_data)
     print("********************************************************************")
-    
+    '''
     
     ### -- QUADRATIC SVM
-    '''
+    '''ATTENZIONE
     print("********************* quadratic SVM TABLES ************************************")
     print("------> applicazione con prior = 0.5")
     print_table_Quadratic_SVM_minDCF(DTR, LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k, eval_data=eval_data)
@@ -443,12 +449,12 @@ def print_all(DTR, LTR, DEV, LEV, k):
     '''
     
     ### RBF
-    '''
+    
     print("********************* RBF SVM TABLES ************************************")
     print("------> applicazione con prior = 0.5")
     print_table_RBF_SVM_minDCF(DTR, LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k, eval_data=eval_data)    
     print("********************************************************************")
-    '''
+    
     
     ### GMM
     '''
