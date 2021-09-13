@@ -166,9 +166,15 @@ def singleFold_DCF(D, L, llr_calculator, prior, cost_fn, cost_fp, otherParams=No
     min_DCF,_,_,optimal_treshold =compute_minimum_detection_cost(llr, LTE, prior , cost_fn, cost_fp)
     return (min_DCF, actDCF, optimal_treshold) #minDCF
 
-def bayes_error_plot(D, L, k, llr_calculator, otherParams, title, color ):
 
-    llr, labels = k_cross_loglikelihoods(D,L, k, llr_calculator, otherParams)
+
+def bayes_error_plot(D, L, k, llr_calculator, otherParams, title, color, eval_data):
+    if (eval_data!=None): 
+        DEV = eval_data[0]
+        labels= eval_data[1]
+        llr = llr_calculator(D, L, DEV, otherParams)
+    else :
+        llr, labels = k_cross_loglikelihoods(D,L,k, llr_calculator, otherParams)
 
     effPriorLogOdds = numpy.linspace(-2,2,20)
     effPriors = 1 / (1+ numpy.exp(-effPriorLogOdds))

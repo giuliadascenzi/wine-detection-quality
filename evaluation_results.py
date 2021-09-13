@@ -423,7 +423,59 @@ def print_table_GMM_minDCF(DTR, LTR, k, eval_data):
     bar_plot_gmm(raw_minDCFs, gau_minDCFs, gmm_comp, "GMM_Tied_Diagonal_covariance")
 
 
+def print_table_comparison_DCFs(DTR, LTR, k, eval_data):
 
+    def actDCF_minDCF(data, llr_calculator, params, eval_data):
+
+            prior=0.5
+            cost_fn=1
+            cost_fp=1
+            min_DCF_LR, act_DCF_LR,_ = model_validation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params, eval_data=eval_data)
+            print("[5-Folds]  -  prior= 0.5  minDCF: ",min_DCF_LR, " actDCF= ",act_DCF_LR)
+
+            prior=0.1
+            cost_fn=1
+            cost_fp=1
+            min_DCF_LR, act_DCF_LR,_ = model_validation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params, eval_data=eval_data)
+            print("[5-Folds]  -  prior= 0.1  minDCF: ",min_DCF_LR, " actDCF= ",act_DCF_LR) 
+
+            prior=0.9
+            cost_fn=1
+            cost_fp=1
+            min_DCF_LR, act_DCF_LR,_ = model_validation.k_cross_DCF(data, LTR, k, llr_calculator, prior , cost_fn, cost_fp, params, eval_data=eval_data)
+            print("[5-Folds]  -  prior= 0.9  minDCF: ",min_DCF_LR, " actDCF= ",act_DCF_LR) 
+
+            print()
+
+
+    #------------------------FIRST MODEL ----------------- 
+
+    print(" RBF SVM, C=1, lam=1, pi_T =0.5 raw features ")
+    lam = 1
+    pi_T = 0.5
+    C= 1
+    actDCF_minDCF(preprocessing.Z_normalization(DTR), SVMClassifier.RBF_SVM_computeLogLikelihoods,[pi_T, C, lam], eval_data)
+
+    #--------------- SECOND MODEL-------------------------
+
+    print(" Quad SVM, C=0.1, pi_T =0.5, c=1,K=0 raw features  ")
+    C=0.1
+    pi_T=0.5
+    c=1
+    K=0
+    actDCF_minDCF(preprocessing.Z_normalization(DTR), SVMClassifier.Polinomial_SVM_computeLogLikelihoods,[pi_T,C,c,K], eval_data)
+
+
+def print_err_bayes_plots(data, L, k, llr_calculators, other_params, titles, colors, eval_data):
+    plt.figure()
+    plt.title("Bayes Error Plot")
+    plt.xlabel("prior log odds")
+    plt.ylabel("DCF")
+    for i in range (len(llr_calculators)):
+        print("Working on calculator "+ str(i))
+        model_validation.bayes_error_plot(data[i], L, k, llr_calculators[i], other_params[i], titles[i], colors[i], eval_data)
+        print("DONE")
+    plt.savefig('Graph/Error_Bayes_Plots/EBP1_EVAL.png' )
 
 #--------------------------
 def print_all(DTR, LTR, DEV, LEV, k):
@@ -470,12 +522,12 @@ def print_all(DTR, LTR, DEV, LEV, k):
     '''
     
     ### -- QUADRATIC SVM
-    
+    '''
     print("********************* quadratic SVM TABLES ************************************")
     print("------> applicazione con prior = 0.5")
     print_table_Quadratic_SVM_minDCF(DTR, LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k, eval_data=eval_data)
     print("********************************************************************")
-    
+    '''
     
     ### RBF
     '''
@@ -486,9 +538,39 @@ def print_all(DTR, LTR, DEV, LEV, k):
     '''
     
     ### GMM
-    
+    '''
     print_table_GMM_minDCF(DTR, LTR, k, eval_data = eval_data)
+    '''
     
+    ## COMPARISON BETWEEN ACT DCF AND MIN DCF OF THE CHOSEN MODELS
+    print("************ Table comparison act dcf and min dcf******************")
+    print_table_comparison_DCFs(DTR, LTR, k=k, eval_data=eval_data)
+    print("******************************************************************")
+
+    #error bayes plot
+
+    pi_T1 = 0.5
+    C1= 1
+    lam1 = 1
+
+    pi_T2=0.5
+    C2=0.1
+    c2=1
+    K2=0
+
+
+    data = [ preprocessing.Z_normalization(DTR), preprocessing.Z_normalization(DTR)]
+    llr_calculators = [SVMClassifier.RBF_SVM_computeLogLikelihoods,SVMClassifier.Polinomial_SVM_computeLogLikelihoods ]
+    other_params = [[pi_T1,C1,lam1], [pi_T2,C2,c2,K2]]
+    titles = ["RBF SVM RAW", "Quad SVM RAW"]
+    colors = ["r", "b"]
+    
+    
+    print("************ PRINT BAYES ERROR PLOT******************")
+    print_err_bayes_plots(data, LTR, k, llr_calculators, other_params, titles, colors, eval_data)
+    print("*****************************************************")
+    
+
 
 
 
