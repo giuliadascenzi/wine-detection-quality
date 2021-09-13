@@ -221,17 +221,17 @@ def print_table_Quadratic_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eval_
     def quadratic_SVM_minDCF(data, C, c, K, eval_data):
         
         pi_T = 0.5
-        minDCF,_,_ = model_validation.singleFold_DCF(data, LTR, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, c, K], eval_data=eval_data)
+        minDCF,_,_ = model_validation.k_cross_DCF(data, LTR, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, c, K], eval_data=eval_data)
         print("[5-Folds]  -  C= ", C, ", pi_T=0.5, c= ", c, " k = ",K ,"  : ",minDCF)  
 
         
         pi_T = 0.1
-        minDCF,_,_ = model_validation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, c, K], eval_data=eval_data)
+        minDCF,_,_ = model_validation.k_cross_DCF(data, LTR,k, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, c, K], eval_data=eval_data)
         print("[5-Folds]  -  C= ", C, ", pi_T=0.1, c= ", c, " k = ",K ,"  : ",minDCF)
 
         
         pi_T = 0.9
-        minDCF,_,_ = model_validation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, c, K], eval_data=eval_data)
+        minDCF,_,_ = model_validation.k_cross_DCF(data, LTR,k, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, c, K], eval_data=eval_data)
         print("[5-Folds]  -  C= ", C, ", pi_T=0.9, c= ", c, " k = ",K, "  : ",minDCF)
 
 
@@ -242,7 +242,7 @@ def print_table_Quadratic_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eval_
         pi_emp_T = n_T / N
 
         pi_T = pi_emp_T
-        minDCF,_,_ = model_validation.k_cross_DCF(data, LTR,k, SVMClassifier.SVM_computeLogLikelihoods, prior , cost_fn, cost_fp,[pi_T, C, c, K], eval_data=eval_data)
+        minDCF,_,_ = model_validation.k_cross_DCF(data, LTR,k, SVMClassifier.Polinomial_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp,[pi_T, C, c, K], eval_data=eval_data)
         print("[5-Folds]  - C= ", C, ", pi_T=pi_emp_T, c= ", c, " k = ",K , "  : ",minDCF)
 
 
@@ -269,9 +269,8 @@ def print_table_Quadratic_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eval_
 
         print("************************************************")
     
-    fun_parametri(10,1,0, eval_data)
-    fun_parametri(100,1,0, eval_data)
-    fun_parametri(0.1,1,1, eval_data)
+    fun_parametri(0.1,1,0, eval_data)
+    
 
 #--------------------------
 
