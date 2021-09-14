@@ -25,6 +25,25 @@ def PCA (D, m):
     principal_components = numpy.dot(eigenvectors_selected.T, normalized_data)
     return principal_components
 
+def PCA_evaluation (D, m, normalized_eval):
+    #dataset mean
+    mu = D.mean(1)
+    #normalize data
+    normalized_data = D - mcol(mu)
+    # N = number of samples
+    N = D.shape[1]
+    #compute the covariance matrix
+    covariance_matrix= numpy.dot(normalized_data, normalized_data.T) / N
+
+    #eigenvectors and eigenvalues
+    eigenvalues,eigenvectors = numpy.linalg.eigh(covariance_matrix)
+    #retrieve the first m eigenvectors
+    eigenvectors_selected = eigenvectors[:, ::-1][:,0:m]
+
+    principal_components = numpy.dot(eigenvectors_selected.T, normalized_data)
+    principal_components_eval = numpy.dot(eigenvectors_selected.T, normalized_eval)
+    return principal_components, principal_components_eval
+
 def LDA(D,L, m):
     n_features= D.shape[0]
     class_labels = numpy.unique(L)
