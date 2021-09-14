@@ -45,44 +45,7 @@ def load(fname):
 
     return numpy.hstack(DList), numpy.array(labelsList, dtype=numpy.int32)
 
-
-
-def GMM_choosing_hyperparams(DTR, LTR, k, covariance_type, prior, cost_fn, cost_fp):
-    gmm_comp = 1
-    normalized_features = preprocessing.Z_normalization(DTR)
-    gaussianizedFeatures = preprocessing.gaussianization(DTR)
-
-    constrained=True
-    #psi_s=[0.000001, 0.00001, 0.0001, 0.001, 0.01, 0.1, 1, 10, 100, 1000]
-    #alpha_s=[0.00001, 0.0001, 0.001, 0.01, 0.1, 1, 10, 100, 1000, 10000]
-    #delta_l_s=[10**(-6), 10**(-7)]
-
-    psi_s = [0.01]
-    alpha_s = [0.1]
-    delta_l_s = [10**-6]
-
-
-    optimal_result = []
-    
-    print("************************" + covariance_type + "*************************")
-    for psi in psi_s:
-        for alpha in alpha_s:
-            for delta_l in delta_l_s:
-    
-                params = [constrained, psi, covariance_type, alpha, gmm_comp ,delta_l]
-                # Raw features
-                raw_minDCFs_i,_,_ = model_validation.k_cross_DCF(normalized_features, LTR, k, gaussian_mixture_models.GMM_computeLogLikelihoodRatios, prior , cost_fn, cost_fp, params)
-                # Gaussianized features
-                gau_minDCFs_i,_,_ = model_validation.k_cross_DCF(gaussianizedFeatures, LTR,k, gaussian_mixture_models.GMM_computeLogLikelihoodRatios, prior , cost_fn, cost_fp, params)
-                
-                print("psi: " + str(psi) + ", alpha: " + str(alpha) + ", delta_l: " + str(delta_l) + " -----> " + "RAW: " + str(raw_minDCFs_i))
-                print("psi: " + str(psi) + ", alpha: " + str(alpha) + ", delta_l: " + str(delta_l) + " -----> " + "GAU: " + str(gau_minDCFs_i))
-
-                if(raw_minDCFs_i < 0.4 or gau_minDCFs_i < 0.4):
-                    optimal_result.append([raw_minDCFs_i, gau_minDCFs_i])
-    return optimal_result
-                
-    
+ 
 
 if __name__ == '__main__':
 
@@ -97,7 +60,7 @@ if __name__ == '__main__':
     
     ## - compute statistics to analyse the data and the given features
     
-    '''
+    
     # plot histograms of the raw training dataset
     stats.plot_hist(DTR, LTR, "Stat/Hist/Raw")
     
@@ -135,7 +98,7 @@ if __name__ == '__main__':
     stats.bars_numsamples(n_high_qty, n_low_qty, "Test")
     print("test, high:", n_high_qty, "low: ", n_low_qty)
     
-    '''
+    
     ##choose k for k cross validation
     k = 5
 
@@ -148,23 +111,7 @@ if __name__ == '__main__':
     
 
 
-    '''
-    #### Full Cov
-    covariance_type = "Full"
-    print( GMM_choosing_hyperparams(DTR, LTR, k, covariance_type, 0.5, 1, 1))
-
-    #### Diagonal Cov
-    covariance_type = "Diagonal"
-    print(GMM_choosing_hyperparams(DTR, LTR, k, covariance_type, 0.5, 1, 1))
-
-    #### Diagonal Cov
-    covariance_type = "Tied"
-    print(GMM_choosing_hyperparams(DTR, LTR, k, covariance_type, 0.5, 1, 1))
     
-    #### Diagonal Cov
-    covariance_type = "Tied Diagonal"
-    print(GMM_choosing_hyperparams(DTR, LTR, k, covariance_type, 0.5, 1, 1))
-    '''
     
     
 

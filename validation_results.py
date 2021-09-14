@@ -774,7 +774,7 @@ def print_table_RBF_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
         minDCF,_,_ = model_validation.k_cross_DCF(data, LTR,k, SVMClassifier.RBF_SVM_computeLogLikelihoods, prior , cost_fn, cost_fp, [pi_T, C, 10**loglam])
         print("[5-Folds]  -  C= ", C, ", loglam= ", loglam, " pi_T=pi_emp_T: ",minDCF)   
 
-
+        
         print()
 
     def fun_parametri(C,loglam):
@@ -787,15 +787,15 @@ def print_table_RBF_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k):
         #------------------------RAW FEATURES -----------------
         print("*** minDCF - RAW FEATURES ***")
         RBF_SVM_minDCF(normalizedFeatures, C=C, loglam=loglam)
-
+        
         #--------------- GAUSSIANIZED FEATURES-------------------------
         print("*** minDCF - GAUSSIANIZED FEATURES  ***")
         RBF_SVM_minDCF(gaussianizedFeatures ,C=C, loglam=loglam)
-
+        
 
         print("************************************************")
     
-    fun_parametri(1,0)
+    fun_parametri(C=10**0.1, loglam=-0.5)
     #fun_parametri(0.5,0)
 
 #--------------------------
@@ -908,10 +908,10 @@ def print_table_comparison_DCFs(DTR, LTR, k):
 
     #------------------------FIRST MODEL ----------------- 
 
-    print(" RBF SVM, C=1, lam=1, pi_T =0.5 raw features ")
-    lam = 1
+    print(" RBF SVM, C=10^0.1, lam=10^-0.5, pi_T =0.5 raw features ")
+    lam = 10**-0.5
     pi_T = 0.5
-    C= 1
+    C= 10**0.1
     actDCF_minDCF(preprocessing.Z_normalization(DTR), SVMClassifier.RBF_SVM_computeLogLikelihoods,[pi_T, C, lam] )
 
     #--------------- SECOND MODEL-------------------------
@@ -951,7 +951,7 @@ def print_treshold_estimated_table(data, LTR, prior, cost_fn, cost_fp, k, llr_ca
 #--------------------------
 def print_all(DTR, LTR, k):
     
-    '''
+    
     ### -- MVG CLASSIFIERS
     print("********************* MVG TABLE ************************************")
     print("------> pi = 0.5")
@@ -987,9 +987,9 @@ def print_all(DTR, LTR, k):
     print()
     print("********************************************************************")
     
-    '''
+    
     ### -- QUADRATIC LOGISTIC REGRESSION
-    '''
+    
     print("********************* quadratic LR GRAPHS ************************************")
     print_graphs_quadratic_LR_lambdas(DTR, LTR,  k)
     print("********************************************************************")
@@ -1006,11 +1006,11 @@ def print_all(DTR, LTR, k):
     print_table_Quadratic_LR_minDCF(DTR, LTR, prior=0.9, cost_fn=1, cost_fp=1, k=k)
     print()
     print("********************************************************************")
-    '''
+    
     
     
     ### -- LINEAR SVM
-    '''
+    
     print("********************* SVM GRAPHS ************************************")
     print_graphs_SVM_Cs(DTR, LTR, k=k )
     print("********************************************************************")
@@ -1023,11 +1023,11 @@ def print_all(DTR, LTR, k):
     print("------> applicazione con prior = 0.1")
     print_table_SVM_minDCF(DTR, LTR, prior=0.1, cost_fn=1, cost_fp=1, k=k )
     print("********************************************************************")
-    '''
+    
     
     
     ### -- QUADRATIC SVM
-    '''
+    
     print("********************* quadratic SVM GRAPHS changing C,k,c ************************************")
     print_graphs_Polinomial_SVM_Cs_k_c(DTR, LTR, k=k )
     print("********************************************************************")
@@ -1051,12 +1051,12 @@ def print_all(DTR, LTR, k):
     print("********************* RBF SVM GRAPHS ************************************")
     print_graphs_RBF_SVM_Cs(DTR, LTR, k=k )
     print("********************************************************************")
-    '''
+    
 
     print("********************* RBF SVM TABLES ************************************")
     print("------> applicazione con prior = 0.5")
     print_table_RBF_SVM_minDCF(DTR, LTR, prior=0.5, cost_fn=1, cost_fp=1, k=k )
-    '''
+    
     print("------> applicazione con prior = 0.9")
     print_table_RBF_SVM_minDCF(DTR, LTR, prior=0.9, cost_fn=1, cost_fp=1, k=k )
     print("------> applicazione con prior = 0.1")
@@ -1077,8 +1077,8 @@ def print_all(DTR, LTR, k):
     #error bayes plot
 
     pi_T1 = 0.5
-    C1= 1
-    lam1 = 1
+    C1= 10**0.1
+    lam1 = 10**-0.5
 
     pi_T2=0.5
     C2=0.1
@@ -1118,6 +1118,6 @@ def print_all(DTR, LTR, k):
     print_treshold_estimated_table(data[1], LTR, prior, 1, 1, k, llr_calculators[1], other_params[1], titles[1])
     print()
     
-    '''
+    
 
 #--------------------------

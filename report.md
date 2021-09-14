@@ -405,22 +405,22 @@ Left: raw features. Right: gaussianized features.
 | <img src="Graph\SVM\RBF\5FoldRAW.png" style="zoom:60%;" /> | <img src="Graph\SVM\RBF\5FoldGauss.png" style="zoom:60%;" /> |
 | ---------------------------------------------------------- | ------------------------------------------------------------ |
 
-The plot shows that both GAMMA and C influence the results. To optimize jointly both hyperpararmeters, the values chosen are GAMMA = 1 and C=1.
+The plot shows that both GAMMA and C influence the results. To optimize jointly both hyperpararmeters, the values chosen are GAMMA = -0.5 and C=10^0.1.
 
 In the table are shown the results got from the model trained with those hyper-parameters with and without re-balancing of the classes costs.
 
-|                                     | prior=0.5   | prior=0.9   | prior=0.1   |
-| ----------------------------------- | ----------- | ----------- | ----------- |
-| **Raw Features**                    | ----------- | ----------- | ----------- |
-| RBF SVM, C=1, lam=1, pi_T =0.5      | **0.218**   | 0.567       | 0.536       |
-| RBF SVM, C=1, lam=1, pi_T =0.1      | 0.348       | 0.690       | **0.534**   |
-| RBF SVM, C=1, lam=1, pi_T =0.9      | 0.285       | **0.567**   | 0.595       |
-| RBF SVM, C=1, lam=1, pi_T =pi_emp_T | 0.225       | 0.606       | 0.548       |
-| **Gaussianized features**           | ----------- | ----------- | ----------- |
-| RBF SVM, C=1, lam=1, pi_T =0.5      | 0.233       | 0.573       | 0.511       |
-| RBF SVM, C=1, lam=1, pi_T =0.1      | 0.338       | 0.613       | 0.522       |
-| RBF SVM, C=1, lam=1, pi_T =0.9      | 0.269       | 0.578       | 0.566       |
-| RBF SVM, C=1, lam=1, pi_T =pi_emp_T | 0.230       | 0.570       | 0.498       |
+|                                                  | prior=0.5   | prior=0.9   | prior=0.1   |
+| ------------------------------------------------ | ----------- | ----------- | ----------- |
+| **Raw Features**                                 | ----------- | ----------- | ----------- |
+| RBF SVM, C=10^0.1, lam=10**-0.5, pi_T =0.5       | 0.229       |             |             |
+| RBF SVM, C=10^0.1, lam=10**-0.5, pi_T =0.1       | 0.298       |             |             |
+| RBF SVM, C=10^0.1, lam=10**-0.5,pi_T =0.9        | 0.261       |             |             |
+| RBF SVM,  C=10^0.1, lam=10**-0.5, pi_T =pi_emp_T | 0.242       |             |             |
+| **Gaussianized features**                        | ----------- | ----------- | ----------- |
+| RBF SVM, C=10^0.1, lam=10**-0.5, pi_T =0.5       | 0.230       |             |             |
+| RBF SVM, C=10^0.1, lam=10**-0.5, pi_T =0.1       | 0.303       |             |             |
+| RBF SVM, C=10^0.1, lam=10**-0.5,pi_T =0.9        | 0.242       |             |             |
+| RBF SVM,  C=10^0.1, lam=10**-0.5, pi_T =pi_emp_T | 0.232       |             |             |
 
 The RBF results significantly outperforms our previous models for both the target application and the unbalanced ones.
 
@@ -511,7 +511,7 @@ The following table compares the values got as minDCF and actDCF for the three d
 |                                                  | prior=0.5 |        | prior=0.1 |        | prior=0.9 |        |
 | ------------------------------------------------ | --------- | ------ | --------- | ------ | --------- | ------ |
 |                                                  | minDCF    | actDCF | minDCF    | actDCF | minDCF    | actDCF |
-| RBF SVM, C=1, lam=1, pi_T =0.5 raw features      | 0.218     | 0.218  | 0.536     | 1.0    | 0.567     | 1.0    |
+| RBF SVM, C=1, lam=1, pi_T =0.5 raw features      | 0.229     | 0.234  | 0.536     | 1.0    | 0.567     | 1.0    |
 | Quad SVM, C=0.1, pi_T =0.5, c=1,K=0 raw features | 0.273     | 0.296  | 0.798     | 0.852  | 0.691     | 0.749  |
 
 These results show that both models are quite calibrated for the target application of this report. In particular, with the RBF model the minDCF corresponds exactly to the actual DCF, despite both models lack a probabilistic interpretation.
@@ -656,31 +656,18 @@ Again, first the performances have been evaluate using the minimum DCF and then 
 
 #### RBF
 
-|                                        | prior=0.5   | prior=0.1   | prior=0.9   |
-| -------------------------------------- | ----------- | ----------- | ----------- |
-| **Raw Features**                       | ----------- | ----------- | ----------- |
-| RBF SVM, C=1, loglam=0, pi_T =0.5      | 0.309       |             |             |
-| RBF SVM, C=1, loglam=0, pi_T =0.1      | 0.446       |             |             |
-| RBF SVM, C=1, loglam=0, pi_T =0.9      | 0.298       |             |             |
-| RBF SVM, C=1, loglam=0, pi_T =pi_emp_T | 0.308       |             |             |
-| **Gaussianized features**              | ----------- | ----------- | ----------- |
-| RBF SVM, C=1, loglam=0, pi_T =0.5      | 0.297       |             |             |
-| RBF SVM, C=1, loglam=0, pi_T =0.1      | 0.425       |             |             |
-| RBF SVM, C=1, loglam=0,, pi_T =0.9     | 0.286       |             |             |
-| RBF SVM, C=1, loglam=0, pi_T =pi_emp_T | 0.320       |             |             |
-
-| ?????                                 | prior=0.5   | prior=0.1   | prior=0.9   |
-| ------------------------------------- | ----------- | ----------- | ----------- |
-| **Raw Features**                      | ----------- | ----------- | ----------- |
-| RBF SVM, C=0.5, lam=1, pi_T =0.5      | 0.323       |             |             |
-| RBF SVM, C=0.5, lam=1, pi_T =0.1      | 0.566       |             |             |
-| RBF SVM, C=0.5, lam=1, pi_T =0.9      | 0.335       |             |             |
-| RBF SVM, C=0.5, lam=1, pi_T =pi_emp_T | 0.348       |             |             |
-| **Gaussianized features**             | ----------- | ----------- | ----------- |
-| RBF SVM, C=0.5, lam=1, pi_T =0.5      | 0.284       |             |             |
-| RBF SVM, C=0.5, lam=1, pi_T =0.1      | 0.507       |             |             |
-| RBF SVM, C=0.5, lam=1, pi_T =0.9      | 0.355       |             |             |
-| RBF SVM, C=0.5, lam=1, pi_T =pi_emp_T | 0.311       |             |             |
+|                                                | prior=0.5   | prior=0.1   | prior=0.9   |
+| ---------------------------------------------- | ----------- | ----------- | ----------- |
+| **Raw Features**                               | ----------- | ----------- | ----------- |
+| RBF SVM, C=10^0.1, loglam=-0.5, pi_T =0.5      | 0.258       |             |             |
+| RBF SVM, C=10^0.1, loglam=-0.5,  pi_T =0.1     | 0.387       |             |             |
+| RBF SVM, C=10^0.1, loglam=-0.5,  pi_T =0.9     | 0.268       |             |             |
+| RBF SVM, C=10^0.1, loglam=-0.5, pi_T =pi_emp_T | 0.298       |             |             |
+| **Gaussianized features**                      | ----------- | ----------- | ----------- |
+| RBF SVM, C=10^0.1, loglam=-0.5, pi_T =0.5      | 0.268       |             |             |
+| RBF SVM, C=10^0.1, loglam=-0.5,  pi_T =0.1     | 0.350       |             |             |
+| RBF SVM, C=10^0.1, loglam=-0.5,  pi_T =0.9     | 0.262       |             |             |
+| RBF SVM, C=10^0.1, loglam=-0.5, pi_T =pi_emp_T | 0.290       |             |             |
 
 #### GMM
 
