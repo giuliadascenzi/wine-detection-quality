@@ -280,7 +280,7 @@ def print_table_Quadratic_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eval_
 
 #--------------------------
 
-def print_table_RBF_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eval_data): #TODO
+def print_table_RBF_SVM_minDCF(DTR, LTR, prior, cost_fn, cost_fp, k, eval_data): 
 
     def RBF_SVM_minDCF(data, C, loglam, eval_data):
         
